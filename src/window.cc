@@ -1,15 +1,16 @@
+#include "window.h"
+
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include <iostream>
-#include <cstdlib>
-#include <string>
 #include <unistd.h>
-#include "window.h"
+
+#include <cstdlib>
+#include <iostream>
+#include <string>
 
 using namespace std;
 
 Xwindow::Xwindow(int width, int height) {
-
     d = XOpenDisplay(NULL);
     if (d == NULL) {
         cerr << "Cannot open display" << endl;
@@ -21,17 +22,17 @@ Xwindow::Xwindow(int width, int height) {
     XSelectInput(d, w, ExposureMask | KeyPressMask);
     XMapRaised(d, w);
 
-    Pixmap pix = XCreatePixmap(d, w, width,
-                               height, DefaultDepth(d, DefaultScreen(d)));
+    Pixmap pix =
+        XCreatePixmap(d, w, width, height, DefaultDepth(d, DefaultScreen(d)));
     gc = XCreateGC(d, pix, 0, (XGCValues *)0);
 
     XFlush(d);
     XFlush(d);
 
-    // Set up class name. I need this because I use i3wm, which stretches windows
-    // at it's own will. If I want to open this window as a floating window every
-    // time, I need to set its class name, and then address that class in my i3wm
-    // config file.
+    // Set up class name. I need this because I use i3wm, which stretches
+    // windows at it's own will. If I want to open this window as a floating
+    // window every time, I need to set its class name, and then address that
+    // class in my i3wm config file.
     XClassHint hint;
     hint.res_class = (char *)"cs246";
     hint.res_name = (char *)"cs246";
@@ -40,7 +41,8 @@ Xwindow::Xwindow(int width, int height) {
     // Set up colours.
     XColor xcolour;
     Colormap cmap;
-    char color_vals[10][10] = {"white", "black", "red", "green", "blue", "cyan", "yellow", "magenta", "orange", "brown"};
+    char color_vals[10][10] = {"white", "black",  "red",     "green",  "blue",
+                               "cyan",  "yellow", "magenta", "orange", "brown"};
 
     cmap = DefaultColormap(d, DefaultScreen(d));
     for (int i = 0; i < 5; ++i) {
@@ -54,7 +56,8 @@ Xwindow::Xwindow(int width, int height) {
     // Make window non-resizeable.
     XSizeHints hints;
     hints.flags = (USPosition | PSize | PMinSize | PMaxSize);
-    hints.height = hints.base_height = hints.min_height = hints.max_height = height;
+    hints.height = hints.base_height = hints.min_height = hints.max_height =
+        height;
     hints.width = hints.base_width = hints.min_width = hints.max_width = width;
     XSetNormalHints(d, w, &hints);
 
@@ -64,7 +67,6 @@ Xwindow::Xwindow(int width, int height) {
 }
 
 Xwindow::~Xwindow() {
-
     XFreeGC(d, gc);
     XCloseDisplay(d);
 }
