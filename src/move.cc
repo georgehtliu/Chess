@@ -2,13 +2,7 @@
 #include "player.h"
 #include "spot.h"
 #include "piece.h"
-
-int abs(int num)
-{
-    if (num > 0)
-        return num;
-    return num * (-1);
-}
+#include "math.h"
 
 bool Move::isDiagonal()
 {
