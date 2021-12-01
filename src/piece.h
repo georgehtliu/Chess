@@ -1,3 +1,6 @@
+#ifndef _PIECE_H_
+#define _PIECE_H_
+
 class Move;
 
 class Piece
@@ -12,3 +15,5 @@ public:
     virtual bool validMove(Move mv) = 0;
     virtual ~Piece();
 };
+
+#endif
