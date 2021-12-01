@@ -2,6 +2,7 @@
 #define _BISHOP_H_
 
 #include "../piece.h"
+#include "../move.h"
 
 class Bishop : public Piece
 {

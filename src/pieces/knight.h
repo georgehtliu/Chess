@@ -2,6 +2,7 @@
 #define _KNIGHT_H_
 
 #include "../piece.h"
+#include "../move.h"
 
 class Knight : public Piece
 {
