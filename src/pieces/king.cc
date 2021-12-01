@@ -9,7 +9,7 @@ bool King::validCastle(Move mv)
 {
     if (hasMoved)
         return false;
-    return mv.isHorizontal() && mv.euclidDist() == CASTLE_DISTANCE;
+    return mv.isHorizontal() && mv.euclidDist() == mv.FORWARD_UNIT * 2;
 }
 
 bool King::validMove(Move mv)
@@ -18,7 +18,7 @@ bool King::validMove(Move mv)
 
     if (!mv.isCastle)
     {
-        return (mv.isDiagonal() && mvEuclidDist == mv.ONE_DIAG_DIST) || (mv.isStraight() && mvEuclidDist == mv.ONE_STRAIGHT_DIST);
+        return (mv.isDiagonal() && mvEuclidDist == mv.DIAG_UNIT) || ((mv.isVertical() || mv.isHorizontal()) && mvEuclidDist == mv.FORWARD_UNIT);
     }
 
     return validCastle(mv);

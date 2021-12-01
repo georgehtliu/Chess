@@ -11,8 +11,8 @@ class Move
 {
 
 public:
-    const int ONE_STRAIGHT_DIST = 1;
-    const int ONE_DIAG_DIST = sqrt(2);
+    const int FORWARD_UNIT = 1;
+    const int DIAG_UNIT = sqrt(2);
     const Player *player;
     const Spot *startPos;
     const Spot *endPos;
@@ -22,7 +22,6 @@ public:
     const bool isEnPassant;
     const bool isResign;
     bool isDiagonal();
-    bool isStraight();
     bool isHorizontal();
     bool isVertical();
     int euclidDist();

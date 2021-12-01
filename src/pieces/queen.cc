@@ -2,5 +2,5 @@
 
 bool Queen::validMove(Move mv)
 {
-    return mv.isStraight() || mv.isDiagonal();
+    return (mv.isVertical() || mv.isHorizontal()) || mv.isDiagonal();
 }

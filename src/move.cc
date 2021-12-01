@@ -18,11 +18,6 @@ bool Move::isVertical()
     return startPos->get_y() == endPos->get_y();
 }
 
-bool Move::isStraight()
-{
-    return isVertical() || isHorizontal();
-}
-
 int Move::euclidDist()
 {
     int deltaX = startPos->get_x() - endPos->get_x();
