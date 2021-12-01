@@ -2,6 +2,7 @@
 #define _KING_H_
 
 #include "../piece.h"
+#include "../move.h"
 
 class King : public Piece
 {
@@ -11,6 +12,7 @@ class King : public Piece
 public:
     bool getHasMoved();
     bool validMove(Move mv) override;
+    bool validCastle(Move mv);
 };
 
 #endif
