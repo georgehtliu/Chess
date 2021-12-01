@@ -1,5 +1,5 @@
-#ifndef __WINDOW_H__
-#define __WINDOW_H__
+#ifndef CHESS_INCLUDE_WINDOW_H_
+#define CHESS_INCLUDE_WINDOW_H_
 #include <X11/Xlib.h>
 
 #include <iostream>
@@ -40,4 +40,4 @@ class Xwindow {
     void drawString(int x, int y, std::string msg);
 };
 
-#endif
+#endif // CHESS_INCLUDE_WINDOW_H_

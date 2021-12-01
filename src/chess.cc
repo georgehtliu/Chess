@@ -7,15 +7,15 @@
 */
 
 #include <iostream>
-
-#include "window.h"
+#include "board.h"
+#include "graphics_observer.h"
 
 int main() {
-    Xwindow w;
+    Board b;
+    std::vector<std::unique_ptr<Observer>> observers;
 
-    w.fillRectangle(100, 200, 50, 250, Xwindow::Blue);
-
-    w.drawString(50, 50, "Hello!");
+    observers.push_back(std::make_unique<GraphicsObserver>(&b));
+    observers[0]->notify();
 
     char c;
     std::cin >> c;
