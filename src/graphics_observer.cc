@@ -12,7 +12,7 @@ GraphicsObserver::GraphicsObserver(Board *board) : subject{board} {
 }
 
 GraphicsObserver::~GraphicsObserver() {
-    w.release();
+    w.reset();
     subject->detach(this);
 }
 
