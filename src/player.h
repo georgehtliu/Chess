@@ -1,4 +1,4 @@
-#ifndef _PIECE_H
-#define _PIECE_H
+#ifndef _PLAYER_H
+#define _PLAYER_H
 
 #endif
