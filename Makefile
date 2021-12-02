@@ -1,6 +1,6 @@
 CXX := -g++
 CXXFLAGS := -std=c++14 -pedantic-errors -Wall -Werror -Wextra -g
-LDFLAGS := -L/usr/lib -lstdc++ -lm -lX11
+LDFLAGS := -L/usr/lib -lstdc++ -lm -lX11 -L/opt/X11/lib
 BUILD := ./build
 OBJ_DIR := $(BUILD)/objects
 APP_DIR := .
@@ -10,6 +10,7 @@ SRC := $(wildcard src/*.cc)
 
 OBJECTS := $(SRC:%.cc=$(OBJ_DIR)/%.o)
 DEPENDENCIES := $(OBJECTS:.o=.d)
+
 
 $(OBJ_DIR)/%.o: %.cc
 	@mkdir -p $(@D)
@@ -21,7 +22,10 @@ $(APP_DIR)/$(TARGET): $(OBJECTS)
 
 -include $(DEPENDENCIES)
 
-.PHONY: build clean zip
+.PHONY: all build clean zip
+
+all:
+	make $(APP_DIR)/$(TARGET)
 
 build:
 	@mkdir -p $(OBJ_DIR)
