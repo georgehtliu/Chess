@@ -8,7 +8,7 @@ class Bishop : public Piece
 {
 
 public:
-    bool validMove(Move mv) override;
+    bool valid_move(Move mv) override;
 };
 
 #endif

@@ -6,13 +6,13 @@
 
 class Pawn : public Piece
 {
-    bool hasMoved;
-    bool movedTwo;
+    bool has_moved;
+    bool moved_two;
 
 public:
-    bool validMove(Move mv) override;
-    bool getHasMoved();
-    bool getMovedTwo();
+    bool valid_move(Move mv) override;
+    bool get_has_moved();
+    bool get_moved_two();
 };
 
 #endif

@@ -3,24 +3,24 @@
 #include "spot.h"
 #include "piece.h"
 
-bool Move::isDiagonal()
+bool Move::is_diagonal()
 {
-    return abs(startPos->get_x() - endPos->get_x()) == abs(startPos->get_y() - endPos->get_y());
+    return abs(start_pos->get_x() - end_pos->get_x()) == abs(start_pos->get_y() - end_pos->get_y());
 }
 
-bool Move::isHorizontal()
+bool Move::is_horizontal()
 {
-    return startPos->get_x() == endPos->get_x();
+    return start_pos->get_x() == end_pos->get_x();
 }
 
-bool Move::isVertical()
+bool Move::is_vertical()
 {
-    return startPos->get_y() == endPos->get_y();
+    return start_pos->get_y() == end_pos->get_y();
 }
 
-int Move::euclidDist()
+int Move::euclid_dist()
 {
-    int deltaX = startPos->get_x() - endPos->get_x();
-    int deltaY = startPos->get_y() - endPos->get_y();
-    return sqrt(deltaX * deltaX - deltaY * deltaY);
+    int delta_x = start_pos->get_x() - end_pos->get_x();
+    int delta_y = start_pos->get_y() - end_pos->get_y();
+    return sqrt(delta_x * delta_x - delta_y * delta_y);
 }

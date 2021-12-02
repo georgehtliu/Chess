@@ -6,11 +6,11 @@
 class Rook : public Piece
 {
 
-    bool hasMoved;
+    bool has_moved;
 
 public:
-    bool getHasMoved();
-    bool validMove(Move mv) override;
+    bool get_has_moved();
+    bool valid_move(Move mv) override;
 };
 
 #endif

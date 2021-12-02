@@ -7,12 +7,12 @@
 class King : public Piece
 {
 
-    bool hasMoved;
+    bool has_moved;
 
 public:
-    bool getHasMoved();
-    bool validMove(Move mv) override;
-    bool validCastle(Move mv);
+    bool get_has_moved();
+    bool valid_move(Move mv) override;
+    bool valid_castle(Move mv);
 };
 
 #endif

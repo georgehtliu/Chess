@@ -1,12 +1,12 @@
 #include "piece.h"
 #include "move.h"
 
-bool Piece::isWhite()
+bool Piece::is_white()
 {
     return white;
 }
 
-bool Piece::isAlive()
+bool Piece::is_alive()
 {
     return alive;
 }

@@ -7,7 +7,7 @@ class Queen : public Piece
 {
 
 public:
-    bool validMove(Move mv) override;
+    bool valid_move(Move mv) override;
 };
 
 #endif

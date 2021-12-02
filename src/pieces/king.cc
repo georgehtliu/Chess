@@ -1,25 +1,25 @@
 #include "king.h"
 
-bool King::getHasMoved()
+bool King::get_has_moved()
 {
-    return hasMoved;
+    return has_moved;
 }
 
-bool King::validCastle(Move mv)
+bool King::valid_castle(Move mv)
 {
-    if (hasMoved)
+    if (has_moved)
         return false;
-    return mv.isHorizontal() && mv.euclidDist() == mv.FORWARD_UNIT * 2;
+    return mv.is_horizontal() && mv.euclid_dist() == mv.FORWARD_UNIT * 2;
 }
 
-bool King::validMove(Move mv)
+bool King::valid_move(Move mv)
 {
-    int mvEuclidDist = mv.euclidDist();
+    int mvEuclidDist = mv.euclid_dist();
 
-    if (!mv.isCastle)
+    if (!mv.is_castle)
     {
-        return (mv.isDiagonal() && mvEuclidDist == mv.DIAG_UNIT) || ((mv.isVertical() || mv.isHorizontal()) && mvEuclidDist == mv.FORWARD_UNIT);
+        return (mv.is_diagonal() && mvEuclidDist == mv.DIAG_UNIT) || ((mv.is_vertical() || mv.is_horizontal()) && mvEuclidDist == mv.FORWARD_UNIT);
     }
 
-    return validCastle(mv);
+    return valid_castle(mv);
 }

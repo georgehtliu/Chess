@@ -10,9 +10,9 @@ class Piece
     bool alive;
 
 public:
-    bool isWhite();
-    bool isAlive();
-    virtual bool validMove(Move mv) = 0;
+    bool is_white();
+    bool is_alive();
+    virtual bool valid_move(Move mv) = 0;
     virtual ~Piece();
 };
 

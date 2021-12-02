@@ -1,11 +1,11 @@
 #include "rook.h"
 
-bool Rook::getHasMoved()
+bool Rook::get_has_moved()
 {
-    return hasMoved;
+    return has_moved;
 }
 
-bool Rook::validMove(Move mv)
+bool Rook::valid_move(Move mv)
 {
-    return mv.isVertical() || mv.isHorizontal();
+    return mv.is_vertical() || mv.is_horizontal();
 }
