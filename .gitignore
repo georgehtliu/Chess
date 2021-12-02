@@ -34,3 +34,6 @@ chess
 
 # VSCode stuff
 .vscode/*
+
+# CLion stuff
+.idea/*
