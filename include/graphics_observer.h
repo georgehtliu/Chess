@@ -15,7 +15,6 @@
 
 class GraphicsObserver : public Observer {
     Board *subject;
-    int top, bottom, left, right;
 
     std::unique_ptr<Xwindow> w;
 
