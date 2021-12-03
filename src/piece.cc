@@ -11,6 +11,6 @@ bool Piece::is_alive()
     return alive;
 }
 
-Piece::~Piece()
-{
+unsigned char* Piece::get_image() {
+    return rgb_image;
 }

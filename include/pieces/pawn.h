@@ -1,8 +1,8 @@
 #ifndef _PAWN_H_
 #define _PAWN_H_
 
-#include "../piece.h"
-#include "../move.h"
+#include "piece.h"
+#include "move.h"
 
 class Pawn : public Piece
 {

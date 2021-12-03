@@ -32,6 +32,10 @@ void Board::notify_observers() {
     for (auto &ob : observers) ob->notify();
 }
 
-std::shared_ptr<Spot> Board::get_spot(int x, int y) {
-    return std::make_shared<Spot>(positions[x][y]);
+Spot* Board::get_spot(int x, int y) {
+    return &positions[x][y];
+}
+
+void Board::add_piece(Piece *p, Spot *s) {
+    s->set_piece(p);
 }

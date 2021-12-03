@@ -11,12 +11,13 @@
 #include <memory>
 
 #include "observer.h"
+//#include "player.h"
 #include "spot.h"
 
 class Board {
     // TODO:
-    // Player* white;
-    // Player* black;
+    //Player* white;
+    //Player* black;
     // std::vector<Move> moves;
 
 
@@ -40,7 +41,8 @@ class Board {
     const static int COLS = 8;
 
     // Manage spots
-    std::shared_ptr<Spot> get_spot(int x, int y);
+    Spot* get_spot(int x, int y);
+    void add_piece(Piece *p, Spot* s);
 };
 
 #endif  // CHESS_INCLUDE_BOARD_H_
