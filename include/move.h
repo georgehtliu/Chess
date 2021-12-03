@@ -24,7 +24,10 @@ public:
     bool is_diagonal();
     bool is_horizontal();
     bool is_vertical();
+    bool is_forward();
     int euclid_dist();
+    int x_dist();
+    int y_dist();
 };
 
 #endif
