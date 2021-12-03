@@ -15,17 +15,20 @@
 
 class GraphicsObserver : public Observer {
     Board *subject;
-
     std::unique_ptr<Xwindow> w;
 
    public:
     GraphicsObserver(Board *board);
     void notify() override;
+    void notify(Spot *s) override;
     ~GraphicsObserver();
 
     // Graphics Constants
     const static int WIDTH = 100;
     const static int HEIGHT = 100;
+
+    const static int WHITE_COL = Xwindow::Red;
+    const static int BLACK_COL = Xwindow::Brown;
 };
 
 #endif  // CHESS_INCLUDE_GRAPHICS_OBSERVER_H_
