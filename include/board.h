@@ -24,6 +24,12 @@ class Board {
     std::vector<Observer*> observers;
     std::vector<std::vector<Spot>> positions;
     bool white_move;
+    Spot *white_king_spot;
+    Spot *black_king_spot;
+
+    // Manage/execute moves
+    bool check_valid_move(Move mv);
+    bool under_attack(Spot s);
 
    public:
     // Constructor / Destructor
@@ -42,9 +48,6 @@ class Board {
 
     // Manage spots
     std::shared_ptr<Spot> get_spot(int x, int y);
-
-    // Manage/execute moves
-    bool checkValidMove(Move mv);
 };
 
 #endif  // CHESS_INCLUDE_BOARD_H_
