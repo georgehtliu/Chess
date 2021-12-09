@@ -12,6 +12,7 @@
 
 #include "observer.h"
 #include "spot.h"
+#include "move.h"
 
 class Board {
     // TODO:
@@ -41,6 +42,9 @@ class Board {
 
     // Manage spots
     std::shared_ptr<Spot> get_spot(int x, int y);
+
+    // Manage/execute moves
+    bool checkValidMove(Move mv);
 };
 
 #endif  // CHESS_INCLUDE_BOARD_H_
