@@ -1,5 +1,14 @@
 #include "pawn.h"
 
+Pawn::Pawn(bool white) {
+    this->white = white;
+    if (white) {
+        this->text_repr = 'P';
+    } else {
+        this->text_repr = 'p';
+    }
+}
+
 bool Pawn::valid_move(Move mv)
 {
     if (!mv.is_forward())

@@ -6,8 +6,8 @@
 
 #include "../include/spot.h"
 
-Spot::Spot(int x, int y) : x{x}, y{y}, white{(x + y) % 2 == 0} {}
 Spot::Spot(int x, int y, Piece *p) : p{p}, x{x}, y{y}, white{(x + y) % 2 == 0} {}
+Spot::Spot(int x, int y) : p{nullptr}, x{x}, y{y}, white{(x + y) % 2 == 0} {}
 
 int Spot::get_x() const
 {
@@ -43,3 +43,21 @@ bool Spot::in_bounds() const
 {
     return (x >= 0 && x < 8) && (y >= 0 && y < 8);
 }
+char Spot::get_spot_text() const {
+    if (this->p) {
+        return p->get_text();
+    }
+
+    return ' ';
+}
+
+void Spot::remove_piece() {
+    this->p = nullptr;
+}
+
+Piece *Spot::get_piece() const {
+    return this->p;
+}
+
+
+

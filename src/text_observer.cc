@@ -14,7 +14,11 @@ void TextObserver::notify() {
     for (int i = 0; i < Board::ROWS; i++) {
         std::cout << Board::ROWS - i << " ";
         for (int j = 0; j < Board::COLS; j++) {
-            if (subject->get_spot(i, j)->is_white()) {
+            if (subject->get_spot(j, i)->get_piece()) {
+                std::cout << subject->get_spot(j, i)->get_spot_text();
+                continue;
+            }
+            if (subject->get_spot(j, i)->is_white()) {
                std::cout << " ";
             } else {
                 std::cout << "-";

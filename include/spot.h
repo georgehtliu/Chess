@@ -9,9 +9,7 @@
 
 #include "piece.h"
 
-class Spot
-{
-
+class Spot {
     Piece *p;
     int x, y;
     bool white;
@@ -28,6 +26,8 @@ public:
     void set_piece(Piece *p);
     bool is_blank();
     bool in_bounds() const;
+    char get_spot_text() const;
+    void remove_piece();
 };
 
 #endif // CHESS_INCLUDE_SPOT_H_

@@ -42,8 +42,7 @@ void Board::notify_observers()
         ob->notify();
 }
 
-std::shared_ptr<Spot> Board::get_spot(int x, int y)
-{
+std::shared_ptr<Spot> Board::get_spot(int x, int y) {
     return std::make_shared<Spot>(positions[x][y]);
 }
 
