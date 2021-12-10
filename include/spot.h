@@ -27,6 +27,7 @@ public:
     Piece *get_piece() const;
     void set_piece(Piece *p);
     bool is_blank();
+    bool in_bounds() const;
 };
 
 #endif // CHESS_INCLUDE_SPOT_H_

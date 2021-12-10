@@ -4,14 +4,7 @@
     CS 246
 */
 
-#include "board.h"
-
-bool check_bounds(int move_x, int move_y, int board_len)
-{
-    bool x_in_bounds = 0 <= move_x && move_x < board_len;
-    bool y_in_bounds = 0 <= move_y && move_y < board_len;
-    return x_in_bounds && y_in_bounds;
-}
+#include "../include/board.h"
 
 Board::Board()
 {
@@ -73,10 +66,10 @@ bool Board::valid_path(Spot from, Spot to)
     return piece_from->valid_move(*mv);
 }
 
-bool Board::is_attacking_path(Spot end, Spot attack_candidate_spot) // has a path attacking end
+bool Board::is_attacking_path(Spot *end, Spot *attack_candidate_spot) // has a path attacking end
 {
-    Piece *e = end.get_piece();
-    Piece *a = attack_candidate_spot.get_piece();
+    Piece *e = end->get_piece();
+    Piece *a = attack_candidate_spot->get_piece();
     bool same_team = e->is_white() == a->is_white();
     if (a == nullptr)
         return false;
@@ -87,18 +80,18 @@ bool Board::is_attacking_path(Spot end, Spot attack_candidate_spot) // has a pat
     return !valid_path(attack_candidate_spot, end);
 }
 
-bool Board::under_attack_vertical(Spot spot)
+bool Board::under_attack_vertical(Spot *spot)
 {
 
-    for (int y = spot.get_y(); y < ROWS; y++)
+    for (int y = spot->get_y(); y < ROWS; y++)
     {
-        Spot *attack_candidate_spot = get_spot(spot.get_x(), y).get();
+        Spot *attack_candidate_spot = get_spot(spot->get_x(), y).get();
         if (is_attacking_path(spot, attack_candidate_spot))
         {
             return true;
             // if not attacking, the piece is either blocking, so there will be no direct attackers behind it or blank
         }
-        else if (spot.is_blank())
+        else if (spot->is_blank())
         {
             continue;
         }
@@ -108,14 +101,14 @@ bool Board::under_attack_vertical(Spot spot)
         }
     }
 
-    for (int y = spot.get_y(); y >= 0; y--)
+    for (int y = spot->get_y(); y >= 0; y--)
     {
-        Spot *attack_candidate_spot = get_spot(spot.get_x(), y).get();
+        Spot *attack_candidate_spot = get_spot(spot->get_x(), y).get();
         if (is_attacking_path(spot, attack_candidate_spot))
         {
             return true;
         }
-        else if (spot.is_blank())
+        else if (spot->is_blank())
         {
             continue;
         }
@@ -128,17 +121,17 @@ bool Board::under_attack_vertical(Spot spot)
     return false;
 }
 
-bool Board::under_attack_horizontal(Spot spot)
+bool Board::under_attack_horizontal(Spot *spot)
 {
 
-    for (int x = spot.get_x(); x < COLS; x++)
+    for (int x = spot->get_x(); x < COLS; x++)
     {
-        Spot *attack_candidate_spot = get_spot(x, spot.get_y()).get();
+        Spot *attack_candidate_spot = get_spot(x, spot->get_y()).get();
         if (is_attacking_path(spot, attack_candidate_spot))
         {
             return true;
         }
-        else if (spot.is_blank())
+        else if (spot->is_blank())
         {
             continue;
         }
@@ -148,14 +141,14 @@ bool Board::under_attack_horizontal(Spot spot)
         }
     }
 
-    for (int x = spot.get_x(); x >= 0; x--)
+    for (int x = spot->get_x(); x >= 0; x--)
     {
         Spot *attack_candidate_spot = get_spot(x, spot.get_y()).get();
         if (is_attacking_path(spot, attack_candidate_spot))
         {
             return true;
         }
-        else if (spot.is_blank())
+        else if (spot->is_blank())
         {
             continue;
         }
@@ -168,16 +161,38 @@ bool Board::under_attack_horizontal(Spot spot)
     return false;
 }
 
-bool Board::under_attack(Spot spot)
+bool Board::under_attack_diagonal(Spot *spot)
 {
-    return ((under_attack_vertical() || under_attack_hoizontal()) || under_attack_diagonal()) || under_attack_knight();
+    // up right
+    Spot *runner = spot;
+    while (runner->in_bounds())
+    {
+        runner = get_spot(runner->get_x() + 1, runner->get_y() + 1).get();
+        if (is_attacking_path(spot, runner))
+        {
+            return true;
+        }
+        else if (runner->is_blank())
+        {
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return false;
+}
+
+bool Board::under_attack(Spot *spot)
+{
+    return ((under_attack_vertical(spot) || under_attack_hoizontal(spot)) || under_attack_diagonal(spot)) || under_attack_knight(spot);
 }
 
 bool Board::check_valid_move(Move mv)
 {
 
-    int end_x = (mv.end_pos)->get_x();
-    int end_y = (mv.end_pos)->get_y();
-
-    if (!(check_bounds(end_x, end_y, COLS)) return false;
+    if (!(mv.end_pos)->in_bounds())
+        return false;
 }

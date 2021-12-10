@@ -4,7 +4,7 @@
     CS 246
 */
 
-#include "spot.h"
+#include "../include/spot.h"
 
 Spot::Spot(int x, int y) : x{x}, y{y}, white{(x + y) % 2 == 0} {}
 Spot::Spot(int x, int y, Piece *p) : p{p}, x{x}, y{y}, white{(x + y) % 2 == 0} {}
@@ -37,4 +37,9 @@ void Spot::set_piece(Piece *p)
 void Spot::is_blank()
 {
     return p == nullptr;
+}
+
+bool Spot::in_bounds() const
+{
+    return (x >= 0 && x < 8) && (y >= 0 && y < 8);
 }

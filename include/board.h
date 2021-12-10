@@ -29,13 +29,13 @@ class Board
 
     // Manage/execute moves
     bool check_valid_move(Move mv);
-    bool under_attack_vertical(Spot spot);
-    bool under_attack_hoizontal(Spot spot);
-    bool under_attack_diagonal(Spot spot);
-    bool under_attack_knight(Spot spot);
-    bool under_attack(Spot spot);
-    bool is_attacking_path(Spot end, Spot attack_candidate);
-    bool valid_path(Spot from, Spot to);
+    bool under_attack_vertical(Spot *spot);
+    bool under_attack_hoizontal(Spot *spot);
+    bool under_attack_diagonal(Spot *spot);
+    bool under_attack_knight(Spot *spot);
+    bool under_attack(Spot *spot);
+    bool is_attacking_path(Spot *end, Spot *attack_candidate);
+    bool valid_path(Spot *from, Spot *to);
 
 public:
     // Constructor / Destructor
