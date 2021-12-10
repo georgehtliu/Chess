@@ -55,7 +55,7 @@ bool same_team(Spot *s1, Spot *s2) {
 
 bool Board::valid_path(Spot *from, Spot *to)
 {
-    if (from == nullptr) return false;
+    if (from->is_blank()) return false;
     Player *p;
     Piece *piece_from = from->get_piece();
     Piece *piece_to = to->get_piece();
@@ -69,8 +69,8 @@ bool Board::valid_path(Spot *from, Spot *to)
         p = black;
     }
 
-    Move *mv = Move{p, from, to, piece_from, piece_to};
-    return piece_from->valid_move(*mv);
+    Move mv = Move{p, from, to, piece_from, piece_to};
+    return piece_from->valid_move(mv);
 }
 
 bool Board::is_attacking_path(Spot *end, Spot *attack_candidate_spot) // has a path attacking end
@@ -141,8 +141,7 @@ bool Board::under_attack_knight(Spot *spot) {
         }
     }
 
-    for (int i = 0; i < knight_threat_spots.size(); i++) {
-        Spot *s = knight_threat_spots[i];
+    for (Spot *s : knight_threat_spots) {
         if (is_attacking_path(spot, s)) return true;
     }
     
