@@ -69,9 +69,9 @@ bool Board::valid_path(Spot *from, Spot *to)
         p = black;
     }
 
-    auto mv = std::make_shared<Move>(p, from, to, piece_from, piece_to);
-    // Move *mv = Move{p, from, to, piece_from, piece_to};
-    return piece_from->valid_move(*mv);
+    // auto mv = std::make_shared<Move>(p, from, to, piece_from, piece_to);
+    Move mv = Move{p, from, to, piece_from, piece_to};
+    return piece_from->valid_move(mv);
 }
 
 bool Board::is_attacking_path(Spot *end, Spot *attack_candidate_spot) // has a path attacking end
