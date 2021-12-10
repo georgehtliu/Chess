@@ -22,7 +22,7 @@ Board::Board()
 
 void Board::attach(Observer *o)
 {
-    observers.emplace_back(o);
+    observers.push_back(o);
 }
 
 void Board::detach(Observer *o)
@@ -273,9 +273,10 @@ bool Board::under_attack_knight(Spot *spot) {
 
 bool Board::under_attack(Spot *spot)
 {
-    return ((under_attack_vertical(spot) || under_attack_hoizontal(spot)) || under_attack_diagonal(spot)) || under_attack_knight(spot);
+    return ((under_attack_vertical(spot) || under_attack_horizontal(spot)) || under_attack_diagonal(spot)) || under_attack_knight(spot);
 }
 
+// TODO
 // bool Board::check_valid_move(Move mv)
 // {
 
