@@ -36,6 +36,7 @@ class Board
     bool under_attack(Spot *spot);
     bool is_attacking_path(Spot *end, Spot *attack_candidate);
     bool valid_path(Spot *from, Spot *to);
+    bool same_team(Spot *s1, Spot *s2);
 
 public:
     // Constructor / Destructor
