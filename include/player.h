@@ -3,7 +3,7 @@
 
 class Player
 {
-    bool white;
+    // bool white;
 };
 
 #endif

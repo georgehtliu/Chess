@@ -46,7 +46,7 @@ std::shared_ptr<Spot> Board::get_spot(int x, int y) {
     return std::make_shared<Spot>(positions[x][y]);
 }
 
-bool same_team(Spot *s1, Spot *s2) {
+bool Board::same_team(Spot *s1, Spot *s2) {
     if (s1->is_blank() || s2->is_blank()) return false;
     Piece *p1 = s1->get_piece();
     Piece *p2 = s2->get_piece();
@@ -69,7 +69,8 @@ bool Board::valid_path(Spot *from, Spot *to)
         p = black;
     }
 
-    Move *mv = Move{p, from, to, piece_from, piece_to};
+    auto mv = std::make_shared<Move>(p, from, to, piece_from, piece_to);
+    // Move *mv = Move{p, from, to, piece_from, piece_to};
     return piece_from->valid_move(*mv);
 }
 
@@ -262,7 +263,7 @@ bool Board::under_attack_knight(Spot *spot) {
         }
     }
 
-    for (int i = 0; i < knight_threat_spots.size(); i++) {
+    for (unsigned long i = 0; i < knight_threat_spots.size(); i++) {
         Spot *s = knight_threat_spots[i];
         if (is_attacking_path(s, spot)) return true;
     }
