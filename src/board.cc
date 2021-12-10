@@ -47,7 +47,7 @@ std::shared_ptr<Spot> Board::get_spot(int x, int y)
     return std::make_shared<Spot>(positions[x][y]);
 }
 
-bool Board::valid_path(Spot from, Spot to)
+bool Board::valid_path(Spot *from, Spot *to)
 {
     Player *p;
     Piece *piece_from = from.get_piece();
@@ -168,6 +168,63 @@ bool Board::under_attack_diagonal(Spot *spot)
     while (runner->in_bounds())
     {
         runner = get_spot(runner->get_x() + 1, runner->get_y() + 1).get();
+        if (is_attacking_path(spot, runner))
+        {
+            return true;
+        }
+        else if (runner->is_blank())
+        {
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    // up left
+    Spot *runner = spot;
+    while (runner->in_bounds())
+    {
+        runner = get_spot(runner->get_x() - 1, runner->get_y() + 1).get();
+        if (is_attacking_path(spot, runner))
+        {
+            return true;
+        }
+        else if (runner->is_blank())
+        {
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    // down right
+    Spot *runner = spot;
+    while (runner->in_bounds())
+    {
+        runner = get_spot(runner->get_x() + 1, runner->get_y() - 1).get();
+        if (is_attacking_path(spot, runner))
+        {
+            return true;
+        }
+        else if (runner->is_blank())
+        {
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    // down left
+    Spot *runner = spot;
+    while (runner->in_bounds())
+    {
+        runner = get_spot(runner->get_x() - 1, runner->get_y() - 1).get();
         if (is_attacking_path(spot, runner))
         {
             return true;

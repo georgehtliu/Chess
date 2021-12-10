@@ -34,7 +34,7 @@ void Spot::set_piece(Piece *p)
     this->p = p;
 }
 
-void Spot::is_blank()
+bool Spot::is_blank()
 {
     return p == nullptr;
 }
