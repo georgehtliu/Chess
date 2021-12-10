@@ -9,7 +9,7 @@ protected:
     bool alive;
     char text_repr;
 public:
-    bool is_white();
+    bool is_white() const;
     bool is_alive();
     char get_text();
     virtual bool valid_move(Move mv) = 0;

@@ -9,6 +9,7 @@
 #include <iostream>
 #include "board.h"
 #include "graphics_observer.h"
+#include "text_observer.h"
 
 // FIXME: THIS IS SUPER SUPER SUPER TEMPORARY
 #include "pieces/king.h"
@@ -33,7 +34,7 @@ int main() {
     std::cout << "Contents of (2, 2): " << b.get_spot(2, 2)->get_spot_text() << std::endl;
     b.get_spot(2, 2)->remove_piece();
     std::cout << "Contents of (2, 2): " << b.get_spot(2, 2)->get_spot_text() << std::endl;
-
+    
     char c;
     std::cin >> c;
 }
