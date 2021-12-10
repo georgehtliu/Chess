@@ -7,18 +7,26 @@
 #ifndef CHESS_INCLUDE_SPOT_H_
 #define CHESS_INCLUDE_SPOT_H_
 
-class Spot {
-    // Piece p;
+#include "piece.h"
+
+class Spot
+{
+
+    Piece *p;
     int x, y;
     bool white;
 
-   public:
+public:
     Spot(int x, int y);
-    ~Spot() = default;  // TEMP
+    Spot(int x, int y, Piece *p);
+    ~Spot() = default; // TEMP
 
     int get_x() const;
     int get_y() const;
     bool is_white() const;
+    Piece *get_piece() const;
+    void set_piece(Piece *p);
+    bool is_blank();
 };
 
-#endif  // CHESS_INCLUDE_SPOT_H_
+#endif // CHESS_INCLUDE_SPOT_H_

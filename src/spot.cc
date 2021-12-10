@@ -9,22 +9,32 @@
 Spot::Spot(int x, int y) : x{x}, y{y}, white{(x + y) % 2 == 0} {}
 Spot::Spot(int x, int y, Piece *p) : p{p}, x{x}, y{y}, white{(x + y) % 2 == 0} {}
 
-int Spot::get_x() const {
+int Spot::get_x() const
+{
     return x;
 }
 
-int Spot::get_y() const {
+int Spot::get_y() const
+{
     return y;
 }
 
-bool Spot::is_white() const {
+bool Spot::is_white() const
+{
     return white;
 }
 
-Piece* Spot::get_piece() const {
+Piece *Spot::get_piece() const
+{
     return p;
 }
 
-void Spot::set_piece(Piece *p) {
+void Spot::set_piece(Piece *p)
+{
     this->p = p;
+}
+
+void Spot::is_blank()
+{
+    return p == nullptr;
 }

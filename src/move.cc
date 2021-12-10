@@ -3,6 +3,8 @@
 #include "spot.h"
 #include "piece.h"
 
+Move(Player *p, Spot *start_p, Spot *end_p, Piece *p_moved, Piece *p_killed = nullptr, bool castle = false, bool ep = false, bool res = false) : player{p}, start_pos{start_p}, end_pos{end_p}, piece_moved{p_moved}, piece_killed{p_killed}, is_castle{castle}, is_en_passant{ep}, is_resign{res} {}
+
 bool Move::is_diagonal()
 {
     return abs(start_pos->get_x() - end_pos->get_x()) == abs(start_pos->get_y() - end_pos->get_y());

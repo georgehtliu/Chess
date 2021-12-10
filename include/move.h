@@ -2,10 +2,9 @@
 #define _MOVE_H_
 
 #include "math.h"
-
-class Player;
-class Spot;
-class Piece;
+#include "player.h"
+#include "spot.h"
+#include "piece.h"
 
 class Move
 {
@@ -28,6 +27,7 @@ public:
     int euclid_dist();
     int x_dist();
     int y_dist();
+    Move(Player *p, Spot *start_p, Spot *end_p, Piece *p_moved, Piece *p_killed = nullptr, bool castle = false, bool ep = false, bool res = false);
 };
 
 #endif
