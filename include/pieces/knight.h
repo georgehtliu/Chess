@@ -8,6 +8,7 @@ class Knight : public Piece
 {
 
 public:
+    Knight(bool white);
     bool valid_move(Move mv) override;
 };
 

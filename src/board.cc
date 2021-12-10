@@ -33,5 +33,4 @@ void Board::notify_observers() {
 }
 
 Spot * Board::get_spot(int x, int y) {
-    return &positions[x][y];
-}
+    return &positions[x][y];}

@@ -12,5 +12,6 @@ public:
     bool valid_move(Move mv) override;
     bool valid_castle(Move mv);
 };
+    
 
 #endif

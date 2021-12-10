@@ -7,6 +7,7 @@ class Queen : public Piece
 {
 
 public:
+    Queen(bool white);
     bool valid_move(Move mv) override;
 };
 
