@@ -10,16 +10,18 @@ class Move
 {
 
 public:
-    const int FORWARD_UNIT = 1;
-    const int DIAG_UNIT = sqrt(2);
-    const Player *player;
-    const Spot *start_pos;
-    const Spot *end_pos;
-    const Piece *piece_moved;
-    const Piece *piece_killed;
-    const bool is_castle;
-    const bool is_en_passant;
-    const bool is_resign;
+    int FORWARD_UNIT = 1;
+    int DIAG_UNIT = sqrt(2);
+    Player *player;
+    Spot *start_pos;
+    Spot *end_pos;
+    Piece *piece_moved;
+    Piece *piece_killed;
+    Piece *promotion_piece;
+    bool is_castle;
+    bool is_en_passant;
+    bool is_promotion;
+    bool is_resign;
     bool is_diagonal();
     bool is_horizontal();
     bool is_vertical();

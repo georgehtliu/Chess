@@ -29,6 +29,8 @@ class Board
 
     // Manage/execute moves
     bool check_valid_move(Move mv);
+    void execute_move(Move mv);
+    bool search_attacker(Spot *spot, int x_inc, int y_inc);
     bool under_attack_vertical(Spot *spot);
     bool under_attack_horizontal(Spot *spot);
     bool under_attack_diagonal(Spot *spot);
