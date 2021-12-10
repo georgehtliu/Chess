@@ -30,6 +30,8 @@ class Board {
     // Manage/execute moves
     bool check_valid_move(Move mv);
     bool under_attack(Spot s);
+    bool is_blocking(Spot s, Spot init_s);
+    bool valid_path(Spot to, Spot from);
 
    public:
     // Constructor / Destructor

@@ -46,6 +46,13 @@ std::shared_ptr<Spot> Board::get_spot(int x, int y) {
     return std::make_shared<Spot>(positions[x][y]);
 }
 
+bool Board::is_blocking(Spot s, Spot init_s) {
+    Piece *p = s.get_piece();
+    Piece *init_p = init_s.get_piece();
+    bool same_team = init_p->is_white() == p->is_white();
+    if (p == nullptr || )
+}
+
 bool Board::under_attack(Spot s) {
 
     // within each type except knight, check if there are pieces blocking it
