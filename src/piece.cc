@@ -1,16 +1,14 @@
 #include "piece.h"
 #include "move.h"
 
-bool Piece::is_white()
-{
+bool Piece::is_white() {
     return white;
 }
 
-bool Piece::is_alive()
-{
+bool Piece::is_alive() {
     return alive;
 }
 
-Piece::~Piece()
-{
+char Piece::get_text() {
+    return text_repr;
 }

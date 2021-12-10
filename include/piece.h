@@ -3,17 +3,18 @@
 
 class Move;
 
-class Piece
-{
-
+class Piece {
+protected:
     bool white;
     bool alive;
-
+    char text_repr;
 public:
     bool is_white();
     bool is_alive();
+    char get_text();
     virtual bool valid_move(Move mv) = 0;
-    virtual ~Piece();
+
+    virtual ~Piece() = default;
 };
 
 #endif

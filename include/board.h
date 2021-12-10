@@ -40,7 +40,7 @@ class Board {
     const static int COLS = 8;
 
     // Manage spots
-    std::shared_ptr<Spot> get_spot(int x, int y);
+    Spot * get_spot(int x, int y);
 };
 
 #endif  // CHESS_INCLUDE_BOARD_H_
