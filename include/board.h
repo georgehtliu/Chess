@@ -19,8 +19,9 @@
 class Board
 {
     // TODO:
-    Player *white;
-    Player *black;
+    std::shared_ptr<Player> black;
+    std::shared_ptr<Player> white;
+
     std::vector<Move> moves;
 
     std::vector<Observer *> observers;

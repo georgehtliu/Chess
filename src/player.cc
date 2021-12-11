@@ -1,6 +1,7 @@
 //
 // Created by david on 12/10/21.
 //
+#include <iostream>
 
 #include "player.h"
 #include "king.h"
