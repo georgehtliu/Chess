@@ -3,9 +3,7 @@
 #include "../piece.h"
 #include "../move.h"
 
-class Rook : public Piece
-{
-
+class Rook : public Piece {
     bool has_moved;
 
 public:

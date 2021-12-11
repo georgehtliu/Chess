@@ -3,8 +3,7 @@
 #include "../piece.h"
 #include "../move.h"
 
-class Queen : public Piece
-{
+class Queen : public Piece {
 
 public:
     Queen(bool white);

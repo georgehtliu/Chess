@@ -4,8 +4,7 @@
 #include "../piece.h"
 #include "../move.h"
 
-class Knight : public Piece
-{
+class Knight : public Piece {
 
 public:
     Knight(bool white);
