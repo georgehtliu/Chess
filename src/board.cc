@@ -155,17 +155,6 @@ bool Board::under_attack(Spot *spot)
     return ((under_attack_vertical(spot) || under_attack_horizontal(spot)) || under_attack_diagonal(spot)) || under_attack_knight(spot);
 }
 
-void Board::addPieceWhite(std::shared_ptr<Piece> p) {
-    white->add_piece(p);
-}
-
-void Board::addPieceBlack(std::shared_ptr<Piece> p) {
-    black->add_piece(p);
-}
-
-void Board::addPiece(Piece * p) {
-    pieces.push_back(p);
-}
 
 // TODO
 bool Board::check_valid_move(Move &mv) {
