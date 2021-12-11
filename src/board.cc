@@ -16,8 +16,9 @@ Board::Board()
             positions[i].push_back(Spot(i, j));
         }
     }
-
     white_move = true;
+    black = std::make_shared<Player>(false, true).get();
+    white = std::make_shared<Player>(true, true).get();
 }
 
 void Board::attach(Observer *o)
@@ -152,6 +153,14 @@ bool Board::under_attack_knight(Spot *spot) {
 bool Board::under_attack(Spot *spot)
 {
     return ((under_attack_vertical(spot) || under_attack_horizontal(spot)) || under_attack_diagonal(spot)) || under_attack_knight(spot);
+}
+
+void Board::addPieceWhite(std::shared_ptr<Piece> p) {
+    white->add_piece(p);
+}
+
+void Board::addPieceBlack(std::shared_ptr<Piece> p) {
+    black->add_piece(p);
 }
 
 void Board::addPiece(std::shared_ptr<Piece> p) {

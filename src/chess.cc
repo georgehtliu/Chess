@@ -36,50 +36,62 @@ void addPiece(char piece, std::string position, Board * b) {
     if (piece == 'p') {
         auto p = std::make_shared<Pawn>(false);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceBlack(p);
         b->addPiece(p);
     } else if (piece == 'P') {
         auto p = std::make_shared<Pawn>(true);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceWhite(p);
         b->addPiece(p);
     } else if (piece == 'n') {
         auto p = std::make_shared<Knight>(false);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceBlack(p);
         b->addPiece(p);
     } else if (piece == 'N') {
         auto p = std::make_shared<Knight>(true);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceWhite(p);
         b->addPiece(p);
     } else if (piece == 'b') {
         auto p = std::make_shared<Bishop>(false);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceBlack(p);
         b->addPiece(p);
     } else if (piece == 'B') {
         auto p = std::make_shared<Bishop>(true);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceWhite(p);
         b->addPiece(p);
     } else if (piece == 'k') {
         auto p = std::make_shared<King>(false);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceBlack(p);
         b->addPiece(p);
     } else if (piece == 'K') {
         auto p = std::make_shared<King>(true);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceWhite(p);
         b->addPiece(p);
     } else if (piece == 'q') {
         auto p = std::make_shared<Queen>(false);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceBlack(p);
         b->addPiece(p);
     } else if (piece == 'Q') {
         auto p = std::make_shared<Queen>(true);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceWhite(p);
         b->addPiece(p);
     } else if (piece == 'r') {
         auto p = std::make_shared<Rook>(false);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceBlack(p);
         b->addPiece(p);
     } else if (piece == 'R') {
         auto p = std::make_shared<Rook>(true);
         b->get_spot(x, y)->set_piece(p.get());
+        b->addPieceWhite(p);
         b->addPiece(p);
     }
 }

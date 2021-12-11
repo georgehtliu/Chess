@@ -62,7 +62,10 @@ public:
 
     // Manage spots
     Spot * get_spot(int x, int y);
+    void addPieceWhite(std::shared_ptr<Piece> p);
+    void addPieceBlack(std::shared_ptr<Piece> p);
     void addPiece(std::shared_ptr<Piece> p);
+
 };
 
 #endif // CHESS_INCLUDE_BOARD_H_
