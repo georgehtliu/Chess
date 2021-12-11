@@ -101,6 +101,7 @@ int main() {
     std::vector<std::unique_ptr<Observer>> observers;
 
     observers.push_back(std::make_unique<TextObserver>(&b));
+    observers.push_back(std::make_unique<GraphicsObserver>(&b));
 
     bool done = false;
     while (!done) {
@@ -108,6 +109,9 @@ int main() {
         char piece;
         std::string position;
         std::cin >> command;
+
+        observers[0]->notify();
+        observers[1]->notify();
 
         if (std::cin.eof()) break;
         if (command == "done") {
@@ -124,8 +128,5 @@ int main() {
         // } else if (command == "=") {
 
         // }
-        observers[0]->notify();
-        
-        
     }
 }

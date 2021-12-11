@@ -29,3 +29,7 @@ void TextObserver::notify() {
     std::endl (std::cout);
     std::cout << "  abcdefgh" << std::endl;
 }
+
+void TextObserver::notify(__attribute__((unused)) Spot &s) {
+    this->notify();
+}
