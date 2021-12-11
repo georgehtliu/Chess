@@ -24,7 +24,7 @@ class Board
     std::vector<Move> moves;
 
     //
-    std::vector <std::shared_ptr<Piece>> pieces;
+    std::vector <Piece *> pieces;
 
     std::vector<Observer *> observers;
     std::vector<std::vector<Spot> > positions;
@@ -68,7 +68,7 @@ public:
     Spot * get_spot(int x, int y);
     void addPieceWhite(std::shared_ptr<Piece> p);
     void addPieceBlack(std::shared_ptr<Piece> p);
-    void addPiece(std::shared_ptr<Piece> p);
+    void addPiece(Piece * p);
 
 };
 

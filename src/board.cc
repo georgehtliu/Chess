@@ -163,7 +163,7 @@ void Board::addPieceBlack(std::shared_ptr<Piece> p) {
     black->add_piece(p);
 }
 
-void Board::addPiece(std::shared_ptr<Piece> p) {
+void Board::addPiece(Piece * p) {
     pieces.push_back(p);
 }
 
