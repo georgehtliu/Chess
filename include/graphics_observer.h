@@ -20,8 +20,8 @@ class GraphicsObserver : public Observer {
    public:
     GraphicsObserver(Board *board);
     void notify() override;
-    void notify(Spot *s) override;
-    ~GraphicsObserver();
+    void notify(Spot &s) override;
+    ~GraphicsObserver() override;
 
     // Graphics Constants
     const static int WIDTH = 100;

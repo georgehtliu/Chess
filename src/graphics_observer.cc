@@ -29,13 +29,14 @@ void GraphicsObserver::notify() {
     }
 }
 
-void GraphicsObserver::notify(Spot *s) {
-    int window_x = s->get_x() * GraphicsObserver::WIDTH;
-    int window_y = s->get_y() * GraphicsObserver::HEIGHT;
+void GraphicsObserver::notify(Spot &s) {
+    int window_x = s.get_x() * GraphicsObserver::WIDTH;
+    int window_y = s.get_y() * GraphicsObserver::HEIGHT;
 
-    int colour = (s->is_white()) ? GraphicsObserver::WHITE_COL : GraphicsObserver::BLACK_COL;
+    int colour = (s.is_white()) ? GraphicsObserver::WHITE_COL : GraphicsObserver::BLACK_COL;
     w->fillRectangle(window_x, window_y, GraphicsObserver::WIDTH, GraphicsObserver::HEIGHT, colour);
 
+    /*
     if (s->get_piece()) {
         unsigned char* rgb_image = s->get_piece()->get_image();
 
@@ -49,5 +50,6 @@ void GraphicsObserver::notify(Spot *s) {
             }
         }
     }
+    */
 
 }
