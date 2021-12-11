@@ -159,6 +159,7 @@ void Board::addPiece(std::shared_ptr<Piece> p) {
 }
 
 // TODO
+/*
 bool Board::check_valid_move(Move &mv) {
     // end move cannot be out of bounds
     if (!(mv.end_pos)->in_bounds()) return false;
@@ -181,6 +182,7 @@ bool Board::check_valid_move(Move &mv) {
 
     
 }
+*/
 
 bool Board::same_spot(Spot *s1, Spot *s2) {
     return s1->get_x() == s2->get_x() && s1->get_y() == s2->get_y();
@@ -207,6 +209,9 @@ void Board::place_piece(Spot *start, Spot *end) {
 
 void Board::execute_castle(Move &mv) {
 
+    Spot *start = mv.start_pos;
+    Spot *end = mv.end_pos;
+
     // starting rook positions
     Spot *start_queenside_rook_white = get_spot(0, 0);
     Spot *start_kingside_rook_white = get_spot(7, 0);
@@ -220,9 +225,7 @@ void Board::execute_castle(Move &mv) {
     Spot *end_queenside_rook_black = get_spot(3, 7);
 
     // end king positions
-    Spot *kingside_white_end = get_spot(2, 0);
     Spot *queenside_white_end = get_spot(6, 0);
-    Spot *kingside_black_end = get_spot(6, 7);
     Spot *queenside_black_end = get_spot(2, 7);
 
     // place king
@@ -232,18 +235,26 @@ void Board::execute_castle(Move &mv) {
     Spot *start_rook_spot = nullptr;
     Spot *end_rook_spot = nullptr;
 
-    if (white_move && same_spot(mv.end_pos, queenside_white_end)) { // white queen side
+    if (white_move && same_spot(end, queenside_white_end)) { // white queen side
+
         start_rook_spot = start_queenside_rook_white;
         end_rook_spot = end_queenside_rook_white;
+
     } else if (white_move) { // white king side
+
         start_rook_spot = start_kingside_rook_white;
         end_rook_spot = end_kingside_rook_white;
-    } else if (!white_move && same_spot(mv.end_pos, queenside_black_end)) { // black queenside
+
+    } else if (!white_move && same_spot(start, queenside_black_end)) { // black queenside
+
         start_rook_spot = start_queenside_rook_black;
         end_rook_spot = end_queenside_rook_black;
+
     } else { // black kingside
+
         start_rook_spot = start_kingside_rook_black;
         end_rook_spot = end_kingside_rook_black;
+
     }
 
     place_piece(start_rook_spot, end_rook_spot);
@@ -287,11 +298,6 @@ void Board::execute_move(Move &mv) {
     }
     
     // promotion
-
-    // check for in check (black and white)
-    
-    // check for checkmate
-    // check for stalemate
 
     // add move to array
     moves.push_back(mv);
