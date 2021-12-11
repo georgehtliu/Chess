@@ -1,7 +1,8 @@
 #include "piece.h"
 #include "move.h"
 
-bool Piece::is_white() {
+
+bool Piece::is_white() const {
     return white;
 }
 
