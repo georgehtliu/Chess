@@ -36,52 +36,71 @@ void addPiece(char piece, std::string position, Board * b) {
     if (piece == 'p') {
         auto p = std::make_shared<Pawn>(false);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceBlack(p);
+        b->addPiece(p.get());
     } else if (piece == 'P') {
         auto p = std::make_shared<Pawn>(true);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceWhite(p);
+        b->addPiece(p.get());
     } else if (piece == 'n') {
         auto p = std::make_shared<Knight>(false);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceBlack(p);
+        b->addPiece(p.get());
     } else if (piece == 'N') {
         auto p = std::make_shared<Knight>(true);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceWhite(p);
+        b->addPiece(p.get());
     } else if (piece == 'b') {
         auto p = std::make_shared<Bishop>(false);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceBlack(p);
+        b->addPiece(p.get());
     } else if (piece == 'B') {
         auto p = std::make_shared<Bishop>(true);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceWhite(p);
+        b->addPiece(p.get());
     } else if (piece == 'k') {
         auto p = std::make_shared<King>(false);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceBlack(p);
+        b->addPiece(p.get());
     } else if (piece == 'K') {
         auto p = std::make_shared<King>(true);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceWhite(p);
+        b->addPiece(p.get());
     } else if (piece == 'q') {
         auto p = std::make_shared<Queen>(false);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceBlack(p);
+        b->addPiece(p.get());
     } else if (piece == 'Q') {
         auto p = std::make_shared<Queen>(true);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceWhite(p);
+        b->addPiece(p.get());
     } else if (piece == 'r') {
         auto p = std::make_shared<Rook>(false);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceBlack(p);
+        b->addPiece(p.get());
     } else if (piece == 'R') {
         auto p = std::make_shared<Rook>(true);
         b->get_spot(x, y)->set_piece(p.get());
-        b->addPiece(p);
+        b->addPieceWhite(p);
+        b->addPiece(p.get());
     }
+}
+
+void make_move(std::string start, std::string end, Board * b) {
+    Spot * startp = b->get_spot(position_getX(start), position_getY(start));
+    Spot * endp = b->get_spot(position_getX(end), position_getY(end));
+    Move m{b->get_black(), startp, endp, startp->get_piece(), endp->get_piece(), false, false, false, false};
+    b->execute_move(m);    
 }
 
 int main() {
@@ -107,6 +126,12 @@ int main() {
         } else if (command == "-") {
             std::cin >> position;
             b.get_spot(position_getX(position), position_getY(position))->remove_piece();
+        } else if (command == "move") {
+            std::string start;
+            std::string end;
+            std::cin >> start;
+            std::cin >> end;
+            make_move(start, end, &b);
         }
 
         // } else if (command == "=") {

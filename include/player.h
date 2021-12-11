@@ -32,6 +32,7 @@ public:
 
     bool has_valid_moves();
     Move get_next_move(const Board *b);
+    void add_piece(std::shared_ptr<Piece> p);
 };
 
 #endif

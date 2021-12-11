@@ -6,8 +6,9 @@
 
 #include "../include/board.h"
 
-Board::Board()
+Board::Board() : white_king_spot{std::make_shared<Spot>(4, 7).get()}, black_king_spot{std::make_shared<Spot>(0, 7).get()}
 {
+    // y=7 is the bottom of the board (d1)
     for (int i = 0; i < ROWS; i++)
     {
         positions.push_back(std::vector<Spot>());
@@ -16,8 +17,9 @@ Board::Board()
             positions[i].push_back(Spot(i, j));
         }
     }
-
     white_move = true;
+    black = std::make_shared<Player>(false, true).get();
+    white = std::make_shared<Player>(true, true).get();
 }
 
 void Board::attach(Observer *o)
@@ -153,7 +155,15 @@ bool Board::under_attack(Spot *spot)
     return ((under_attack_vertical(spot) || under_attack_horizontal(spot)) || under_attack_diagonal(spot)) || under_attack_knight(spot);
 }
 
-void Board::addPiece(std::shared_ptr<Piece> p) {
+void Board::addPieceWhite(std::shared_ptr<Piece> p) {
+    white->add_piece(p);
+}
+
+void Board::addPieceBlack(std::shared_ptr<Piece> p) {
+    black->add_piece(p);
+}
+
+void Board::addPiece(Piece * p) {
     pieces.push_back(p);
 }
 
@@ -319,4 +329,12 @@ void Board::execute_move(Move &mv) {
 
     // change turns
     white_move = !white_move;
+}
+
+Player * Board::get_black() {
+    return black;
+}
+
+Player * Board::get_white() {
+    return white;
 }

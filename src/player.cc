@@ -30,3 +30,7 @@ void Player::gen_standard_pieces() {
         pieces.push_back(std::make_shared<Pawn>(white));
     }
 }
+
+void Player::add_piece(std::shared_ptr<Piece> p) {
+    pieces.push_back(p);
+}

@@ -24,7 +24,7 @@ class Board
     std::vector<Move> moves;
 
     //
-    std::vector <std::shared_ptr<Piece>> pieces;
+    std::vector <Piece *> pieces;
 
     std::vector<Observer *> observers;
     std::vector<std::vector<Spot> > positions;
@@ -36,7 +36,7 @@ class Board
     bool check_valid_move(Move &mv);
     void execute_en_passant(Move &mv);
     void execute_castle(Move &mv);
-    void execute_move(Move &mv);
+    // void execute_move(Move &mv);
     bool search_attacker(Spot *spot, int x_inc, int y_inc);
     bool under_attack_vertical(Spot *spot);
     bool under_attack_horizontal(Spot *spot);
@@ -46,7 +46,7 @@ class Board
     bool is_attacking_path(Spot *end, Spot *attack_candidate);
     bool valid_path(Spot *from, Spot *to);
     bool same_team(Spot *s1, Spot *s2);
-    void place_piece(Spot *start, Spot *end);
+    // void place_piece(Spot *start, Spot *end);
     bool same_spot(Spot *s1, Spot *s2);
     bool in_check();
 
@@ -67,7 +67,14 @@ public:
 
     // Manage spots
     Spot * get_spot(int x, int y);
-    void addPiece(std::shared_ptr<Piece> p);
+
+    void addPieceWhite(std::shared_ptr<Piece> p);
+    void addPieceBlack(std::shared_ptr<Piece> p);
+    void addPiece(Piece * p);
+    void execute_move(Move &mv);
+    void place_piece(Spot *start, Spot *end);
+    Player * get_black();
+    Player * get_white();
 };
 
 #endif // CHESS_INCLUDE_BOARD_H_
