@@ -48,6 +48,7 @@ class Board
     bool same_team(Spot *s1, Spot *s2);
     // void place_piece(Spot *start, Spot *end);
     bool same_spot(Spot *s1, Spot *s2);
+    bool in_check();
 
 public:
     // Constructor / Destructor

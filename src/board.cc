@@ -71,7 +71,6 @@ bool Board::valid_path(Spot *from, Spot *to)
         p = black;
     }
 
-    // **** DOES NOT CONSIDER CASTLE, PROMOTION, OR EN PASSANT
     Move mv = Move{p, from, to, piece_from, piece_to};
     return piece_from->valid_move(mv);
 }
@@ -144,8 +143,8 @@ bool Board::under_attack_knight(Spot *spot) {
         }
     }
 
-    for (Spot *s : knight_threat_spots) {
-        if (is_attacking_path(spot, s)) return true;
+    for (Spot *attacker_candidate : knight_threat_spots) {
+        if (is_attacking_path(spot, attacker_candidate)) return true;
     }
     
     return false;
@@ -169,30 +168,38 @@ void Board::addPiece(Piece * p) {
 }
 
 // TODO
-/*
 bool Board::check_valid_move(Move &mv) {
+
+    // can only move if it's your turn
+    bool piece_is_white = ((mv.start_pos)->get_piece())->is_white();
+    if ((piece_is_white && !white_move) || (!piece_is_white && white_move)) return false;
+    
     // end move cannot be out of bounds
     if (!(mv.end_pos)->in_bounds()) return false;
 
     // cannot move into own pieces
     if (same_team(mv.start_pos, mv.end_pos)) return false;
 
-    // cannot be in check after move
+    // cannot be in check after move ** HARD **
 
-    // check if piece can move path
+    // check if piece can move path and check for anything blocking it
 
     // cannot move other pieces if in check and can only
     // get king to safety/block/capture attack - should be covered by in check after move
 
     // cannot take king - should already be covered since you must be in check beforehand
 
-    // cannot move somewhere if blocked (vertical, horizontal, diagonal)
+    // cannot move somewhere if blocked 
 
-    // check castle, promotion, en passant
+    // castle
 
-    
+    // promotion
+
+    // en passant
+
+    return true;
 }
-*/
+
 
 bool Board::same_spot(Spot *s1, Spot *s2) {
     return s1->get_x() == s2->get_x() && s1->get_y() == s2->get_y();
@@ -215,6 +222,13 @@ void Board::place_piece(Spot *start, Spot *end) {
     } else if (same_spot(black_king_spot, start)) {
         black_king_spot = end;
     }
+}
+
+bool Board::in_check() {
+
+    if (white_move) return under_attack(white_king_spot);
+
+    return under_attack(black_king_spot);
 }
 
 void Board::execute_castle(Move &mv) {
@@ -302,12 +316,13 @@ void Board::execute_move(Move &mv) {
         execute_castle(mv);
     }
 
-    // en passant
+    // perform en passant
     if (mv.is_en_passant) {
         execute_en_passant(mv);
     }
     
-    // promotion
+    // promotion TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // generate function in Piece.h which takes in a bool is_white
 
     // add move to array
     moves.push_back(mv);
