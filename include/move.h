@@ -29,7 +29,7 @@ public:
     int euclid_dist();
     int x_dist();
     int y_dist();
-    Move(Player *p, Spot *start_p, Spot *end_p, Piece *p_moved, Piece *p_killed = nullptr, bool castle = false, bool ep = false, bool res = false);
+    Move(Player *p, Spot *start_p, Spot *end_p, Piece *p_moved, Piece *p_killed = nullptr, bool castle = false, bool ep = false, bool prom = false, bool res = false);
 };
 
 #endif

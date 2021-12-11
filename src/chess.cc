@@ -99,7 +99,7 @@ void addPiece(char piece, std::string position, Board * b) {
 void make_move(std::string start, std::string end, Board * b) {
     Spot * startp = b->get_spot(position_getX(start), position_getY(start));
     Spot * endp = b->get_spot(position_getX(end), position_getY(end));
-    Move m{b->get_black(), startp, endp, startp->get_piece(), endp->get_piece(), false, false, false};
+    Move m{b->get_black(), startp, endp, startp->get_piece(), endp->get_piece(), false, false, false, false};
     b->execute_move(m);    
 }
 
