@@ -12,6 +12,7 @@
 
 #include "observer.h"
 #include "spot.h"
+#include "player.h"
 #include "move.h"
 
 class Board
