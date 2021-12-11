@@ -69,7 +69,6 @@ bool Board::valid_path(Spot *from, Spot *to)
         p = black;
     }
 
-    // **** DOES NOT CONSIDER CASTLE, PROMOTION, OR EN PASSANT
     Move mv = Move{p, from, to, piece_from, piece_to};
     return piece_from->valid_move(mv);
 }
@@ -142,8 +141,8 @@ bool Board::under_attack_knight(Spot *spot) {
         }
     }
 
-    for (Spot *s : knight_threat_spots) {
-        if (is_attacking_path(spot, s)) return true;
+    for (Spot *attacker_candidate : knight_threat_spots) {
+        if (is_attacking_path(spot, attacker_candidate)) return true;
     }
     
     return false;
@@ -161,6 +160,9 @@ void Board::addPiece(std::shared_ptr<Piece> p) {
 // TODO
 /*
 bool Board::check_valid_move(Move &mv) {
+
+    // can only move if it's your turn
+    
     // end move cannot be out of bounds
     if (!(mv.end_pos)->in_bounds()) return false;
 
@@ -208,7 +210,9 @@ void Board::place_piece(Spot *start, Spot *end) {
 }
 
 bool Board::in_check() {
+
     if (white_move) return under_attack(white_king_spot);
+
     return under_attack(black_king_spot);
 }
 
@@ -297,7 +301,7 @@ void Board::execute_move(Move &mv) {
         execute_castle(mv);
     }
 
-    // en passant
+    // perform en passant
     if (mv.is_en_passant) {
         execute_en_passant(mv);
     }
