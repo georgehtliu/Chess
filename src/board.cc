@@ -232,13 +232,13 @@ void Board::execute_castle(Move &mv) {
     Spot *start_rook_spot = nullptr;
     Spot *end_rook_spot = nullptr;
 
-    if (white_move && same_spot(end, queenside_white_end)) { // white queen side
+    if (white_move && same_spot(mv.end_pos, queenside_white_end)) { // white queen side
         start_rook_spot = start_queenside_rook_white;
         end_rook_spot = end_queenside_rook_white;
     } else if (white_move) { // white king side
         start_rook_spot = start_kingside_rook_white;
         end_rook_spot = end_kingside_rook_white;
-    } else if (!white_move && same_spot(end, queenside_black_end)) { // black queenside
+    } else if (!white_move && same_spot(mv.end_pos, queenside_black_end)) { // black queenside
         start_rook_spot = start_queenside_rook_black;
         end_rook_spot = end_queenside_rook_black;
     } else { // black kingside
@@ -247,6 +247,23 @@ void Board::execute_castle(Move &mv) {
     }
 
     place_piece(start_rook_spot, end_rook_spot);
+}
+
+void Board::execute_en_passant(Move &mv) {
+
+    Spot *start = mv.start_pos;
+    Spot *end = mv.end_pos;
+
+    place_piece(start, end);
+    Spot *taken_pawn_spot = nullptr;
+    if (white_move) {
+        taken_pawn_spot = get_spot(end->get_x(), end->get_y() - 1);
+    } else {
+        taken_pawn_spot = get_spot(end->get_x(), end->get_y() + 1);
+    }
+
+    (taken_pawn_spot->get_piece())->set_killed();
+    taken_pawn_spot->set_piece(nullptr);
 }
 
 void Board::execute_move(Move &mv) {
@@ -265,6 +282,10 @@ void Board::execute_move(Move &mv) {
     }
 
     // en passant
+    if (mv.is_en_passant) {
+        execute_en_passant(mv);
+    }
+    
     // promotion
 
     // check for in check (black and white)
