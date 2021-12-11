@@ -6,8 +6,9 @@
 
 #include "../include/board.h"
 
-Board::Board()
+Board::Board() : white_king_spot{std::make_shared<Spot>(4, 7).get()}, black_king_spot{std::make_shared<Spot>(0, 7).get()}
 {
+    // y=7 is the bottom of the board (d1)
     for (int i = 0; i < ROWS; i++)
     {
         positions.push_back(std::vector<Spot>());
@@ -313,4 +314,12 @@ void Board::execute_move(Move &mv) {
 
     // change turns
     white_move = !white_move;
+}
+
+Player * Board::get_black() {
+    return black;
+}
+
+Player * Board::get_white() {
+    return white;
 }
