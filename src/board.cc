@@ -207,6 +207,11 @@ void Board::place_piece(Spot *start, Spot *end) {
     }
 }
 
+bool Board::in_check() {
+    if (white_move) return under_attack(white_king_spot);
+    return under_attack(black_king_spot);
+}
+
 void Board::execute_castle(Move &mv) {
 
     Spot *start = mv.start_pos;
@@ -297,7 +302,7 @@ void Board::execute_move(Move &mv) {
         execute_en_passant(mv);
     }
     
-    // promotion
+    // promotion TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     // add move to array
     moves.push_back(mv);
