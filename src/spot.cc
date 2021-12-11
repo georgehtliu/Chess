@@ -54,3 +54,5 @@ char Spot::get_spot_text() const {
 void Spot::remove_piece() {
     this->p = nullptr;
 }
+
+

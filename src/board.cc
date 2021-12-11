@@ -55,7 +55,7 @@ bool Board::same_team(Spot *s1, Spot *s2) {
 
 bool Board::valid_path(Spot *from, Spot *to)
 {
-    if (from == nullptr) return false;
+    if (from->is_blank()) return false;
     Player *p;
     Piece *piece_from = from->get_piece();
     Piece *piece_to = to->get_piece();
@@ -84,166 +84,45 @@ bool Board::is_attacking_path(Spot *end, Spot *attack_candidate_spot) // has a p
     return valid_path(attack_candidate_spot, end);
 }
 
-bool Board::under_attack_vertical(Spot *spot)
-{
+bool Board::search_attacker(Spot *spot, int x_inc, int y_inc) {
 
-    for (int y = spot->get_y(); y < ROWS; y++)
+    Spot *runner = spot;
+
+    while (runner->in_bounds())
     {
-        Spot *attack_candidate_spot = get_spot(spot->get_x(), y).get();
-        if (is_attacking_path(spot, attack_candidate_spot))
+        runner = get_spot(runner->get_x() + x_inc, runner->get_y() + y_inc).get();
+        if (is_attacking_path(spot, runner))
         {
             return true;
-            // if not attacking, the piece is either blocking, so there will be no direct attackers behind it or blank
         }
-        else if (spot->is_blank())
+        else if (runner->is_blank())
         {
             continue;
         }
         else
         {
-            break;
-        }
-    }
-
-    for (int y = spot->get_y(); y >= 0; y--)
-    {
-        Spot *attack_candidate_spot = get_spot(spot->get_x(), y).get();
-        if (is_attacking_path(spot, attack_candidate_spot))
-        {
-            return true;
-        }
-        else if (spot->is_blank())
-        {
-            continue;
-        }
-        else
-        {
-            break;
+            return false;
         }
     }
 
     return false;
+
+}
+
+bool Board::under_attack_vertical(Spot *spot)
+{
+    return search_attacker(spot, 0, 1) || search_attacker(spot, 0, -1);
 }
 
 bool Board::under_attack_horizontal(Spot *spot)
 {
 
-    for (int x = spot->get_x(); x < COLS; x++)
-    {
-        Spot *attack_candidate_spot = get_spot(x, spot->get_y()).get();
-        if (is_attacking_path(spot, attack_candidate_spot))
-        {
-            return true;
-        }
-        else if (spot->is_blank())
-        {
-            continue;
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    for (int x = spot->get_x(); x >= 0; x--)
-    {
-        Spot *attack_candidate_spot = get_spot(x, spot->get_y()).get();
-        if (is_attacking_path(spot, attack_candidate_spot))
-        {
-            return true;
-        }
-        else if (spot->is_blank())
-        {
-            continue;
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    return false;
+    return search_attacker(spot, 1, 0) || search_attacker(spot, -1, 0);
 }
 
 bool Board::under_attack_diagonal(Spot *spot)
 {
-    // up right
-    Spot *runner = spot;
-    while (runner->in_bounds())
-    {
-        runner = get_spot(runner->get_x() + 1, runner->get_y() + 1).get();
-        if (is_attacking_path(spot, runner))
-        {
-            return true;
-        }
-        else if (runner->is_blank())
-        {
-            continue;
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    // up left
-    runner = spot;
-    while (runner->in_bounds())
-    {
-        runner = get_spot(runner->get_x() - 1, runner->get_y() + 1).get();
-        if (is_attacking_path(spot, runner))
-        {
-            return true;
-        }
-        else if (runner->is_blank())
-        {
-            continue;
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    // down right
-    runner = spot;
-    while (runner->in_bounds())
-    {
-        runner = get_spot(runner->get_x() + 1, runner->get_y() - 1).get();
-        if (is_attacking_path(spot, runner))
-        {
-            return true;
-        }
-        else if (runner->is_blank())
-        {
-            continue;
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    // down left
-    runner = spot;
-    while (runner->in_bounds())
-    {
-        runner = get_spot(runner->get_x() - 1, runner->get_y() - 1).get();
-        if (is_attacking_path(spot, runner))
-        {
-            return true;
-        }
-        else if (runner->is_blank())
-        {
-            continue;
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    return false;
+    return search_attacker(spot, 1, 1) || search_attacker(spot, -1, 1) || search_attacker(spot, -1, -1) || search_attacker(spot, 1, -1);
 }
 
 bool Board::under_attack_knight(Spot *spot) {
@@ -263,9 +142,8 @@ bool Board::under_attack_knight(Spot *spot) {
         }
     }
 
-    for (unsigned long i = 0; i < knight_threat_spots.size(); i++) {
-        Spot *s = knight_threat_spots[i];
-        if (is_attacking_path(s, spot)) return true;
+    for (Spot *s : knight_threat_spots) {
+        if (is_attacking_path(spot, s)) return true;
     }
     
     return false;
@@ -277,9 +155,37 @@ bool Board::under_attack(Spot *spot)
 }
 
 // TODO
-// bool Board::check_valid_move(Move mv)
-// {
+/*
+bool Board::check_valid_move(Move mv) {
+    // end move cannot be out of bounds
+    if (!(mv.end_pos)->in_bounds()) return false;
 
-//     if (!(mv.end_pos)->in_bounds())
-//         return false;
-// }
+    // cannot move into own pieces
+    if (same_team(mv.start_pos, mv.end_pos)) return false;
+
+    // cannot be in check after move
+
+    // check if piece can move path
+
+    // cannot move other pieces if in check and can only
+    // get king to safety/block/capture attack - should be covered by in check after move
+
+    // cannot take king - should already be covered since you must be in check beforehand
+
+    // cannot move somewhere if blocked (vertical, horizontal, diagonal)
+
+    // check castle, promotion, en passant
+
+    
+}
+
+void Board::execute_move(Move mv) {
+    // add move to array
+    // check for checkmate
+    // check for stalemate
+    // if king moves, update king spot
+
+    // perform castle, en passant, promotion
+    // place piece for generic move
+}
+*/
