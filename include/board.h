@@ -14,6 +14,7 @@
 #include "spot.h"
 #include "player.h"
 #include "move.h"
+#include "piece.h"
 
 class Board
 {
@@ -21,6 +22,9 @@ class Board
     Player *white;
     Player *black;
     std::vector<Move> moves;
+
+    //
+    std::vector <std::shared_ptr<Piece>> pieces;
 
     std::vector<Observer *> observers;
     std::vector<std::vector<Spot> > positions;
@@ -58,6 +62,7 @@ public:
 
     // Manage spots
     Spot * get_spot(int x, int y);
+    void addPiece(std::shared_ptr<Piece> p);
 };
 
 #endif // CHESS_INCLUDE_BOARD_H_

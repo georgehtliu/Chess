@@ -33,43 +33,54 @@ void addPiece(char piece, std::string position, Board * b) {
     int x = position_getX(position);
     int y = position_getY(position);
     // advanced programming skills
-    switch (piece) {
-        case 'p':
-            b->get_spot(x, y)->set_piece(std::make_shared<Pawn>(false).get());
-            break;
-        case 'P':
-            b->get_spot(x, y)->set_piece(std::make_shared<Pawn>(true).get());
-            break;
-        case 'n':
-            b->get_spot(x, y)->set_piece(std::make_shared<Knight>(false).get());
-            break;
-        case 'N':
-            b->get_spot(x, y)->set_piece(std::make_shared<Knight>(true).get());
-            break;
-        case 'b':
-            b->get_spot(x, y)->set_piece(std::make_shared<Bishop>(false).get());
-            break;
-        case 'B':
-            b->get_spot(x, y)->set_piece(std::make_shared<Bishop>(true).get());
-            break;
-        case 'k':
-            b->get_spot(x, y)->set_piece(std::make_shared<King>(false).get());
-            break;
-        case 'K':
-            b->get_spot(x, y)->set_piece(std::make_shared<King>(true).get());
-            break;
-        case 'q':
-            b->get_spot(x, y)->set_piece(std::make_shared<Queen>(false).get());
-            break;
-        case 'Q':
-            b->get_spot(x, y)->set_piece(std::make_shared<Queen>(true).get());
-            break;
-        case 'r':
-            b->get_spot(x, y)->set_piece(std::make_shared<Rook>(false).get());
-            break;  
-        case 'R':
-            b->get_spot(x, y)->set_piece(std::make_shared<Rook>(true).get());
-            break; 
+    if (piece == 'p') {
+        auto p = std::make_shared<Pawn>(false);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
+    } else if (piece == 'P') {
+        auto p = std::make_shared<Pawn>(true);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
+    } else if (piece == 'n') {
+        auto p = std::make_shared<Knight>(false);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
+    } else if (piece == 'N') {
+        auto p = std::make_shared<Knight>(true);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
+    } else if (piece == 'b') {
+        auto p = std::make_shared<Bishop>(false);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
+    } else if (piece == 'B') {
+        auto p = std::make_shared<Bishop>(true);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
+    } else if (piece == 'k') {
+        auto p = std::make_shared<King>(false);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
+    } else if (piece == 'K') {
+        auto p = std::make_shared<King>(true);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
+    } else if (piece == 'q') {
+        auto p = std::make_shared<Queen>(false);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
+    } else if (piece == 'Q') {
+        auto p = std::make_shared<Queen>(true);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
+    } else if (piece == 'r') {
+        auto p = std::make_shared<Rook>(false);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
+    } else if (piece == 'R') {
+        auto p = std::make_shared<Rook>(true);
+        b->get_spot(x, y)->set_piece(p.get());
+        b->addPiece(p);
     }
 }
 
@@ -79,7 +90,6 @@ int main() {
 
     observers.push_back(std::make_unique<TextObserver>(&b));
 
-    // setup mode
     bool done = false;
     while (!done) {
         std::string command;
@@ -104,6 +114,6 @@ int main() {
         // }
         observers[0]->notify();
         
+        
     }
-
 }
