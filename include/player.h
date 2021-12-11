@@ -7,11 +7,13 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
 
-#include "move.h"
+// #include "move.h"
+#include "piece.h"
 #include <vector>
 #include <memory>
 
 class Board;
+class Move;
 
 class Player {
     int score;
