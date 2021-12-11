@@ -4,10 +4,10 @@
 #include "piece.h"
 #include "move.h"
 
-class Bishop : public Piece
-{
+class Bishop : public Piece {
 
 public:
+    Bishop(bool white);
     bool valid_move(Move mv) override;
 };
 

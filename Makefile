@@ -5,7 +5,7 @@ BUILD := ./build
 OBJ_DIR := $(BUILD)/objects
 APP_DIR := .
 TARGET := chess
-INCLUDE := -Iinclude/ -Iinclude/pieces/ -I.
+INCLUDE := -Iinclude/ -I. -Iinclude/pieces/
 SRC := $(wildcard src/*.cc src/pieces/*.cc)
 
 OBJECTS := $(SRC:%.cc=$(OBJ_DIR)/%.o)

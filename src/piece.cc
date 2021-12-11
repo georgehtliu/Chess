@@ -1,16 +1,19 @@
-#include "piece.h"
-#include "move.h"
+#include "../include/piece.h"
+#include "../include/move.h"
 
-bool Piece::is_white()
-{
+
+bool Piece::is_white() const {
     return white;
 }
 
-bool Piece::is_alive()
-{
+bool Piece::is_alive() {
     return alive;
 }
 
-unsigned char* Piece::get_image() {
-    return rgb_image;
+char Piece::get_text() {
+    return text_repr;
+}
+
+void Piece::set_killed() {
+    alive = false;
 }

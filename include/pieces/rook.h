@@ -3,12 +3,11 @@
 #include "piece.h"
 #include "move.h"
 
-class Rook : public Piece
-{
-
+class Rook : public Piece {
     bool has_moved;
 
 public:
+    Rook(bool white);
     bool get_has_moved();
     bool valid_move(Move mv) override;
 };

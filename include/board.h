@@ -11,24 +11,48 @@
 #include <memory>
 
 #include "observer.h"
-//#include "player.h"
 #include "spot.h"
+#include "player.h"
+#include "move.h"
+#include "piece.h"
 
-class Board {
+class Board
+{
     // TODO:
-    //Player* white;
-    //Player* black;
-    // std::vector<Move> moves;
+    Player *white;
+    Player *black;
+    std::vector<Move> moves;
 
+    //
+    std::vector <Piece *> pieces;
 
-    std::vector<Observer*> observers;
-    std::vector<std::vector<Spot>> positions;
+    std::vector<Observer *> observers;
+    std::vector<std::vector<Spot> > positions;
     bool white_move;
+    Spot *white_king_spot;
+    Spot *black_king_spot;
 
-   public:
+    // Manage/execute moves
+    bool check_valid_move(Move &mv);
+    void execute_en_passant(Move &mv);
+    void execute_castle(Move &mv);
+    void execute_move(Move &mv);
+    bool search_attacker(Spot *spot, int x_inc, int y_inc);
+    bool under_attack_vertical(Spot *spot);
+    bool under_attack_horizontal(Spot *spot);
+    bool under_attack_diagonal(Spot *spot);
+    bool under_attack_knight(Spot *spot);
+    bool under_attack(Spot *spot);
+    bool is_attacking_path(Spot *end, Spot *attack_candidate);
+    bool valid_path(Spot *from, Spot *to);
+    bool same_team(Spot *s1, Spot *s2);
+    void place_piece(Spot *start, Spot *end);
+    bool same_spot(Spot *s1, Spot *s2);
+
+public:
     // Constructor / Destructor
     Board();
-    ~Board() = default;  // FIXME
+    ~Board() = default; // FIXME
 
     // Observers
     void attach(Observer *o);
@@ -41,8 +65,11 @@ class Board {
     const static int COLS = 8;
 
     // Manage spots
-    Spot* get_spot(int x, int y);
-    void add_piece(Piece *p, Spot* s);
+    Spot * get_spot(int x, int y);
+    void addPieceWhite(std::shared_ptr<Piece> p);
+    void addPieceBlack(std::shared_ptr<Piece> p);
+    void addPiece(Piece * p);
+
 };
 
-#endif  // CHESS_INCLUDE_BOARD_H_
+#endif // CHESS_INCLUDE_BOARD_H_

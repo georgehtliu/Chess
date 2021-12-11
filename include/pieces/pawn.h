@@ -10,6 +10,7 @@ class Pawn : public Piece
     bool moved_two;
 
 public:
+    Pawn(bool white);
     bool valid_move(Move mv) override;
     bool get_has_moved();
     bool get_moved_two();
