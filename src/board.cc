@@ -158,10 +158,11 @@ void Board::addPiece(std::shared_ptr<Piece> p) {
 }
 
 // TODO
-/*
 bool Board::check_valid_move(Move &mv) {
 
     // can only move if it's your turn
+    bool piece_is_white = ((mv.start_pos)->get_piece())->is_white();
+    if ((piece_is_white && !white_move) || (!piece_is_white && white_move)) return false;
     
     // end move cannot be out of bounds
     if (!(mv.end_pos)->in_bounds()) return false;
@@ -169,22 +170,26 @@ bool Board::check_valid_move(Move &mv) {
     // cannot move into own pieces
     if (same_team(mv.start_pos, mv.end_pos)) return false;
 
-    // cannot be in check after move
+    // cannot be in check after move ** HARD **
 
-    // check if piece can move path
+    // check if piece can move path and check for anything blocking it
 
     // cannot move other pieces if in check and can only
     // get king to safety/block/capture attack - should be covered by in check after move
 
     // cannot take king - should already be covered since you must be in check beforehand
 
-    // cannot move somewhere if blocked (vertical, horizontal, diagonal)
+    // cannot move somewhere if blocked 
 
-    // check castle, promotion, en passant
+    // castle
 
-    
+    // promotion
+
+    // en passant
+
+    return true;
 }
-*/
+
 
 bool Board::same_spot(Spot *s1, Spot *s2) {
     return s1->get_x() == s2->get_x() && s1->get_y() == s2->get_y();
@@ -307,6 +312,7 @@ void Board::execute_move(Move &mv) {
     }
     
     // promotion TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // generate function in Piece.h which takes in a bool is_white
 
     // add move to array
     moves.push_back(mv);
