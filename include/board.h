@@ -33,8 +33,9 @@ class Board
     Spot *black_king_spot;
 
     // Manage/execute moves
-    bool check_valid_move(Move mv);
-    void execute_move(Move mv);
+    bool check_valid_move(Move &mv);
+    void execute_castle(Move &mv);
+    void execute_move(Move &mv);
     bool search_attacker(Spot *spot, int x_inc, int y_inc);
     bool under_attack_vertical(Spot *spot);
     bool under_attack_horizontal(Spot *spot);
@@ -44,6 +45,8 @@ class Board
     bool is_attacking_path(Spot *end, Spot *attack_candidate);
     bool valid_path(Spot *from, Spot *to);
     bool same_team(Spot *s1, Spot *s2);
+    void place_piece(Spot *start, Spot *end);
+    bool same_spot(Spot *s1, Spot *s2);
 
 public:
     // Constructor / Destructor

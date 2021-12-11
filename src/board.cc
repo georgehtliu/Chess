@@ -69,7 +69,7 @@ bool Board::valid_path(Spot *from, Spot *to)
         p = black;
     }
 
-    // auto mv = std::make_shared<Move>(p, from, to, piece_from, piece_to);
+    // **** DOES NOT CONSIDER CASTLE, PROMOTION, OR EN PASSANT
     Move mv = Move{p, from, to, piece_from, piece_to};
     return piece_from->valid_move(mv);
 }
@@ -159,8 +159,7 @@ void Board::addPiece(std::shared_ptr<Piece> p) {
 }
 
 // TODO
-/*
-bool Board::check_valid_move(Move mv) {
+bool Board::check_valid_move(Move &mv) {
     // end move cannot be out of bounds
     if (!(mv.end_pos)->in_bounds()) return false;
 
@@ -183,13 +182,99 @@ bool Board::check_valid_move(Move mv) {
     
 }
 
-void Board::execute_move(Move mv) {
-    // add move to array
+bool Board::same_spot(Spot *s1, Spot *s2) {
+    return s1->get_x() == s2->get_x() && s1->get_y() == s2->get_y();
+}
+
+void Board::place_piece(Spot *start, Spot *end) {
+
+    // capture piece
+    if (!end->is_blank() && !same_team(start, end)) {
+       (end->get_piece())->set_killed();
+    }
+
+    // end spot now has start's piece
+    end->set_piece(start->get_piece());
+    start->set_piece(nullptr);
+
+    // if king moves, update king spot
+    if (white_move && same_spot(white_king_spot, start)) {
+        white_king_spot = end;
+    } else if (same_spot(black_king_spot, start)) {
+        black_king_spot = end;
+    }
+}
+
+void Board::execute_castle(Move &mv) {
+
+    // starting rook positions
+    Spot *start_queenside_rook_white = get_spot(0, 0);
+    Spot *start_kingside_rook_white = get_spot(7, 0);
+    Spot *start_kingside_rook_black = get_spot(7, 7);
+    Spot *start_queenside_rook_black = get_spot(0, 7);
+    
+    // end rook positions
+    Spot *end_queenside_rook_white = get_spot(3, 0);
+    Spot *end_kingside_rook_white = get_spot(5, 0);
+    Spot *end_kingside_rook_black = get_spot(5, 7);
+    Spot *end_queenside_rook_black = get_spot(3, 7);
+
+    // end king positions
+    Spot *kingside_white_end = get_spot(2, 0);
+    Spot *queenside_white_end = get_spot(6, 0);
+    Spot *kingside_black_end = get_spot(6, 7);
+    Spot *queenside_black_end = get_spot(2, 7);
+
+    // place king
+    place_piece(start, end);
+
+    // place rook
+    Spot *start_rook_spot = nullptr;
+    Spot *end_rook_spot = nullptr;
+
+    if (white_move && same_spot(end, queenside_white_end)) { // white queen side
+        start_rook_spot = start_queenside_rook_white;
+        end_rook_spot = end_queenside_rook_white;
+    } else if (white_move) { // white king side
+        start_rook_spot = start_kingside_rook_white;
+        end_rook_spot = end_kingside_rook_white;
+    } else if (!white_move && same_spot(end, queenside_black_end)) { // black queenside
+        start_rook_spot = start_queenside_rook_black;
+        end_rook_spot = end_queenside_rook_black;
+    } else { // black kingside
+        start_rook_spot = start_kingside_rook_black;
+        end_rook_spot = end_kingside_rook_black;
+    }
+
+    place_piece(start_rook_spot, end_rook_spot);
+}
+
+void Board::execute_move(Move &mv) {
+
+    Spot *start = mv.start_pos;
+    Spot *end = mv.end_pos;
+
+    // place piece for generic move
+    if (!(mv.is_castle || mv.is_en_passant || mv.is_promotion)) {
+        place_piece(start, end);
+    }
+
+    // perform castle
+    if (mv.is_castle) {
+        execute_castle(mv);
+    }
+
+    // en passant
+    // promotion
+
+    // check for in check (black and white)
+    
     // check for checkmate
     // check for stalemate
-    // if king moves, update king spot
 
-    // perform castle, en passant, promotion
-    // place piece for generic move
+    // add move to array
+    moves.push_back(mv);
+
+    // change turns
+    white_move = !white_move;
 }
-*/
