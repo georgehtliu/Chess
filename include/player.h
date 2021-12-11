@@ -31,4 +31,5 @@ public:
     bool has_valid_moves();
     Move get_next_move(const Board *b);
 };
+
 #endif

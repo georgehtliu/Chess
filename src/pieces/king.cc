@@ -2,7 +2,11 @@
 
 King::King(bool white) {
     this->white = white;
-    this->text_repr = 'K';
+    if (white) {
+        this->text_repr = 'K';
+    } else {
+        this->text_repr = 'k';
+    }
 }
 
 bool King::get_has_moved() {
