@@ -13,11 +13,11 @@
 // FIXME: THIS IS SUPER SUPER SUPER TEMPORARY
 #include "pieces/king.h"
 // We need to build constructors for all of these pieces:
-//#include "pieces/bishop.h"
-//#include "pieces/knight.h"
-//#include "pieces/pawn.h"
-//#include "pieces/queen.h"
-//#include "pieces/rook.h"
+#include "pieces/bishop.h"
+#include "pieces/knight.h"
+#include "pieces/pawn.h"
+#include "pieces/queen.h"
+#include "pieces/rook.h"
 
 int main() {
     Board b;

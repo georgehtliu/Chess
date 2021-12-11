@@ -12,11 +12,12 @@
 
 #include "observer.h"
 #include "spot.h"
+#include "player.h"
 
 class Board {
     // TODO:
-    // Player* white;
-    // Player* black;
+    Player* white;
+    Player* black;
     // std::vector<Move> moves;
 
 
