@@ -42,8 +42,8 @@ void Board::notify_observers()
         ob->notify();
 }
 
-std::shared_ptr<Spot> Board::get_spot(int x, int y) {
-    return std::make_shared<Spot>(positions[x][y]);
+Spot * Board::get_spot(int x, int y) {
+    return &positions[x][y];
 }
 
 bool Board::same_team(Spot *s1, Spot *s2) {
@@ -90,7 +90,7 @@ bool Board::search_attacker(Spot *spot, int x_inc, int y_inc) {
 
     while (runner->in_bounds())
     {
-        runner = get_spot(runner->get_x() + x_inc, runner->get_y() + y_inc).get();
+        runner = get_spot(runner->get_x() + x_inc, runner->get_y() + y_inc);
         if (is_attacking_path(spot, runner))
         {
             return true;
@@ -131,8 +131,8 @@ bool Board::under_attack_knight(Spot *spot) {
     // should be 8 positions
     for (int i = 1; i <= 2; i++) {
         for (int j = -2; j <= -1; j++) {
-            Spot *spot1 = get_spot(spot->get_x() + i, spot->get_y() + j).get();
-            Spot *spot2 = get_spot(spot->get_x() + j, spot->get_y() + i).get();
+            Spot *spot1 = get_spot(spot->get_x() + i, spot->get_y() + j);
+            Spot *spot2 = get_spot(spot->get_x() + j, spot->get_y() + i);
             if (spot1->in_bounds()) {
                 knight_threat_spots.push_back(spot1);
             }
