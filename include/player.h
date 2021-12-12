@@ -31,6 +31,7 @@ public:
     bool has_valid_moves();
     void gen_standard_pieces();
     void add_piece(std::shared_ptr<Piece> p);
+    void remove_last_piece();
     Piece* get_last_piece();
     Piece* get_nth_piece(size_t n);
 

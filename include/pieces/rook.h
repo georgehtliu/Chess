@@ -9,7 +9,7 @@ class Rook : public Piece {
 public:
     Rook(bool white);
     bool get_has_moved();
-    bool valid_move(Move mv) override;
+    bool valid_path(Move mv) override;
 };
 
 #endif

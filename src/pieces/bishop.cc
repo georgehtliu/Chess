@@ -10,6 +10,6 @@ Bishop::Bishop(bool white) {
     }
 }
 
-bool Bishop::valid_move(Move mv) {
+bool Bishop::valid_path(Move mv) {
     return mv.is_diagonal();
 }

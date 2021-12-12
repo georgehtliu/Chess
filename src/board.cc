@@ -5,6 +5,13 @@
 */
 
 #include "board.h"
+#include "pieces/king.h"
+#include "pieces/bishop.h"
+#include "pieces/knight.h"
+#include "pieces/pawn.h"
+#include "pieces/queen.h"
+#include "pieces/rook.h"
+#include "text_observer.h"
 
 Board::Board(Player* white, Player* black): 
     white{white}, 
@@ -22,6 +29,10 @@ Board::Board(Player* white, Player* black):
         }
     }
     white_move = true;
+}
+
+bool in_bounds(int x, int y) {
+    return (x >= 0 && x < 8) && (y >= 0 && y < 8);
 }
 
 void Board::attach(Observer *o)
@@ -46,34 +57,123 @@ void Board::notify_observers()
         ob->notify();
 }
 
+int position_getX(std::string pos) {
+    return pos.at(0) - 'a';
+}
+
+int position_getY(std::string pos) {
+    return 8 - (pos.at(1) - '0');
+}
+
 void Board::gen_standard_layout() {
     // White pieces
     white->gen_standard_pieces();
-    get_spot(3, 0)->set_piece(white->get_nth_piece(0));
-    get_spot(4, 0)->set_piece(white->get_nth_piece(1));
-    get_spot(0, 0)->set_piece(white->get_nth_piece(2));
-    get_spot(7, 0)->set_piece(white->get_nth_piece(3));
-    get_spot(1, 0)->set_piece(white->get_nth_piece(4));
-    get_spot(6, 0)->set_piece(white->get_nth_piece(5));
-    get_spot(2, 0)->set_piece(white->get_nth_piece(6));
-    get_spot(5, 0)->set_piece(white->get_nth_piece(7));
+    get_spot(3, 7)->set_piece(white->get_nth_piece(0));
+    get_spot(4, 7)->set_piece(white->get_nth_piece(1));
+    get_spot(0, 7)->set_piece(white->get_nth_piece(2));
+    get_spot(7, 7)->set_piece(white->get_nth_piece(3));
+    get_spot(1, 7)->set_piece(white->get_nth_piece(4));
+    get_spot(6, 7)->set_piece(white->get_nth_piece(5));
+    get_spot(2, 7)->set_piece(white->get_nth_piece(6));
+    get_spot(5, 7)->set_piece(white->get_nth_piece(7));
     for (int i = 0; i < 8; i++) {
-        get_spot(i, 1)->set_piece(white->get_nth_piece(8 + i));
+        get_spot(i, 6)->set_piece(white->get_nth_piece(8 + i));
     }
 
     // Black pieces
     black->gen_standard_pieces();
-    get_spot(3, 6)->set_piece(black->get_nth_piece(0));
-    get_spot(4, 6)->set_piece(black->get_nth_piece(1));
-    get_spot(0, 6)->set_piece(black->get_nth_piece(2));
-    get_spot(7, 6)->set_piece(black->get_nth_piece(3));
-    get_spot(1, 6)->set_piece(black->get_nth_piece(4));
-    get_spot(6, 6)->set_piece(black->get_nth_piece(5));
-    get_spot(2, 6)->set_piece(black->get_nth_piece(6));
-    get_spot(5, 6)->set_piece(black->get_nth_piece(7));
+    get_spot(3, 0)->set_piece(black->get_nth_piece(0));
+    get_spot(4, 0)->set_piece(black->get_nth_piece(1));
+    get_spot(0, 0)->set_piece(black->get_nth_piece(2));
+    get_spot(7, 0)->set_piece(black->get_nth_piece(3));
+    get_spot(1, 0)->set_piece(black->get_nth_piece(4));
+    get_spot(6, 0)->set_piece(black->get_nth_piece(5));
+    get_spot(2, 0)->set_piece(black->get_nth_piece(6));
+    get_spot(5, 0)->set_piece(black->get_nth_piece(7));
     for (int i = 0; i < 8; i++) {
-        get_spot(i, 7)->set_piece(black->get_nth_piece(8 + i));
+        get_spot(i, 1)->set_piece(black->get_nth_piece(8 + i));
     }
+}
+
+void Board::add_piece(char piece, std::string position) {
+    int x = position_getX(position);
+    int y = position_getY(position);
+    // advanced programming skills
+    if (piece == 'p') {
+        black->add_piece(std::make_shared<Pawn>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'P') {
+        white->add_piece(std::make_shared<Pawn>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    } else if (piece == 'n') {
+        black->add_piece(std::make_shared<Knight>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'N') {
+        white->add_piece(std::make_shared<Knight>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    } else if (piece == 'b') {
+        black->add_piece(std::make_shared<Bishop>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'B') {
+        white->add_piece(std::make_shared<Bishop>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    } else if (piece == 'k') {
+        black->add_piece(std::make_shared<King>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'K') {
+        white->add_piece(std::make_shared<King>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    } else if (piece == 'q') {
+        black->add_piece(std::make_shared<Queen>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'Q') {
+        white->add_piece(std::make_shared<Queen>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    } else if (piece == 'r') {
+        black->add_piece(std::make_shared<Rook>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'R') {
+        white->add_piece(std::make_shared<Rook>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    }
+}
+
+bool Board::setup_complete() {
+    // condition 1: no pawns in row 1 or 8
+    for (int i = 0; i < 8; i++) {
+        if (get_spot(i, 7)->get_piece() && get_spot(i, 7)->get_piece()->is_pawn()) return false;
+        if (get_spot(i, 0)->get_piece() && get_spot(i, 0)->get_piece()->is_pawn()) return false;
+    }
+
+    // condition 2: 2 kings on the board
+    int white_king_count = 0;
+    int black_king_count = 0;
+    int white_x = 0;
+    int white_y = 0;
+    int black_x = 0;
+    int black_y = 0;
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (get_spot(i, j)->get_piece() && get_spot(i, j)->get_piece()->is_king() && get_spot(i, j)->get_piece()->is_white()) {
+                white_king_count += 1;
+                white_x = i;
+                white_y = j;
+            } else if (get_spot(i, j)->get_piece() && get_spot(i, j)->get_piece()->is_king()) {
+                black_king_count += 1;
+                black_x = i;
+                black_y = j;
+            }
+        }
+    }
+    if (!(white_king_count == 1 && black_king_count == 1)) return false;
+
+    // condition 3: neither king is in check -- TODO
+    Spot *white_king = get_spot(white_x, white_y);
+    Spot *black_king = get_spot(black_x, black_y);
+    if (under_attack(white_king)) return false;
+    if (under_attack(black_king)) return false;
+
+    return true;
 }
 
 void Board::setup_mode() {
@@ -81,8 +181,32 @@ void Board::setup_mode() {
     if (f.is_open())
         std::cout << f.rdbuf();
 
-    notify_observers();
-    // TODO: Frank, can you move your setup mode stuff over here?
+
+    bool done = false;
+    while (!done) {
+        notify_observers()
+        std::string command;
+        char piece;
+        std::string position;
+        std::cin >> command;
+
+        if (std::cin.eof()) break;
+        if (command == "done") {
+            if (setup_complete()) {
+                done = true;
+            } else {
+                std::cout << "Ensure that all requirements for setup are met!" << std::endl;
+            }
+            
+        } else if (command == "+") {
+            std::cin >> piece;
+            std::cin >> position;
+            add_piece(piece, position);
+        } else if (command == "-") {
+            std::cin >> position;
+            get_spot(position_getX(position), position_getY(position))->remove_piece();
+        }
+    }
 }
 
 Spot * Board::get_spot(int x, int y) {
@@ -111,7 +235,14 @@ bool Board::valid_path(Spot *from, Spot *to)
     }
 
     Move mv = Move{p, from, to, piece_from, piece_to};
-    return piece_from->valid_move(mv);
+    return piece_from->valid_path(mv);
+}
+
+bool Board::has_moved(Piece *p) {
+    for (auto &move : moves) {
+        if (move.piece_moved == p) return true;
+    }
+    return false;
 }
 
 bool Board::is_attacking_path(Spot *end, Spot *attack_candidate_spot) // has a path attacking end
@@ -120,7 +251,7 @@ bool Board::is_attacking_path(Spot *end, Spot *attack_candidate_spot) // has a p
     if (same_team(end, attack_candidate_spot))
         return false;
 
-    // (opposite team or blank) and valid path
+    // opposite team and valid path
     return valid_path(attack_candidate_spot, end);
 }
 
@@ -128,8 +259,11 @@ bool Board::search_attacker(Spot *spot, int x_inc, int y_inc) {
 
     Spot *runner = spot;
 
-    while (runner->in_bounds())
+    while (true)
     {
+        bool out_of_bounds = !in_bounds(runner->get_x() + x_inc, runner->get_y() + y_inc);
+        if (out_of_bounds) break;
+        
         runner = get_spot(runner->get_x() + x_inc, runner->get_y() + y_inc);
         if (is_attacking_path(spot, runner))
         {
@@ -166,26 +300,21 @@ bool Board::under_attack_diagonal(Spot *spot)
 }
 
 bool Board::under_attack_knight(Spot *spot) {
-    std::vector<Spot *> knight_threat_spots;
 
     // should be 8 positions
     for (int i = 1; i <= 2; i++) {
         for (int j = -2; j <= -1; j++) {
-            Spot *spot1 = get_spot(spot->get_x() + i, spot->get_y() + j);
-            Spot *spot2 = get_spot(spot->get_x() + j, spot->get_y() + i);
-            if (spot1->in_bounds()) {
-                knight_threat_spots.push_back(spot1);
+            if (in_bounds(spot->get_x() + i, spot->get_x() + j)) {
+                Spot *spot1 = get_spot(spot->get_x() + i, spot->get_y() + j);
+                if (is_attacking_path(spot, spot1)) return true;
             }
-            if (spot2->in_bounds()) {
-                knight_threat_spots.push_back(spot2);
+            if (in_bounds(spot->get_x() + j, spot->get_x() + i)) {
+                Spot *spot2 = get_spot(spot->get_x() + j, spot->get_y() + i);
+                if (is_attacking_path(spot, spot2)) return true;
             }
         }
     }
 
-    for (Spot *attacker_candidate : knight_threat_spots) {
-        if (is_attacking_path(spot, attacker_candidate)) return true;
-    }
-    
     return false;
 }
 
@@ -194,6 +323,57 @@ bool Board::under_attack(Spot *spot)
     return ((under_attack_vertical(spot) || under_attack_horizontal(spot)) || under_attack_diagonal(spot)) || under_attack_knight(spot);
 }
 
+// TODO: !!!!!!
+bool Board::valid_castle(Move &mv) {
+
+    if (in_check()) return false;
+    if (!mv.is_castle) return false;
+
+    return true;
+}
+bool Board::valid_promotion(Move &mv) {
+    if (!mv.is_promotion()) return false;
+    return true;
+}
+
+bool Board::valid_en_passant(Move &mv) {
+    if (mv.is_en_passant) return false;
+    return true;
+}
+
+bool Board::move_blocked(Move &mv) {
+
+    int inc_x = 0;
+    int inc_y = 0;
+
+    Spot *end = mv.end_pos;
+    Spot *start = mv.start_pos;
+    int dx = end->get_x() - start->get_x();
+    int dy = end->get_x() - start->get_x();
+
+    Spot *runner = start; // only checks for vertical, horizontal and diagonal
+
+    if (dx > 0) {
+        inc_x = 1;
+    } else if (dx < 0) {
+        inc_x = -1;
+    }
+
+    if (dy > 0) {
+        inc_y = 1;
+    } else if (dy < 0) {
+        inc_y = -1;
+    }
+
+    while (true) {
+        if (!in_bounds(runner->get_x() + inc_x, runner->get_y() + inc_y)) break;
+        runner = get_spot(runner->get_x() + inc_x, runner->get_y() + inc_y);
+        if (same_spot(runner, end)) return false;
+        if (!runner->is_blank()) return true;
+    }
+
+    return true; // if input is valid then should never land here
+}
 
 // TODO
 bool Board::check_valid_move(Move &mv) {
@@ -202,15 +382,14 @@ bool Board::check_valid_move(Move &mv) {
     bool piece_is_white = ((mv.start_pos)->get_piece())->is_white();
     if ((piece_is_white && !white_move) || (!piece_is_white && white_move)) return false;
     
-    // end move cannot be out of bounds
-    if (!(mv.end_pos)->in_bounds()) return false;
+    // start and end cannot be out of bounds
+    if (!(mv.end_pos)->in_bounds() || !(mv.start_pos)->in_bounds()) return false;
 
     // cannot move into own pieces
     if (same_team(mv.start_pos, mv.end_pos)) return false;
 
-    // cannot be in check after move ** HARD **
-
-    // check if piece can move path and check for anything blocking it
+    // check if piece can move path
+    if (!(valid_path(mv.start_pos, mv.end_pos))) return false;
 
     // cannot move other pieces if in check and can only
     // get king to safety/block/capture attack - should be covered by in check after move
@@ -218,12 +397,19 @@ bool Board::check_valid_move(Move &mv) {
     // cannot take king - should already be covered since you must be in check beforehand
 
     // cannot move somewhere if blocked 
+    if (move_blocked(mv)) return false;
 
     // castle
+    if (!valid_castle(mv)) return false;
 
-    // promotion
+    // promotion: must be last row
+    if (!valid_promotion(mv)) return false;
 
     // en passant
+    if (!valid_en_passant(mv)) return false;
+
+    // cannot be in check after move ** should be done last **
+    if (in_check_after_move(mv)) return false;
 
     return true;
 }
@@ -257,6 +443,70 @@ bool Board::in_check() {
     if (white_move) return under_attack(white_king_spot);
 
     return under_attack(black_king_spot);
+}
+
+bool Board::in_check_after_move(Move &mv) {
+
+    bool will_be_in_check = false;
+
+    std::vector<std::vector<Spot> > init_positions = positions;
+
+    execute_move(mv);
+    white_move = !white_move;
+    if (in_check()) will_be_in_check = true;
+
+    // undo execute move side effects
+    moves.pop_back();
+    positions = init_positions;
+
+    Spot *starting_spot = get_spot((mv.start_pos)->get_x(), (mv.start_pos)->get_y());
+    if (same_spot(white_king_spot, mv.start_pos)) {
+        white_king_spot = starting_spot;
+    }
+    if (same_spot(black_king_spot, mv.start_pos)) {
+        black_king_spot = starting_spot;
+    }
+
+    if (mv.piece_killed) {
+        (mv.piece_killed)->set_alive();
+    }
+
+    // if en passant, set taken pawn back to alive
+    if (valid_en_passant(mv)) {
+        Spot *taken_pawn_spot;
+        if (white_move) {
+            taken_pawn_spot = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() - 1);
+        } else {
+            taken_pawn_spot = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() + 1);
+        }
+
+        (taken_pawn_spot->get_piece())->set_alive();
+    }
+
+    // if promotion, delete new piece and set original pawn to be alive
+    if (valid_promotion(mv)) {
+        if (white_move) {
+            white->remove_last_piece();
+        } else {
+            black->remove_last_piece();
+        }
+
+        (starting_spot->get_piece())->set_alive();
+    }
+
+    return will_be_in_check;
+}
+
+Spot *Board::get_rook_end_spot_castle(Spot *king_end) {
+    if (same_spot(king_end, get_spot(6, 0))) {
+        return get_spot(5, 0);
+    } else if (same_spot(king_end, get_spot(2, 0))) {
+        return get_spot(3, 0);
+    } else if (same_spot(king_end, get_spot(2, 7))) {
+        return get_spot(3, 7);
+    } else {
+        return get_spot(5, 7);
+    }
 }
 
 void Board::execute_castle(Move &mv) {
@@ -329,13 +579,38 @@ void Board::execute_en_passant(Move &mv) {
     taken_pawn_spot->set_piece(nullptr);
 }
 
+void Board::execute_promotion(Move &mv) {
+
+    Spot *start = mv.start_pos;
+    Spot *end = mv.end_pos;
+
+    (start->get_piece())->set_killed();
+
+    bool init_pawn_white = (start->get_piece())->is_white();
+    place_piece(start, end);
+
+    Player *player = init_pawn_white ? white : black;
+
+    if (mv.promotion_piece == 'n') {
+        player->add_piece(std::make_shared<Knight>(init_pawn_white)); 
+    } else if (mv.promotion_piece == 'r') {
+        player->add_piece(std::make_shared<Rook>(init_pawn_white)); 
+    } else if (mv.promotion_piece == 'b') {
+        player->add_piece(std::make_shared<Bishop>(init_pawn_white));
+    } else {
+        player->add_piece(std::make_shared<Queen>(init_pawn_white));
+    }
+
+    end->set_piece(player->get_last_piece());
+}
+
 void Board::execute_move(Move &mv) {
 
     Spot *start = mv.start_pos;
     Spot *end = mv.end_pos;
 
     // place piece for generic move
-    if (!(mv.is_castle || mv.is_en_passant || mv.is_promotion)) {
+    if (!(mv.is_castle || mv.is_en_passant || mv.is_promotion())) {
         place_piece(start, end);
     }
 
@@ -349,8 +624,10 @@ void Board::execute_move(Move &mv) {
         execute_en_passant(mv);
     }
     
-    // promotion TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // generate function in Piece.h which takes in a bool is_white
+    // promotion
+    if (mv.is_promotion()) {
+        execute_promotion(mv);
+    }
 
     // add move to array
     moves.push_back(mv);

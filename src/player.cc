@@ -66,3 +66,7 @@ Move Player::get_next_move(const Board *b) {
     (void)b;
     return Move(nullptr, nullptr, nullptr, nullptr);
 }
+
+void Player::remove_last_piece() {
+    pieces.pop_back();
+}

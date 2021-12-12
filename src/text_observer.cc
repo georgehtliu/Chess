@@ -11,6 +11,7 @@ TextObserver::~TextObserver() {
 }
 
 void TextObserver::notify() {
+    std::cout << "------------" << std::endl;
     for (int i = 0; i < Board::ROWS; i++) {
         std::cout << Board::ROWS - i << " ";
         for (int j = 0; j < Board::COLS; j++) {
@@ -28,4 +29,5 @@ void TextObserver::notify() {
     }
     std::endl (std::cout);
     std::cout << "  abcdefgh" << std::endl;
+    std::cout << "------------" << std::endl;
 }

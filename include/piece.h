@@ -11,10 +11,13 @@ protected:
 public:
     bool is_white() const;
     bool is_alive();
+    virtual bool is_pawn() const;
+    virtual bool is_king() const;
     char get_text();
     void set_killed();
-    virtual bool valid_move(Move mv) = 0;
-
+    void set_alive();
+    void set_white(bool white);
+    virtual bool valid_path(Move mv) = 0;
     virtual ~Piece() = default;
 };
 
