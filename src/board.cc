@@ -144,18 +144,30 @@ bool Board::setup_complete() {
     // condition 2: 2 kings on the board
     int white_king_count = 0;
     int black_king_count = 0;
+    int white_x = 0;
+    int white_y = 0;
+    int black_x = 0;
+    int black_y = 0;
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             if (get_spot(i, j)->get_piece() && get_spot(i, j)->get_piece()->is_king() && get_spot(i, j)->get_piece()->is_white()) {
                 white_king_count += 1;
+                white_x = i;
+                white_y = j;
             } else if (get_spot(i, j)->get_piece() && get_spot(i, j)->get_piece()->is_king()) {
                 black_king_count += 1;
+                black_x = i;
+                black_y = j;
             }
         }
     }
     if (!(white_king_count == 1 && black_king_count == 1)) return false;
 
     // condition 3: neither king is in check -- TODO
+    Spot *white_king = get_spot(white_x, white_y);
+    Spot *black_king = get_spot(black_x, black_y);
+    if (under_attack(white_king)) return false;
+    if (under_attack(black_king)) return false;
 
     return true;
 }
