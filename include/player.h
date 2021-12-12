@@ -20,10 +20,8 @@ class Player {
     bool white;
     std::vector<std::shared_ptr<Piece>> pieces;
 
-    void gen_standard_pieces();
-
 public:
-    Player(bool white, bool empty=false);
+    Player(bool white);
     ~Player() = default;
 
     bool is_white();
@@ -31,9 +29,11 @@ public:
     int incr_score();
 
     bool has_valid_moves();
+    void gen_standard_pieces();
     Move get_next_move(const Board *b);
     void add_piece(std::shared_ptr<Piece> p);
     Piece* get_last_piece();
+    Piece* get_nth_piece(size_t n);
 };
 
 #endif
