@@ -5,6 +5,13 @@
 */
 
 #include "board.h"
+#include "pieces/king.h"
+#include "pieces/bishop.h"
+#include "pieces/knight.h"
+#include "pieces/pawn.h"
+#include "pieces/queen.h"
+#include "pieces/rook.h"
+#include "text_observer.h"
 
 Board::Board(Player* white, Player* black): 
     white{white}, 
@@ -46,6 +53,14 @@ void Board::notify_observers()
         ob->notify();
 }
 
+int position_getX(std::string pos) {
+    return pos.at(0) - 'a';
+}
+
+int position_getY(std::string pos) {
+    return 8 - (pos.at(1) - '0');
+}
+
 void Board::gen_standard_layout() {
     // White pieces
     white->gen_standard_pieces();
@@ -76,12 +91,76 @@ void Board::gen_standard_layout() {
     }
 }
 
+void Board::add_piece(char piece, std::string position) {
+    int x = position_getX(position);
+    int y = position_getY(position);
+    // advanced programming skills
+    if (piece == 'p') {
+        black->add_piece(std::make_shared<Pawn>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'P') {
+        white->add_piece(std::make_shared<Pawn>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    } else if (piece == 'n') {
+        black->add_piece(std::make_shared<Knight>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'N') {
+        white->add_piece(std::make_shared<Knight>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    } else if (piece == 'b') {
+        black->add_piece(std::make_shared<Bishop>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'B') {
+        white->add_piece(std::make_shared<Bishop>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    } else if (piece == 'k') {
+        black->add_piece(std::make_shared<King>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'K') {
+        white->add_piece(std::make_shared<King>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    } else if (piece == 'q') {
+        black->add_piece(std::make_shared<Queen>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'Q') {
+        white->add_piece(std::make_shared<Queen>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    } else if (piece == 'r') {
+        black->add_piece(std::make_shared<Rook>(false));
+        get_spot(x, y)->set_piece(black->get_last_piece());
+    } else if (piece == 'R') {
+        white->add_piece(std::make_shared<Rook>(true));
+        get_spot(x, y)->set_piece(white->get_last_piece());
+    }
+}
+
 void Board::setup_mode() {
     std::ifstream f("assets/text/setup_mode.txt");
     if (f.is_open())
         std::cout << f.rdbuf();
 
-    // TODO: Frank, can you move your setup mode stuff over here?
+    bool done = false;
+    std::vector<std::unique_ptr<Observer>> observers;
+    observers.push_back(std::make_unique<TextObserver>(this));
+    while (!done) {
+        observers[0]->notify();
+        std::string command;
+        char piece;
+        std::string position;
+        std::cin >> command;
+
+        if (std::cin.eof()) break;
+        if (command == "done") {
+            done = true;
+        } else if (command == "+") {
+            std::cin >> piece;
+            std::cin >> position;
+            add_piece(piece, position);
+        } else if (command == "-") {
+            std::cin >> position;
+            get_spot(position_getX(position), position_getY(position))->remove_piece();
+        }
+    }
 }
 
 Spot * Board::get_spot(int x, int y) {
