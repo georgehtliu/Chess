@@ -9,7 +9,7 @@ class King : public Piece {
 public:
     King(bool white);
     bool get_has_moved();
-    bool valid_move(Move mv) override;
+    bool valid_path(Move mv) override;
     bool valid_castle(Move mv);
     bool is_king() const override;
 };

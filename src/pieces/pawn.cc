@@ -9,7 +9,7 @@ Pawn::Pawn(bool white) {
     }
 }
 
-bool Pawn::valid_move(Move mv) {
+bool Pawn::valid_path(Move mv) {
     if (!mv.is_forward())
         return false;
     if (!has_moved && mv.is_vertical() && mv.euclid_dist() == mv.FORWARD_UNIT * 2)

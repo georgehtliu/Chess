@@ -17,7 +17,7 @@ public:
     void set_killed();
     void set_alive();
     void set_white(bool white);
-    virtual bool valid_move(Move mv) = 0;
+    virtual bool valid_path(Move mv) = 0;
     virtual ~Piece() = default;
 };
 

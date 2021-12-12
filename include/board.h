@@ -46,6 +46,7 @@ class Board
     bool under_attack_horizontal(Spot *spot);
     bool under_attack_diagonal(Spot *spot);
     bool under_attack_knight(Spot *spot);
+    bool move_blocked(Move &mv);
     bool under_attack(Spot *spot);
     bool is_attacking_path(Spot *end, Spot *attack_candidate);
     bool valid_path(Spot *from, Spot *to);
