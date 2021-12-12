@@ -251,6 +251,7 @@ bool Board::search_attacker(Spot *spot, int x_inc, int y_inc) {
 
     while (runner->in_bounds())
     {
+        if (runner->get_x() + x_inc >= 8 || runner->get_x() + x_inc < 0 || runner->get_y() + y_inc >= 8 || runner->get_y() + y_inc < 0) break;
         runner = get_spot(runner->get_x() + x_inc, runner->get_y() + y_inc);
         if (is_attacking_path(spot, runner))
         {
@@ -292,6 +293,8 @@ bool Board::under_attack_knight(Spot *spot) {
     // should be 8 positions
     for (int i = 1; i <= 2; i++) {
         for (int j = -2; j <= -1; j++) {
+            if (spot->get_x() + i >= 8 || spot->get_x() + i < 0 || spot->get_y() + j >= 8 || spot->get_y() + j < 0) continue;
+            if (spot->get_x() + j >= 8 || spot->get_x() + j < 0 || spot->get_y() + i >= 8 || spot->get_y() + i < 0) continue;
             Spot *spot1 = get_spot(spot->get_x() + i, spot->get_y() + j);
             Spot *spot2 = get_spot(spot->get_x() + j, spot->get_y() + i);
             if (spot1->in_bounds()) {
