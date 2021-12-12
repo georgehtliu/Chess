@@ -236,7 +236,7 @@ bool Board::valid_path(Spot *from, Spot *to)
     }
 
     Move mv = Move{p, from, to, piece_from, piece_to};
-    return piece_from->valid_move(mv);
+    return piece_from->valid_path(mv);
 }
 
 bool Board::has_moved(Piece *p) {
