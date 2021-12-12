@@ -19,7 +19,7 @@ public:
     Piece *piece_killed;
     bool is_castle;
     bool is_en_passant;
-    Piece *promotion_piece;
+    char promotion_piece;
     bool is_resign;
     
     bool is_promotion();
@@ -30,7 +30,7 @@ public:
     int euclid_dist();
     int x_dist();
     int y_dist();
-    Move(Player *p, Spot *start_p, Spot *end_p, Piece *p_moved, Piece *p_killed = nullptr, bool castle = false, bool ep = false, Piece *p_promote = nullptr, bool res = false);
+    Move(Player *p, Spot *start_p, Spot *end_p, Piece *p_moved, Piece *p_killed = nullptr, bool castle = false, bool ep = false, char p_promote = 'x', bool res = false);
 };
 
 #endif

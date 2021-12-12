@@ -326,12 +326,19 @@ bool Board::under_attack(Spot *spot)
 
 // TODO: !!!!!!
 bool Board::valid_castle(Move &mv) {
+
+    if (in_check()) return false;
+    if (!mv.is_castle) return false;
+
     return true;
 }
 bool Board::valid_promotion(Move &mv) {
+    if (!mv.is_promotion()) return false;
     return true;
 }
+
 bool Board::valid_en_passant(Move &mv) {
+    if (mv.is_en_passant) return false;
     return true;
 }
 
@@ -430,7 +437,7 @@ bool Board::in_check_after_move(Move &mv) {
     // if en passant, set taken pawn back to alive
     if (valid_en_passant(mv)) {
         Spot *taken_pawn_spot;
-        if (white_turn) {
+        if (white_move) {
             taken_pawn_spot = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() - 1);
         } else {
             taken_pawn_spot = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() + 1);
@@ -441,10 +448,10 @@ bool Board::in_check_after_move(Move &mv) {
 
     // if promotion, delete new piece and set original pawn to be alive
     if (valid_promotion(mv)) {
-        if (white_turn) {
-            (white->pieces).pop_back();
+        if (white_move) {
+            white->remove_last_piece();
         } else {
-            (black->pieces).pop_back();
+            black->remove_last_piece();
         }
 
         (starting_spot->get_piece())->set_alive();
@@ -544,8 +551,20 @@ void Board::execute_promotion(Move &mv) {
 
     bool init_pawn_white = (start->get_piece())->is_white();
     place_piece(start, end);
-    (mv.promotion_piece)->set_white(init_pawn_white);
-    end->set_piece(mv.promotion_piece);
+
+    Player *player = init_pawn_white ? white : black;
+
+    if (mv.promotion_piece == 'n') {
+        player->add_piece(std::make_shared<Knight>(init_pawn_white)); 
+    } else if (mv.promotion_piece == 'r') {
+        player->add_piece(std::make_shared<Rook>(init_pawn_white)); 
+    } else if (mv.promotion_piece == 'b') {
+        player->add_piece(std::make_shared<Bishop>(init_pawn_white));
+    } else {
+        player->add_piece(std::make_shared<Queen>(init_pawn_white));
+    }
+
+    end->set_piece(player->get_last_piece());
 }
 
 void Board::execute_move(Move &mv) {
