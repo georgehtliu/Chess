@@ -10,6 +10,14 @@ bool Piece::is_alive() {
     return alive;
 }
 
+bool Piece::is_pawn() const {
+    return false;
+}
+
+bool Piece::is_king() const {
+    return false;
+}
+
 char Piece::get_text() {
     return text_repr;
 }

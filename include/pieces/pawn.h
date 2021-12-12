@@ -12,6 +12,7 @@ class Pawn : public Piece
 public:
     Pawn(bool white);
     bool valid_move(Move mv) override;
+    bool is_pawn() const override;
     bool get_has_moved();
     bool get_moved_two();
 };

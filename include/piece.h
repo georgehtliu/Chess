@@ -11,6 +11,8 @@ protected:
 public:
     bool is_white() const;
     bool is_alive();
+    virtual bool is_pawn() const;
+    virtual bool is_king() const;
     char get_text();
     void set_killed();
     virtual bool valid_move(Move mv) = 0;

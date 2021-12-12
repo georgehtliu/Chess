@@ -49,6 +49,7 @@ class Board
     bool same_spot(Spot *s1, Spot *s2);
     bool in_check();
     void add_piece(char piece, std::string position);
+    bool setup_complete();
 
 public:
     // Constructor / Destructor

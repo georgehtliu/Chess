@@ -37,3 +37,7 @@ bool Pawn::get_has_moved() {
 bool Pawn::get_moved_two() {
     return moved_two;
 }
+
+bool Pawn::is_pawn() const {
+    return true;
+}

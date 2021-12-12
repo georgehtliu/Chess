@@ -12,7 +12,7 @@
 Game::Game(PlayerType white_lvl, PlayerType black_lvl, bool normal_game): white_lvl{white_lvl}, black_lvl{black_lvl} {
     switch (white_lvl) {
         case PlayerType::Human: 
-            white = std::make_shared<Player>(false);
+            white = std::make_shared<Player>(true);
             break;
         // Add cases for AI
         default: 
@@ -22,7 +22,7 @@ Game::Game(PlayerType white_lvl, PlayerType black_lvl, bool normal_game): white_
 
     switch (black_lvl) {
         case PlayerType::Human: 
-            black = std::make_shared<Player>(true);
+            black = std::make_shared<Player>(false);
             break;
         // Add cases for AI
         default: 

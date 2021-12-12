@@ -64,30 +64,30 @@ int position_getY(std::string pos) {
 void Board::gen_standard_layout() {
     // White pieces
     white->gen_standard_pieces();
-    get_spot(3, 0)->set_piece(white->get_nth_piece(0));
-    get_spot(4, 0)->set_piece(white->get_nth_piece(1));
-    get_spot(0, 0)->set_piece(white->get_nth_piece(2));
-    get_spot(7, 0)->set_piece(white->get_nth_piece(3));
-    get_spot(1, 0)->set_piece(white->get_nth_piece(4));
-    get_spot(6, 0)->set_piece(white->get_nth_piece(5));
-    get_spot(2, 0)->set_piece(white->get_nth_piece(6));
-    get_spot(5, 0)->set_piece(white->get_nth_piece(7));
+    get_spot(3, 7)->set_piece(white->get_nth_piece(0));
+    get_spot(4, 7)->set_piece(white->get_nth_piece(1));
+    get_spot(0, 7)->set_piece(white->get_nth_piece(2));
+    get_spot(7, 7)->set_piece(white->get_nth_piece(3));
+    get_spot(1, 7)->set_piece(white->get_nth_piece(4));
+    get_spot(6, 7)->set_piece(white->get_nth_piece(5));
+    get_spot(2, 7)->set_piece(white->get_nth_piece(6));
+    get_spot(5, 7)->set_piece(white->get_nth_piece(7));
     for (int i = 0; i < 8; i++) {
-        get_spot(i, 1)->set_piece(white->get_nth_piece(8 + i));
+        get_spot(i, 6)->set_piece(white->get_nth_piece(8 + i));
     }
 
     // Black pieces
     black->gen_standard_pieces();
-    get_spot(3, 6)->set_piece(black->get_nth_piece(0));
-    get_spot(4, 6)->set_piece(black->get_nth_piece(1));
-    get_spot(0, 6)->set_piece(black->get_nth_piece(2));
-    get_spot(7, 6)->set_piece(black->get_nth_piece(3));
-    get_spot(1, 6)->set_piece(black->get_nth_piece(4));
-    get_spot(6, 6)->set_piece(black->get_nth_piece(5));
-    get_spot(2, 6)->set_piece(black->get_nth_piece(6));
-    get_spot(5, 6)->set_piece(black->get_nth_piece(7));
+    get_spot(3, 0)->set_piece(black->get_nth_piece(0));
+    get_spot(4, 0)->set_piece(black->get_nth_piece(1));
+    get_spot(0, 0)->set_piece(black->get_nth_piece(2));
+    get_spot(7, 0)->set_piece(black->get_nth_piece(3));
+    get_spot(1, 0)->set_piece(black->get_nth_piece(4));
+    get_spot(6, 0)->set_piece(black->get_nth_piece(5));
+    get_spot(2, 0)->set_piece(black->get_nth_piece(6));
+    get_spot(5, 0)->set_piece(black->get_nth_piece(7));
     for (int i = 0; i < 8; i++) {
-        get_spot(i, 7)->set_piece(black->get_nth_piece(8 + i));
+        get_spot(i, 1)->set_piece(black->get_nth_piece(8 + i));
     }
 }
 
@@ -134,6 +134,32 @@ void Board::add_piece(char piece, std::string position) {
     }
 }
 
+bool Board::setup_complete() {
+    // condition 1: no pawns in row 1 or 8
+    for (int i = 0; i < 8; i++) {
+        if (get_spot(i, 7)->get_piece() && get_spot(i, 7)->get_piece()->is_pawn()) return false;
+        if (get_spot(i, 0)->get_piece() && get_spot(i, 0)->get_piece()->is_pawn()) return false;
+    }
+
+    // condition 2: 2 kings on the board
+    int white_king_count = 0;
+    int black_king_count = 0;
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (get_spot(i, j)->get_piece() && get_spot(i, j)->get_piece()->is_king() && get_spot(i, j)->get_piece()->is_white()) {
+                white_king_count += 1;
+            } else if (get_spot(i, j)->get_piece() && get_spot(i, j)->get_piece()->is_king()) {
+                black_king_count += 1;
+            }
+        }
+    }
+    if (!(white_king_count == 1 && black_king_count == 1)) return false;
+
+    // condition 3: neither king is in check -- TODO
+
+    return true;
+}
+
 void Board::setup_mode() {
     std::ifstream f("assets/text/setup_mode.txt");
     if (f.is_open())
@@ -151,7 +177,12 @@ void Board::setup_mode() {
 
         if (std::cin.eof()) break;
         if (command == "done") {
-            done = true;
+            if (setup_complete()) {
+                done = true;
+            } else {
+                std::cout << "Ensure that all requirements for setup are met!" << std::endl;
+            }
+            
         } else if (command == "+") {
             std::cin >> piece;
             std::cin >> position;

@@ -11,6 +11,7 @@ public:
     bool get_has_moved();
     bool valid_move(Move mv) override;
     bool valid_castle(Move mv);
+    bool is_king() const override;
 };
     
 

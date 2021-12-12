@@ -29,3 +29,7 @@ bool King::valid_move(Move mv) {
 
     return valid_castle(mv);
 }
+
+bool King::is_king() const {
+    return true;
+}
