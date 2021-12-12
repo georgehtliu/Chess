@@ -1,6 +1,9 @@
 #include "../include/piece.h"
 #include "../include/move.h"
 
+void Piece::set_white(bool white) {
+    this->white = white;
+}
 
 bool Piece::is_white() const {
     return white;
@@ -24,4 +27,9 @@ char Piece::get_text() {
 
 void Piece::set_killed() {
     alive = false;
+}
+
+void Piece::set_alive()
+{
+    alive = true;
 }

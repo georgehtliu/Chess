@@ -15,8 +15,9 @@ public:
     virtual bool is_king() const;
     char get_text();
     void set_killed();
+    void set_alive();
+    void set_white(bool white);
     virtual bool valid_move(Move mv) = 0;
-
     virtual ~Piece() = default;
 };
 

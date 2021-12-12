@@ -50,3 +50,7 @@ Piece* Player::get_nth_piece(size_t n) {
 
     return pieces[n].get();
 }
+
+void Player::remove_last_piece() {
+    pieces.pop_back();
+}
