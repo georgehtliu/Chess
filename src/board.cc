@@ -4,7 +4,7 @@
     CS 246
 */
 
-#include "../include/board.h"
+#include "board.h"
 
 Board::Board() : white_king_spot{std::make_shared<Spot>(4, 7).get()}, black_king_spot{std::make_shared<Spot>(0, 7).get()}
 {
@@ -18,8 +18,9 @@ Board::Board() : white_king_spot{std::make_shared<Spot>(4, 7).get()}, black_king
         }
     }
     white_move = true;
-    black = std::make_shared<Player>(false, true).get();
-    white = std::make_shared<Player>(true, true).get();
+
+    black = std::make_shared<Player>(false, true);
+    white = std::make_shared<Player>(true, true);
 }
 
 void Board::attach(Observer *o)
@@ -64,11 +65,11 @@ bool Board::valid_path(Spot *from, Spot *to)
 
     if (white_move)
     {
-        p = white;
+        p = white.get();
     }
     else
     {
-        p = black;
+        p = black.get();
     }
 
     Move mv = Move{p, from, to, piece_from, piece_to};
@@ -155,17 +156,6 @@ bool Board::under_attack(Spot *spot)
     return ((under_attack_vertical(spot) || under_attack_horizontal(spot)) || under_attack_diagonal(spot)) || under_attack_knight(spot);
 }
 
-void Board::addPieceWhite(std::shared_ptr<Piece> p) {
-    white->add_piece(p);
-}
-
-void Board::addPieceBlack(std::shared_ptr<Piece> p) {
-    black->add_piece(p);
-}
-
-void Board::addPiece(Piece * p) {
-    pieces.push_back(p);
-}
 
 // TODO
 bool Board::check_valid_move(Move &mv) {
@@ -332,9 +322,9 @@ void Board::execute_move(Move &mv) {
 }
 
 Player * Board::get_black() {
-    return black;
+    return black.get();
 }
 
 Player * Board::get_white() {
-    return white;
+    return white.get();
 }

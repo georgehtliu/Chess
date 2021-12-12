@@ -1,6 +1,7 @@
 //
 // Created by david on 12/10/21.
 //
+#include <iostream>
 
 #include "player.h"
 #include "king.h"
@@ -33,4 +34,11 @@ void Player::gen_standard_pieces() {
 
 void Player::add_piece(std::shared_ptr<Piece> p) {
     pieces.push_back(p);
+}
+
+Piece* Player::get_last_piece() {
+    if (pieces.size() != 0) {
+        return pieces.back().get();
+    }
+    return nullptr;
 }

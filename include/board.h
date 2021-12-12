@@ -19,15 +19,13 @@
 class Board
 {
     // TODO:
-    Player *white;
-    Player *black;
+    std::shared_ptr<Player> black;
+    std::shared_ptr<Player> white;
+
     std::vector<Move> moves;
 
-    //
-    std::vector <Piece *> pieces;
-
     std::vector<Observer *> observers;
-    std::vector<std::vector<Spot> > positions;
+    std::vector<std::vector<Spot>> positions;
     bool white_move;
     Spot *white_king_spot;
     Spot *black_king_spot;
@@ -68,13 +66,10 @@ public:
     // Manage spots
     Spot * get_spot(int x, int y);
 
-    void addPieceWhite(std::shared_ptr<Piece> p);
-    void addPieceBlack(std::shared_ptr<Piece> p);
-    void addPiece(Piece * p);
     void execute_move(Move &mv);
     void place_piece(Spot *start, Spot *end);
-    Player * get_black();
-    Player * get_white();
+    Player* get_black();
+    Player* get_white();
 };
 
 #endif // CHESS_INCLUDE_BOARD_H_
