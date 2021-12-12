@@ -455,6 +455,13 @@ void Board::execute_en_passant(Move &mv) {
     taken_pawn_spot->set_piece(nullptr);
 }
 
+void Board::execute_promotion(Move &mv) {
+    bool init_pawn_white = (start->get_piece())->is_white();
+    place_piece(start, end);
+    (mv.promotion_piece)->set_white(init_pawn_white);
+    end->set_piece(mv.promotion_piece);
+}
+
 void Board::execute_move(Move &mv) {
 
     Spot *start = mv.start_pos;
@@ -475,8 +482,10 @@ void Board::execute_move(Move &mv) {
         execute_en_passant(mv);
     }
     
-    // promotion TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // generate function in Piece.h which takes in a bool is_white
+    // promotion TODO: 
+    if (mv.is_promotion()) {
+        execute_promotion(mv);
+    }
 
     // add move to array
     moves.push_back(mv);

@@ -35,6 +35,7 @@ class Board
     bool check_valid_move(Move &mv);
     void execute_en_passant(Move &mv);
     void execute_castle(Move &mv);
+    void execute_promotion(Move &mv);
     // void execute_move(Move &mv);
     bool search_attacker(Spot *spot, int x_inc, int y_inc);
     bool under_attack_vertical(Spot *spot);
