@@ -81,6 +81,7 @@ void Board::setup_mode() {
     if (f.is_open())
         std::cout << f.rdbuf();
 
+    notify_observers();
     // TODO: Frank, can you move your setup mode stuff over here?
 }
 

@@ -7,117 +7,9 @@
 */
 
 #include <iostream>
-#include <sstream>
+#include <unordered_map>
 
 #include "game.h"
-#include "graphics_observer.h"
-#include "text_observer.h"
-#include "pieces/king.h"
-#include "pieces/bishop.h"
-#include "pieces/knight.h"
-#include "pieces/pawn.h"
-#include "pieces/queen.h"
-#include "pieces/rook.h"
-
-int position_getX(std::string pos) {
-    return pos.at(0) - 'a';
-}
-
-int position_getY(std::string pos) {
-    return 8 - (pos.at(1) - '0');
-}
-
-void add_piece(char piece, std::string position, Board * b) {
-    int x = position_getX(position);
-    int y = position_getY(position);
-    // advanced programming skills
-    if (piece == 'p') {
-        b->get_black()->add_piece(std::make_shared<Pawn>(false));
-        b->get_spot(x, y)->set_piece(b->get_black()->get_last_piece());
-    } else if (piece == 'P') {
-        b->get_white()->add_piece(std::make_shared<Pawn>(true));
-        b->get_spot(x, y)->set_piece(b->get_white()->get_last_piece());
-    } else if (piece == 'n') {
-        b->get_black()->add_piece(std::make_shared<Knight>(false));
-        b->get_spot(x, y)->set_piece(b->get_black()->get_last_piece());
-    } else if (piece == 'N') {
-        b->get_white()->add_piece(std::make_shared<Knight>(true));
-        b->get_spot(x, y)->set_piece(b->get_white()->get_last_piece());
-    } else if (piece == 'b') {
-        b->get_black()->add_piece(std::make_shared<Bishop>(false));
-        b->get_spot(x, y)->set_piece(b->get_black()->get_last_piece());
-    } else if (piece == 'B') {
-        b->get_white()->add_piece(std::make_shared<Bishop>(true));
-        b->get_spot(x, y)->set_piece(b->get_white()->get_last_piece());
-    } else if (piece == 'k') {
-        b->get_black()->add_piece(std::make_shared<King>(false));
-        b->get_spot(x, y)->set_piece(b->get_black()->get_last_piece());
-    } else if (piece == 'K') {
-        b->get_white()->add_piece(std::make_shared<King>(true));
-        b->get_spot(x, y)->set_piece(b->get_white()->get_last_piece());
-    } else if (piece == 'q') {
-        b->get_black()->add_piece(std::make_shared<Queen>(false));
-        b->get_spot(x, y)->set_piece(b->get_black()->get_last_piece());
-    } else if (piece == 'Q') {
-        b->get_white()->add_piece(std::make_shared<Queen>(true));
-        b->get_spot(x, y)->set_piece(b->get_white()->get_last_piece());
-    } else if (piece == 'r') {
-        b->get_black()->add_piece(std::make_shared<Rook>(false));
-        b->get_spot(x, y)->set_piece(b->get_black()->get_last_piece());
-    } else if (piece == 'R') {
-        b->get_white()->add_piece(std::make_shared<Rook>(true));
-        b->get_spot(x, y)->set_piece(b->get_white()->get_last_piece());
-    }
-}
-
-void make_move(std::string start, std::string end, Board * b) {
-    Spot * startp = b->get_spot(position_getX(start), position_getY(start));
-    Spot * endp = b->get_spot(position_getX(end), position_getY(end));
-    Move m{b->get_black(), startp, endp, startp->get_piece(), endp->get_piece(), false, false, false, false};
-    b->execute_move(m);    
-}
-
-/*
-int main() {
-    Board b;
-    std::vector<std::unique_ptr<Observer>> observers;
-
-    observers.push_back(std::make_unique<TextObserver>(&b));
-
-    bool done = false;
-    while (!done) {
-        std::string command;
-        char piece;
-        std::string position;
-        std::cin >> command;
-
-        if (std::cin.eof()) break;
-        if (command == "done") {
-            done = true;
-        } else if (command == "+") {
-            std::cin >> piece;
-            std::cin >> position;
-            add_piece(piece, position, &b);
-        } else if (command == "-") {
-            std::cin >> position;
-            b.get_spot(position_getX(position), position_getY(position))->remove_piece();
-        } else if (command == "move") {
-            std::string start;
-            std::string end;
-            std::cin >> start;
-            std::cin >> end;
-            make_move(start, end, &b);
-        }
-
-        // } else if (command == "=") {
-
-        // }
-        observers[0]->notify();
-        
-        
-    }
-}
-*/
 
 int main() {
     // Welcome message
@@ -125,88 +17,71 @@ int main() {
     if (welcome.is_open())
         std::cout << welcome.rdbuf();
 
-    int in_lvl;
-    bool done = false;
-    // Choose White player type
-    PlayerType white_lvl;
-    while (!done) {
-        std::cout << "Please choose white player type\n==> ";
-        std::cin >> in_lvl;
+    // Handle score
+    double white_score = 0.0;
+    double black_score = 0.0;
 
-        switch (in_lvl) {
-            case 0: 
-                white_lvl = PlayerType::Human;
-                done = true;
-                break;
-            case 1: 
-                white_lvl = PlayerType::AI1;
-                done = true;
-                break;
-            case 2: 
-                white_lvl = PlayerType::AI2;
-                done = true;
-                break;
-            case 3: 
-                white_lvl = PlayerType::AI3;
-                done = true;
-                break;
-            case 4: 
-                white_lvl = PlayerType::AI4;
-                done = true;
-                break;
-            default: 
-                std::cout << "Sorry, that was an invalid entry. Try again." << std::endl;
+    // Hold list of games
+    std::vector<Game> games;
+
+    // Main menu command interpreter
+    std::string cmd;
+
+    // Convert player type command (string) to PlayerType
+    std::unordered_map<std::string, PlayerType> player_str_to_type = {
+        {"human", PlayerType::HumanType},
+        {"computer1", PlayerType::AI1},
+        {"computer2", PlayerType::AI2},
+        {"computer3", PlayerType::AI3},
+        {"computer4", PlayerType::AI4},
+    };
+
+    while (true) {
+        std::cin >> cmd;
+        if (cmd == "game") {
+            std::string white_player;
+            std::string black_player;
+
+            std::cin >> white_player >> black_player;
+
+            PlayerType white_player_type, black_player_type;
+
+            try {
+                white_player_type = player_str_to_type[white_player];
+                black_player_type = player_str_to_type[black_player];
+            } catch (const std::out_of_range& oor) {
+                std::cout << "Invalid entry for player type. Try again"; 
+            }
+
+            if (games.empty() || games.back().get_game_mode() == Mode::Finished) {
+                games.push_back(Game(white_player_type, black_player_type));
+            } else if (games.back().get_game_mode() == Mode::Setup) {
+                games.back().set_white_type(white_player_type);
+                games.back().set_black_type(black_player_type);
+            }
+
+            games.back().run_game();
+            break;
+
+        } else if (cmd == "setup") {
+            if (games.empty() || games.back().get_game_mode() == Mode::Finished) {
+                games.push_back(Game());
+                games.back().set_game_mode(Mode::Setup);
+                games.back().get_board()->setup_mode();
+            } else if (games.back().get_game_mode() == Mode::Setup || games.back().get_game_mode() == Mode::Ready) {
+                games.back().set_game_mode(Mode::Setup);
+                games.back().get_board()->setup_mode();
+            }
+
+        } else if (cmd == "quit") {
+            break;
+        } else {
+            std::cout << "Invalid command. Try again." << std::endl;
         }
     }
 
-    done = false;
-    // Choose Black player type
-    PlayerType black_lvl;
-    while (!done) {
-        std::cout << "Please choose black player type\n==> ";
-        std::cin >> in_lvl;
-
-        switch (in_lvl) {
-            case 0: 
-                black_lvl = PlayerType::Human;
-                done = true;
-                break;
-            case 1: 
-                black_lvl = PlayerType::AI1;
-                done = true;
-                break;
-            case 2: 
-                black_lvl = PlayerType::AI2;
-                done = true;
-                break;
-            case 3: 
-                black_lvl = PlayerType::AI3;
-                done = true;
-                break;
-            case 4: 
-                black_lvl = PlayerType::AI4;
-                done = true;
-                break;
-            default: 
-                std::cout << "Sorry, that was an invalid entry. Try again." << std::endl;
-        }
-    }
-
-    // Default game or setup mode?
-    std::cout << "Do you want to set up a custom game?\n==> y[N] ";
-    char c;
-    std::cin >> c;
-
-    bool custom_game = (c == 'y' || c == 'Y');
-
-    Game g(white_lvl, black_lvl, !custom_game);
-
-    // Text and Graphics
-    GraphicsObserver graphics(g.get_board());
-    TextObserver text(g.get_board());
-
-    graphics.notify();
-    text.notify();
-
-    g.run_game();
+    // Final Score output
+    std::cout << "Final Score: " << std::endl;
+    std::cout << "White: " << white_score << std::endl;
+    std::cout << "Black: " << black_score << std::endl;
 }
