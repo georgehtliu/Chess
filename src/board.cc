@@ -239,13 +239,20 @@ bool Board::valid_path(Spot *from, Spot *to)
     return piece_from->valid_move(mv);
 }
 
+bool Board::has_moved(Piece *p) {
+    for (auto &move : moves) {
+        if (move.piece_moved == p) return true;
+    }
+    return false;
+}
+
 bool Board::is_attacking_path(Spot *end, Spot *attack_candidate_spot) // has a path attacking end
 {
     if (attack_candidate_spot->is_blank()) return false;
     if (same_team(end, attack_candidate_spot))
         return false;
 
-    // (opposite team or blank) and valid path
+    // opposite team and valid path
     return valid_path(attack_candidate_spot, end);
 }
 
@@ -308,7 +315,7 @@ bool Board::under_attack_knight(Spot *spot) {
             }
         }
     }
-    
+
     return false;
 }
 
@@ -348,8 +355,7 @@ bool Board::check_valid_move(Move &mv) {
     // en passant
 
     // cannot be in check after move ** HARD **
-    if (in_check_after_move(mv))
-        return false;
+    if (in_check_after_move(mv)) return false;
 
     return true;
 }
@@ -389,7 +395,6 @@ bool Board::in_check_after_move(Move &mv) {
 
     bool will_be_in_check = false;
 
-    bool init_has_moved = has_moved()
     std::vector<std::vector<Spot> > init_positions = positions;
 
     execute_move(mv);
@@ -435,7 +440,6 @@ void Board::execute_castle(Move &mv) {
 
     Spot *start = mv.start_pos;
     Spot *end = mv.end_pos;
-    (start->get_piece())->has_moved = true; // set king has_moved to be true
 
     // starting rook positions
     Spot *start_queenside_rook_white = get_spot(0, 0);
@@ -482,7 +486,6 @@ void Board::execute_castle(Move &mv) {
 
     }
 
-    (start_rook_spot->get_piece())->has_moved = true; // set rook has_moved to be true
     place_piece(start_rook_spot, end_rook_spot);
 }
 

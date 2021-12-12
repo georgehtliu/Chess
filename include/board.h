@@ -37,6 +37,7 @@ class Board
     void execute_castle(Move &mv);
     Spot *get_rook_end_spot_castle(Spot *king_end);
     void execute_promotion(Move &mv);
+    bool has_moved(Piece *p);
     // void execute_move(Move &mv);
     bool search_attacker(Spot *spot, int x_inc, int y_inc);
     bool under_attack_vertical(Spot *spot);
