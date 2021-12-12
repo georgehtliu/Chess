@@ -18,20 +18,36 @@ Game::Game(PlayerType white_lvl, PlayerType black_lvl): white_lvl{white_lvl}, bl
         case PlayerType::HumanType: 
             white = std::make_shared<Human>(true);
             break;
-        // Add cases for AI
-        default: 
-            std::cout << "UNIMPLEMENTED" << std::endl; 
-            white = nullptr;
+        case AI1:
+            white = std::make_shared<Computer1>(true);
+            break;
+        case AI2:
+            white = std::make_shared<Computer2>(true);
+            break;
+        case AI3:
+            white = std::make_shared<Computer3>(true);
+            break;
+        case AI4:
+            white = std::make_shared<Computer4>(true);
+            break;
     }
 
     switch (black_lvl) {
         case PlayerType::HumanType: 
-            black = std::make_shared<Human>(true);
+            black = std::make_shared<Human>(false);
             break;
-        // Add cases for AI
-        default: 
-            std::cout << "UNIMPLEMENTED" << std::endl;
-            black = nullptr;
+        case AI1:
+            black = std::make_shared<Computer1>(false);
+            break;
+        case AI2:
+            black = std::make_shared<Computer2>(false);
+            break;
+        case AI3:
+            black = std::make_shared<Computer3>(false);
+            break;
+        case AI4:
+            black = std::make_shared<Computer4>(false);
+            break;
     }
 
 
@@ -126,9 +142,6 @@ void Game::set_white_type(PlayerType type) {
         case AI4:
             white = std::dynamic_pointer_cast<Computer4>(white);
             break;
-        default:
-            std::cout << "Unimplemented" << std::endl;
-            break;
     }
 }
 
@@ -148,9 +161,6 @@ void Game::set_black_type(PlayerType type) {
             break;
         case AI4:
             black = std::dynamic_pointer_cast<Computer4>(black);
-            break;
-        default:
-            std::cout << "Unimplemented" << std::endl;
             break;
     }
 

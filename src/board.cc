@@ -184,7 +184,7 @@ void Board::setup_mode() {
 
     bool done = false;
     while (!done) {
-        notify_observers()
+        notify_observers();
         std::string command;
         char piece;
         std::string position;
