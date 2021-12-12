@@ -324,6 +324,16 @@ bool Board::under_attack(Spot *spot)
     return ((under_attack_vertical(spot) || under_attack_horizontal(spot)) || under_attack_diagonal(spot)) || under_attack_knight(spot);
 }
 
+// TODO: !!!!!!
+bool Board::valid_castle(Move &mv) {
+    return true;
+}
+bool Board::valid_promotion(Move &mv) {
+    return true;
+}
+bool Board::valid_en_passant(Move &mv) {
+    return true;
+}
 
 // TODO
 bool Board::check_valid_move(Move &mv) {
@@ -417,9 +427,28 @@ bool Board::in_check_after_move(Move &mv) {
         (mv.piece_killed)->set_alive();
     }
 
-    // if castle set rook back to unmoved
-    // if en passant set taken pawn back to alive
-    // if promotion set piece back to original and alive
+    // if en passant, set taken pawn back to alive
+    if (valid_en_passant(mv)) {
+        Spot *taken_pawn_spot;
+        if (white_turn) {
+            taken_pawn_spot = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() - 1);
+        } else {
+            taken_pawn_spot = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() + 1);
+        }
+
+        (taken_pawn_spot->get_piece())->set_alive();
+    }
+
+    // if promotion, delete new piece and set original pawn to be alive
+    if (valid_promotion(mv)) {
+        if (white_turn) {
+            (white->pieces).pop_back();
+        } else {
+            (black->pieces).pop_back();
+        }
+
+        (starting_spot->get_piece())->set_alive();
+    }
 
     return will_be_in_check;
 }

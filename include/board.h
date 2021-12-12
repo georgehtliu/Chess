@@ -38,7 +38,9 @@ class Board
     Spot *get_rook_end_spot_castle(Spot *king_end);
     void execute_promotion(Move &mv);
     bool has_moved(Piece *p);
-    // void execute_move(Move &mv);
+    bool valid_castle(Move &mv);
+    bool valid_promotion(Move &mv);
+    bool valid_en_passant(Move &mv);
     bool search_attacker(Spot *spot, int x_inc, int y_inc);
     bool under_attack_vertical(Spot *spot);
     bool under_attack_horizontal(Spot *spot);
@@ -48,7 +50,6 @@ class Board
     bool is_attacking_path(Spot *end, Spot *attack_candidate);
     bool valid_path(Spot *from, Spot *to);
     bool same_team(Spot *s1, Spot *s2);
-    // void place_piece(Spot *start, Spot *end);
     bool same_spot(Spot *s1, Spot *s2);
     bool in_check();
     bool in_check_after_move(Move &mv);
