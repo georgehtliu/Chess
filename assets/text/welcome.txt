@@ -1,0 +1,7 @@
+=== Welcome to Chess! ===
+    Each player may either be a human, or one of four AI levels
+    Level 0: Human Player.
+    Level 1: random legal moves.
+    Level 2: prefers capturing moves and checks over other moves.
+    Level 3: prefers avoiding capture, capturing moves, and checks. 
+    Level 4: more sophisticated :)

@@ -7,6 +7,8 @@
 #ifndef CHESS_INCLUDE_BOARD_H_
 #define CHESS_INCLUDE_BOARD_H_
 
+#include <iostream>
+#include <fstream>
 #include <vector>
 #include <memory>
 
@@ -18,9 +20,8 @@
 
 class Board
 {
-    // TODO:
-    std::shared_ptr<Player> black;
-    std::shared_ptr<Player> white;
+    Player* white;
+    Player* black;
 
     std::vector<Move> moves;
 
@@ -50,7 +51,7 @@ class Board
 
 public:
     // Constructor / Destructor
-    Board();
+    Board(Player* white, Player* black);
     ~Board() = default; // FIXME
 
     // Observers
@@ -63,11 +64,18 @@ public:
     const static int ROWS = 8;
     const static int COLS = 8;
 
+    // Board construction
+    void gen_standard_layout();
+    void setup_mode(); 
+
     // Manage spots
-    Spot * get_spot(int x, int y);
+    Spot* get_spot(int x, int y);
 
     void execute_move(Move &mv);
     void place_piece(Spot *start, Spot *end);
+
+    void set_white(Player* white);
+    void set_black(Player* black);
     Player* get_black();
     Player* get_white();
 };

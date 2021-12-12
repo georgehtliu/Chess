@@ -1,0 +1,5 @@
+SETUP MODE MESSAGE
+LOCATED IN assets/text/setup_mode.txt 
+
+EDIT THIS TO YOUR LIKING
+

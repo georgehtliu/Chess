@@ -6,7 +6,11 @@
 
 #include "board.h"
 
-Board::Board() : white_king_spot{std::make_shared<Spot>(4, 7).get()}, black_king_spot{std::make_shared<Spot>(0, 7).get()}
+Board::Board(Player* white, Player* black): 
+    white{white}, 
+    black{black}, 
+    white_king_spot{std::make_shared<Spot>(4, 7).get()}, 
+    black_king_spot{std::make_shared<Spot>(0, 7).get()}
 {
     // y=7 is the bottom of the board (d1)
     for (int i = 0; i < ROWS; i++)
@@ -18,9 +22,6 @@ Board::Board() : white_king_spot{std::make_shared<Spot>(4, 7).get()}, black_king
         }
     }
     white_move = true;
-
-    black = std::make_shared<Player>(false, true);
-    white = std::make_shared<Player>(true, true);
 }
 
 void Board::attach(Observer *o)
@@ -45,6 +46,44 @@ void Board::notify_observers()
         ob->notify();
 }
 
+void Board::gen_standard_layout() {
+    // White pieces
+    white->gen_standard_pieces();
+    get_spot(3, 0)->set_piece(white->get_nth_piece(0));
+    get_spot(4, 0)->set_piece(white->get_nth_piece(1));
+    get_spot(0, 0)->set_piece(white->get_nth_piece(2));
+    get_spot(7, 0)->set_piece(white->get_nth_piece(3));
+    get_spot(1, 0)->set_piece(white->get_nth_piece(4));
+    get_spot(6, 0)->set_piece(white->get_nth_piece(5));
+    get_spot(2, 0)->set_piece(white->get_nth_piece(6));
+    get_spot(5, 0)->set_piece(white->get_nth_piece(7));
+    for (int i = 0; i < 8; i++) {
+        get_spot(i, 1)->set_piece(white->get_nth_piece(8 + i));
+    }
+
+    // Black pieces
+    black->gen_standard_pieces();
+    get_spot(3, 6)->set_piece(black->get_nth_piece(0));
+    get_spot(4, 6)->set_piece(black->get_nth_piece(1));
+    get_spot(0, 6)->set_piece(black->get_nth_piece(2));
+    get_spot(7, 6)->set_piece(black->get_nth_piece(3));
+    get_spot(1, 6)->set_piece(black->get_nth_piece(4));
+    get_spot(6, 6)->set_piece(black->get_nth_piece(5));
+    get_spot(2, 6)->set_piece(black->get_nth_piece(6));
+    get_spot(5, 6)->set_piece(black->get_nth_piece(7));
+    for (int i = 0; i < 8; i++) {
+        get_spot(i, 7)->set_piece(black->get_nth_piece(8 + i));
+    }
+}
+
+void Board::setup_mode() {
+    std::ifstream f("assets/text/setup_mode.txt");
+    if (f.is_open())
+        std::cout << f.rdbuf();
+
+    // TODO: Frank, can you move your setup mode stuff over here?
+}
+
 Spot * Board::get_spot(int x, int y) {
     return &positions[x][y];
 }
@@ -63,13 +102,11 @@ bool Board::valid_path(Spot *from, Spot *to)
     Piece *piece_from = from->get_piece();
     Piece *piece_to = to->get_piece();
 
-    if (white_move)
-    {
-        p = white.get();
+    if (white_move) {
+        p = white;
     }
-    else
-    {
-        p = black.get();
+    else {
+        p = black;
     }
 
     Move mv = Move{p, from, to, piece_from, piece_to};
@@ -321,10 +358,18 @@ void Board::execute_move(Move &mv) {
     white_move = !white_move;
 }
 
-Player * Board::get_black() {
-    return black.get();
+void Board::set_white(Player* white) {
+    this->white = white;
 }
 
-Player * Board::get_white() {
-    return white.get();
+void Board::set_black(Player* black) {
+    this->black = black;
+}
+
+Player* Board::get_black() {
+    return black;
+}
+
+Player* Board::get_white() {
+    return white;
 }
