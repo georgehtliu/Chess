@@ -106,6 +106,41 @@ int main() {
             std::cin >> start;
             std::cin >> end;
             make_move(start, end, &b);
+        } else if (command == "default") {
+            add_piece('P', "a2", &b);
+            add_piece('P', "b2", &b);
+            add_piece('P', "c2", &b);
+            add_piece('P', "d2", &b);
+            add_piece('P', "e2", &b);
+            add_piece('P', "f2", &b);
+            add_piece('P', "g2", &b);
+            add_piece('P', "h2", &b);
+            add_piece('R', "a1", &b);
+            add_piece('N', "b1", &b);
+            add_piece('B', "c1", &b);
+            add_piece('Q', "d1", &b);
+            add_piece('K', "e1", &b);
+            add_piece('B', "f1", &b);
+            add_piece('N', "g1", &b);
+            add_piece('R', "h1", &b);
+
+
+            add_piece('p', "a7", &b);
+            add_piece('p', "b7", &b);
+            add_piece('p', "c7", &b);
+            add_piece('p', "d7", &b);
+            add_piece('p', "e7", &b);
+            add_piece('p', "f7", &b);
+            add_piece('p', "g7", &b);
+            add_piece('p', "h7", &b);
+            add_piece('r', "a8", &b);
+            add_piece('n', "b8", &b);
+            add_piece('b', "c8", &b);
+            add_piece('q', "d8", &b);
+            add_piece('k', "e8", &b);
+            add_piece('b', "f8", &b);
+            add_piece('n', "g8", &b);
+            add_piece('r', "h8", &b);
         }
 
         // } else if (command == "=") {
