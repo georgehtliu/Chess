@@ -461,7 +461,7 @@ void Board::execute_move(Move &mv) {
     Spot *end = mv.end_pos;
 
     // place piece for generic move
-    if (!(mv.is_castle || mv.is_en_passant || mv.is_promotion)) {
+    if (!(mv.is_castle || mv.is_en_passant || mv.is_promotion())) {
         place_piece(start, end);
     }
 

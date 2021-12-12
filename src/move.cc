@@ -3,7 +3,7 @@
 #include "spot.h"
 #include "piece.h"
 
-Move::Move(Player *p, Spot *start_p, Spot *end_p, Piece *p_moved, Piece *p_killed, bool castle, bool ep, bool prom, bool res) : player{p}, start_pos{start_p}, end_pos{end_p}, piece_moved{p_moved}, piece_killed{p_killed}, is_castle{castle}, is_en_passant{ep}, is_promotion{prom}, is_resign{res} {}
+Move::Move(Player *p, Spot *start_p, Spot *end_p, Piece *p_moved, Piece *p_killed, bool castle, bool ep, Piece *p_promote, bool res) : player{p}, start_pos{start_p}, end_pos{end_p}, piece_moved{p_moved}, piece_killed{p_killed}, is_castle{castle}, is_en_passant{ep}, promotion_piece{p_promote}, is_resign{res} {}
 
 bool Move::is_diagonal()
 {
@@ -47,4 +47,8 @@ int Move::x_dist()
 int Move::y_dist()
 {
     return abs(start_pos->get_y() - end_pos->get_y());
+}
+
+bool Move::is_promotion() {
+    return promotion_piece;
 }
