@@ -390,12 +390,9 @@ bool Board::in_check_after_move(Move &mv) {
     bool will_be_in_check = false;
 
     std::vector<std::vector<Spot> > init_positions = positions;
-    Spot init_white_king_spot = *white_king_spot;
-    Spot init_black_king_spot = *black_king_spot;
-    bool init_white_move = white_move
 
     execute_move(mv);
-    white_move = init_white_move;
+    white_move = !white_move;
     if (in_check()) will_be_in_check = true;
 
     // undo execute move side effects
@@ -482,6 +479,10 @@ void Board::execute_en_passant(Move &mv) {
 }
 
 void Board::execute_promotion(Move &mv) {
+
+    Spot *start = mv.start_pos;
+    Spot *end = mv.end_pos;
+    
     bool init_pawn_white = (start->get_piece())->is_white();
     place_piece(start, end);
     (mv.promotion_piece)->set_white(init_pawn_white);
