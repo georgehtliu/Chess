@@ -249,9 +249,11 @@ bool Board::search_attacker(Spot *spot, int x_inc, int y_inc) {
 
     Spot *runner = spot;
 
-    while (runner->in_bounds())
+    while (true)
     {
-        if (runner->get_x() + x_inc >= 8 || runner->get_x() + x_inc < 0 || runner->get_y() + y_inc >= 8 || runner->get_y() + y_inc < 0) break;
+        bool out_of_bounds = runner->get_x() + x_inc >= 8 || runner->get_x() + x_inc < 0 || runner->get_y() + y_inc >= 8 || runner->get_y() + y_inc < 0;
+        if (out_of_bounds) break;
+        
         runner = get_spot(runner->get_x() + x_inc, runner->get_y() + y_inc);
         if (is_attacking_path(spot, runner))
         {
