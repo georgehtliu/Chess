@@ -31,6 +31,10 @@ Board::Board(Player* white, Player* black):
     white_move = true;
 }
 
+bool in_bounds(int x, int y) {
+    return (x >= 0 && x < 8) && (y >= 0 && y < 8);
+}
+
 void Board::attach(Observer *o)
 {
     observers.push_back(o);
@@ -251,7 +255,7 @@ bool Board::search_attacker(Spot *spot, int x_inc, int y_inc) {
 
     while (true)
     {
-        bool out_of_bounds = runner->get_x() + x_inc >= 8 || runner->get_x() + x_inc < 0 || runner->get_y() + y_inc >= 8 || runner->get_y() + y_inc < 0;
+        bool out_of_bounds = !in_bounds(runner->get_x() + x_inc, runner->get_y() + y_inc);
         if (out_of_bounds) break;
         
         runner = get_spot(runner->get_x() + x_inc, runner->get_y() + y_inc);
@@ -290,26 +294,19 @@ bool Board::under_attack_diagonal(Spot *spot)
 }
 
 bool Board::under_attack_knight(Spot *spot) {
-    std::vector<Spot *> knight_threat_spots;
 
     // should be 8 positions
     for (int i = 1; i <= 2; i++) {
         for (int j = -2; j <= -1; j++) {
-            if (spot->get_x() + i >= 8 || spot->get_x() + i < 0 || spot->get_y() + j >= 8 || spot->get_y() + j < 0) continue;
-            if (spot->get_x() + j >= 8 || spot->get_x() + j < 0 || spot->get_y() + i >= 8 || spot->get_y() + i < 0) continue;
-            Spot *spot1 = get_spot(spot->get_x() + i, spot->get_y() + j);
-            Spot *spot2 = get_spot(spot->get_x() + j, spot->get_y() + i);
-            if (spot1->in_bounds()) {
-                knight_threat_spots.push_back(spot1);
+            if (in_bounds(spot->get_x() + i, spot->get_x() + j)) {
+                Spot *spot1 = get_spot(spot->get_x() + i, spot->get_y() + j);
+                if (is_attacking_path(spot, spot1)) return true;
             }
-            if (spot2->in_bounds()) {
-                knight_threat_spots.push_back(spot2);
+            if (in_bounds(spot->get_x() + j, spot->get_x() + i)) {
+                Spot *spot2 = get_spot(spot->get_x() + j, spot->get_y() + i);
+                if (is_attacking_path(spot, spot2)) return true;
             }
         }
-    }
-
-    for (Spot *attacker_candidate : knight_threat_spots) {
-        if (is_attacking_path(spot, attacker_candidate)) return true;
     }
     
     return false;
@@ -328,15 +325,14 @@ bool Board::check_valid_move(Move &mv) {
     bool piece_is_white = ((mv.start_pos)->get_piece())->is_white();
     if ((piece_is_white && !white_move) || (!piece_is_white && white_move)) return false;
     
-    // end move cannot be out of bounds
-    if (!(mv.end_pos)->in_bounds()) return false;
+    // start and end cannot be out of bounds
+    if (!(mv.end_pos)->in_bounds() || !(mv.start_pos)->in_bounds()) return false;
 
     // cannot move into own pieces
     if (same_team(mv.start_pos, mv.end_pos)) return false;
 
-    // cannot be in check after move ** HARD **
-
-    // check if piece can move path and check for anything blocking it
+    // check if piece can move path
+    if (!(valid_path(mv.start_pos, mv.end_pos))) return false;
 
     // cannot move other pieces if in check and can only
     // get king to safety/block/capture attack - should be covered by in check after move
@@ -347,9 +343,13 @@ bool Board::check_valid_move(Move &mv) {
 
     // castle
 
-    // promotion
+    // promotion: must be last row
 
     // en passant
+
+    // cannot be in check after move ** HARD **
+    if (in_check_after_move(mv))
+        return false;
 
     return true;
 }
@@ -389,6 +389,7 @@ bool Board::in_check_after_move(Move &mv) {
 
     bool will_be_in_check = false;
 
+    bool init_has_moved = has_moved()
     std::vector<std::vector<Spot> > init_positions = positions;
 
     execute_move(mv);
@@ -398,20 +399,43 @@ bool Board::in_check_after_move(Move &mv) {
     // undo execute move side effects
     moves.pop_back();
     positions = init_positions;
+
+    Spot *starting_spot = get_spot((mv.start_pos)->get_x(), (mv.start_pos)->get_y());
     if (same_spot(white_king_spot, mv.start_pos)) {
-        white_king_spot = get_spot((mv.start_pos)->get_x(), (mv.start_pos)->get_y());
+        white_king_spot = starting_spot;
     }
     if (same_spot(black_king_spot, mv.start_pos)) {
-        black_king_spot = get_spot((mv.start_pos)->get_x(), (mv.start_pos)->get_y());
+        black_king_spot = starting_spot;
     }
 
+    if (mv.piece_killed) {
+        (mv.piece_killed)->set_alive();
+    }
+
+    // if castle set rook back to unmoved
+    // if en passant set taken pawn back to alive
+    // if promotion set piece back to original and alive
+
     return will_be_in_check;
+}
+
+Spot *Board::get_rook_end_spot_castle(Spot *king_end) {
+    if (same_spot(king_end, get_spot(6, 0))) {
+        return get_spot(5, 0);
+    } else if (same_spot(king_end, get_spot(2, 0))) {
+        return get_spot(3, 0);
+    } else if (same_spot(king_end, get_spot(2, 7))) {
+        return get_spot(3, 7);
+    } else {
+        return get_spot(5, 7);
+    }
 }
 
 void Board::execute_castle(Move &mv) {
 
     Spot *start = mv.start_pos;
     Spot *end = mv.end_pos;
+    (start->get_piece())->has_moved = true; // set king has_moved to be true
 
     // starting rook positions
     Spot *start_queenside_rook_white = get_spot(0, 0);
@@ -458,6 +482,7 @@ void Board::execute_castle(Move &mv) {
 
     }
 
+    (start_rook_spot->get_piece())->has_moved = true; // set rook has_moved to be true
     place_piece(start_rook_spot, end_rook_spot);
 }
 
@@ -482,7 +507,9 @@ void Board::execute_promotion(Move &mv) {
 
     Spot *start = mv.start_pos;
     Spot *end = mv.end_pos;
-    
+
+    (start->get_piece())->set_killed();
+
     bool init_pawn_white = (start->get_piece())->is_white();
     place_piece(start, end);
     (mv.promotion_piece)->set_white(init_pawn_white);
@@ -509,7 +536,7 @@ void Board::execute_move(Move &mv) {
         execute_en_passant(mv);
     }
     
-    // promotion TODO: 
+    // promotion
     if (mv.is_promotion()) {
         execute_promotion(mv);
     }

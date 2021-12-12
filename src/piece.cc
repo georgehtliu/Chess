@@ -28,3 +28,8 @@ char Piece::get_text() {
 void Piece::set_killed() {
     alive = false;
 }
+
+void Piece::set_alive()
+{
+    alive = true;
+}
