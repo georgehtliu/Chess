@@ -342,6 +342,40 @@ bool Board::valid_en_passant(Move &mv) {
     return true;
 }
 
+bool Board::move_blocked(Move &mv) {
+
+    int inc_x = 0;
+    int inc_y = 0;
+
+    Spot *end = mv.end_pos;
+    Spot *start = mv.start_pos;
+    int dx = end->get_x() - start->get_x();
+    int dy = end->get_x() - start->get_x();
+
+    Spot *runner = start; // only checks for vertical, horizontal and diagonal
+
+    if (dx > 0) {
+        inc_x = 1;
+    } else if (dx < 0) {
+        inc_x = -1;
+    }
+
+    if (dy > 0) {
+        inc_y = 1;
+    } else if (dy < 0) {
+        inc_y = -1;
+    }
+
+    while (true) {
+        if (!in_bounds(runner->get_x() + inc_x, runner->get_y() + inc_y)) break;
+        runner = get_spot(runner->get_x() + inc_x, runner->get_y() + inc_y);
+        if (same_spot(runner, end)) return false;
+        if (!runner->is_blank()) return true;
+    }
+
+    return true; // if input is valid then should never land here
+}
+
 // TODO
 bool Board::check_valid_move(Move &mv) {
 
@@ -364,14 +398,18 @@ bool Board::check_valid_move(Move &mv) {
     // cannot take king - should already be covered since you must be in check beforehand
 
     // cannot move somewhere if blocked 
+    if (move_blocked(mv)) return false;
 
     // castle
+    if (!valid_castle(mv)) return false;
 
     // promotion: must be last row
+    if (!valid_promotion(mv)) return false;
 
     // en passant
+    if (!valid_en_passant(mv)) return false;
 
-    // cannot be in check after move ** HARD **
+    // cannot be in check after move ** should be done last **
     if (in_check_after_move(mv)) return false;
 
     return true;
