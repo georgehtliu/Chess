@@ -385,6 +385,32 @@ bool Board::in_check() {
     return under_attack(black_king_spot);
 }
 
+bool Board::in_check_after_move(Move &mv) {
+
+    bool will_be_in_check = false;
+
+    std::vector<std::vector<Spot> > init_positions = positions;
+    Spot init_white_king_spot = *white_king_spot;
+    Spot init_black_king_spot = *black_king_spot;
+    bool init_white_move = white_move
+
+    execute_move(mv);
+    white_move = init_white_move;
+    if (in_check()) will_be_in_check = true;
+
+    // undo execute move side effects
+    moves.pop_back();
+    positions = init_positions;
+    if (same_spot(white_king_spot, mv.start_pos)) {
+        white_king_spot = get_spot((mv.start_pos)->get_x(), (mv.start_pos)->get_y());
+    }
+    if (same_spot(black_king_spot, mv.start_pos)) {
+        black_king_spot = get_spot((mv.start_pos)->get_x(), (mv.start_pos)->get_y());
+    }
+
+    return will_be_in_check;
+}
+
 void Board::execute_castle(Move &mv) {
 
     Spot *start = mv.start_pos;

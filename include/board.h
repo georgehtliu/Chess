@@ -36,6 +36,7 @@ class Board
     void execute_en_passant(Move &mv);
     void execute_castle(Move &mv);
     void execute_promotion(Move &mv);
+    void undo_move(Move &mv);
     // void execute_move(Move &mv);
     bool search_attacker(Spot *spot, int x_inc, int y_inc);
     bool under_attack_vertical(Spot *spot);
@@ -49,6 +50,7 @@ class Board
     // void place_piece(Spot *start, Spot *end);
     bool same_spot(Spot *s1, Spot *s2);
     bool in_check();
+    bool in_check_after_move(Move &mv);
     void add_piece(char piece, std::string position);
     bool setup_complete();
 
