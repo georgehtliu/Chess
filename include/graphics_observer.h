@@ -12,15 +12,13 @@
 #include "window.h"
 
 #include <memory>
-#include <unordered_map>
-
 
 class GraphicsObserver : public Observer {
     Board *subject;
     std::unique_ptr<Xwindow> w;
 
    public:
-    GraphicsObserver(Board *board);
+    explicit GraphicsObserver(Board *board);
     void notify() override;
     void notify(Spot *s) override;
     ~GraphicsObserver() override;
