@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <utility>
+#include <vector>
 #include "image_loader.h"
 
 class Move;
