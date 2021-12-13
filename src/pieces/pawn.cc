@@ -16,7 +16,7 @@ Pawn::Pawn(bool white) {
 bool Pawn::valid_path(Move mv) {
     if (!mv.is_forward())
         return false;
-    if (!has_moved && mv.is_vertical() && mv.euclid_dist() == mv.FORWARD_UNIT * 2)
+    if (!moved && mv.is_vertical() && mv.euclid_dist() == mv.FORWARD_UNIT * 2)
     {
         // 2 forward case
         return true;
@@ -32,14 +32,6 @@ bool Pawn::valid_path(Move mv) {
         return true;
     }
     return false;
-}
-
-bool Pawn::get_has_moved() {
-    return has_moved;
-}
-
-bool Pawn::get_moved_two() {
-    return moved_two;
 }
 
 bool Pawn::is_pawn() const {
@@ -60,7 +52,7 @@ std::vector<std::pair<int, int>> Pawn::generate_paths(std::pair<int, int> pos) {
     }
     // there are up to 4 possible cases for pawns
     if (this->in_board(x, y + forward_dir)) paths.push_back(std::make_pair(x, y + forward_dir));
-    if (!has_moved && this->in_board(x, y + 2 * forward_dir)) paths.push_back(std::make_pair(x, y + 2 * forward_dir));
+    if (!moved && this->in_board(x, y + 2 * forward_dir)) paths.push_back(std::make_pair(x, y + 2 * forward_dir));
     if (this->in_board(x + 1, y +  forward_dir)) paths.push_back(std::make_pair(x + 1, y + forward_dir));
     if (this->in_board(x - 1, y +  forward_dir)) paths.push_back(std::make_pair(x - 1, y + forward_dir));
 

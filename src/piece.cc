@@ -21,6 +21,10 @@ bool Piece::is_king() const {
     return false;
 }
 
+bool Piece::is_rook() const {
+    return false;
+}
+
 char Piece::get_text() {
     return text_repr;
 }
@@ -45,6 +49,15 @@ void Piece::increment(int x_inc, int y_inc, int x_start, int y_start, std::vecto
         y_start += y_inc;
     }
 }
+
+bool Piece::has_moved() {
+    return moved;
+}
+
+void Piece::set_has_moved(bool has_moved) {
+    moved = has_moved;
+}
+
 std::string Piece::get_white_square_img() const {
     return white_square;
 }

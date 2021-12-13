@@ -243,13 +243,6 @@ bool Board::valid_path(Spot *from, Spot *to)
     return piece_from->valid_path(mv);
 }
 
-bool Board::has_moved(Piece *p) {
-    for (auto &move : moves) {
-        if (move.piece_moved == p) return true;
-    }
-    return false;
-}
-
 bool Board::is_attacking_path(Spot *end, Spot *attack_candidate_spot) // has a path attacking end
 {
     if (attack_candidate_spot->is_blank()) return false;
@@ -329,7 +322,7 @@ bool Board::under_attack(Spot *spot)
 }
 
 bool Board::is_en_passant(Move &mv) {
-    return (mv.piece_moved)->is_pawn() && mv.is_diagonal() && mv.end_pos->is_blank() && mv.euclid_dist() == mv.DIAG_UNIT;
+    return mv.piece_moved && (mv.piece_moved)->is_pawn() && mv.is_diagonal() && mv.end_pos->is_blank() && mv.euclid_dist() == mv.DIAG_UNIT;
 }
 
 bool Board::valid_castle(Move &mv) {
@@ -337,7 +330,7 @@ bool Board::valid_castle(Move &mv) {
     Piece *king = mv.piece_moved;
     Spot *king_start = mv.start_pos;
     Spot *king_end = mv.end_pos;
-    std::pair<Spot*, Spot*> rook_spots = get_rook_castle_spots(mv.end);
+    std::pair<Spot*, Spot*> rook_spots = get_rook_castle_spots(king_end);
     Spot *rook_start = rook_spots.first;
     Spot *rook_end = rook_spots.second;
 
@@ -361,12 +354,12 @@ bool Board::valid_castle(Move &mv) {
     if (!mv.is_castle()) return false;
 
     // if king or rook has moved
-    if (has_moved(rook) || has_moved(king)) return false;
+    if (rook->has_moved() || king->has_moved()) return false;
 
     // check if there are pieces between king and rook and spot under attack
     int inc_x = (king_start->get_x() < rook_start->get_x()) ? 1 : -1;
     for (int x = king_start->get_x(); x != king_start->get_x(); x += inc_x) {
-        Spot *between_spot = get_spot(x, king_start->get_y();
+        Spot *between_spot = get_spot(x, king_start->get_y());
         if (!between_spot->is_blank()) {
             return false;
         }
@@ -383,7 +376,40 @@ bool Board::valid_promotion(Move &mv) {
 }
 
 bool Board::valid_en_passant(Move &mv) {
+
+    Spot *start = mv.start_pos;
+    Spot *end = mv.end_pos;
+    int fifth_rank_white = 4;
+    int fifth_rank_black = 3;
+
     if (!is_en_passant(mv)) return false;
+
+    // must be on fifth rank
+    if (white_move) {
+        if (start->get_y() != fifth_rank_white) return false;
+    } else {
+        if (start->get_y() != fifth_rank_black) return false;
+    }
+
+    // to be taken pawn must exist
+    Spot *taken_pawn_spot = nullptr;
+
+    if (white_move) {
+        taken_pawn_spot = get_spot(end->get_x(), end->get_y() - 1);
+    } else {
+        taken_pawn_spot = get_spot(end->get_x(), end->get_y() + 1);
+    }
+
+    if (taken_pawn_spot->is_blank()) return false;
+    if (!((taken_pawn_spot->get_piece())->is_pawn())) return false;
+
+    // last move must be the double up pawn about to be taken
+    Move &last_move = moves.back();
+    if (!same_spot(last_move.end_pos, taken_pawn_spot)) {
+        return false;
+    }
+    if (last_move.y_dist() != 2) return false;
+
     return true;
 }
 
@@ -466,6 +492,8 @@ void Board::place_piece(Spot *start, Spot *end) {
        (end->get_piece())->set_killed();
     }
 
+    (start->get_piece())->set_has_moved(true);
+
     // end spot now has start's piece
     end->set_piece(start->get_piece());
     start->set_piece(nullptr);
@@ -487,11 +515,17 @@ bool Board::in_check() {
 
 bool Board::in_check_after_move(Move &mv) {
 
+    Spot *starting_spot = mv.start_pos;
+    Spot *ending_spot = mv.end_pos;
+
     bool will_be_in_check = false;
 
     // get en passant information in case of en passant
     Spot *taken_pawn_spot_ep = nullptr;
     Piece *killed_pawn_ep = nullptr;
+
+    // set initial has_moved for piece
+    bool has_moved = (starting_spot->get_piece())->has_moved();
 
     if (valid_en_passant(mv)) {
         if (white_move) {
@@ -514,9 +548,10 @@ bool Board::in_check_after_move(Move &mv) {
     moves.pop_back();
 
     // move piece back to original position
-    Spot *starting_spot = mv.start_pos;
-    Spot *ending_spot = mv.end_pos;
     starting_spot->set_piece(mv.piece_moved);
+
+    // reset has_moved
+    (starting_spot->get_piece())->set_has_moved(has_moved);
 
     // adjust end position
     if (mv.piece_killed) {
@@ -541,6 +576,7 @@ bool Board::in_check_after_move(Move &mv) {
         Spot *rook_start_spot = rook_spots.first;
         Spot *rook_end_spot = rook_spots.second;
         rook_start_spot->set_piece(rook_end_spot->get_piece());
+        (rook_start_spot->get_piece())->set_has_moved(false);
         rook_end_spot->set_piece(nullptr);
     }
 
@@ -590,11 +626,11 @@ std::pair<Spot*, Spot*> Board::get_rook_castle_spots(Spot *king_end) {
 bool Board::is_valid_king_castle_spots(Spot *start, Spot *end) {
 
     if (white_move) {
-        if (same_spot(start, get_spot(5, 0) && same_spot(start, get_spot(2, 0)))) return true;
-        if (same_spot(start, get_spot(5, 0) && same_spot(start, get_spot(6, 0)))) return true;
+        if (same_spot(start, get_spot(5, 0)) && same_spot(end, get_spot(2, 0))) return true;
+        if (same_spot(start, get_spot(5, 0)) && same_spot(end, get_spot(6, 0))) return true;
     } else {
-        if (same_spot(start, get_spot(5, 7) && same_spot(start, get_spot(2, 7)))) return true;
-        if (same_spot(start, get_spot(5, 7) && same_spot(start, get_spot(6, 7)))) return true;
+        if (same_spot(start, get_spot(5, 7)) && same_spot(end, get_spot(2, 7))) return true;
+        if (same_spot(start, get_spot(5, 7)) && same_spot(end, get_spot(6, 7))) return true;
     }
     
     return false;

@@ -7,12 +7,11 @@
 #include "move.h"
 
 class Rook : public Piece {
-    bool has_moved;
 
 public:
     Rook(bool white);
-    bool get_has_moved();
     bool valid_path(Move mv) override;
+    bool is_rook() const override;
     std::vector<std::pair<int, int>> generate_paths(std::pair<int, int> pos) override;
 };
 

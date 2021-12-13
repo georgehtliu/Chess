@@ -9,7 +9,10 @@
 class Move;
 
 class Piece {
+
 protected:
+
+    bool moved = false;
     bool white;
     bool alive;
     char text_repr;
@@ -17,15 +20,19 @@ protected:
     // File paths for PNGs to load
     std::string white_square;
     std::string black_square;
+
 public:
     bool is_white() const;
     bool is_alive();
     virtual bool is_pawn() const;
     virtual bool is_king() const;
+    virtual bool is_rook() const;
     char get_text();
     void set_killed();
     void set_alive();
     void set_white(bool white);
+    bool has_moved();
+    void set_has_moved(bool has_moved);
     virtual bool valid_path(Move mv) = 0;
     virtual std::vector<std::pair<int, int>> generate_paths(std::pair<int, int> pos) = 0;
     virtual ~Piece() = default;
