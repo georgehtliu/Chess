@@ -21,6 +21,7 @@ class GraphicsObserver : public Observer {
     explicit GraphicsObserver(Board *board);
     void notify() override;
     void notify(Spot *s) override;
+    void notify(Move *m) override;
     ~GraphicsObserver() override;
 
     // Graphics Constants

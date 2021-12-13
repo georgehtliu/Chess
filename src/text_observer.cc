@@ -36,3 +36,8 @@ void TextObserver::notify(Spot *s) {
     (void)s;
     notify();
 }
+
+void TextObserver::notify(Move *m) {
+    (void)m;
+    notify();
+}
