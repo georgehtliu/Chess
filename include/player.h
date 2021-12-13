@@ -22,7 +22,7 @@ protected:
     std::vector<std::shared_ptr<Piece>> pieces;
 
 public:
-    ~Player() = default;
+    virtual ~Player() = default;
 
     bool is_white() const;
     int get_score();
