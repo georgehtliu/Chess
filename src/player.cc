@@ -11,7 +11,6 @@
 #include "bishop.h"
 #include "pawn.h"
 
-Player::Player(bool white): score{0}, white{white} {}
 
 void Player::gen_standard_pieces() {
     pieces.push_back(std::make_shared<King>(white));
@@ -37,7 +36,7 @@ int Player::get_score() {
 }
 
 Piece* Player::get_last_piece() {
-    if (pieces.size() != 0) {
+    if (!pieces.empty()) {
         return pieces.back().get();
     }
     return nullptr;
@@ -49,6 +48,23 @@ Piece* Player::get_nth_piece(size_t n) {
     }
 
     return pieces[n].get();
+}
+
+bool Player::is_white() const {
+    return white;
+}
+
+int Player::incr_score() {
+    return ++score;
+}
+
+bool Player::has_valid_moves() {
+    return false;
+}
+
+Move Player::get_next_move(const Board *b) {
+    (void)b;
+    return Move(nullptr, nullptr, nullptr, nullptr);
 }
 
 void Player::remove_last_piece() {

@@ -11,7 +11,6 @@
 #include "pieces/pawn.h"
 #include "pieces/queen.h"
 #include "pieces/rook.h"
-#include "text_observer.h"
 
 Board::Board(Player* white, Player* black): 
     white{white}, 
@@ -35,13 +34,11 @@ bool in_bounds(int x, int y) {
     return (x >= 0 && x < 8) && (y >= 0 && y < 8);
 }
 
-void Board::attach(Observer *o)
-{
+void Board::attach(Observer *o) {
     observers.push_back(o);
 }
 
-void Board::detach(Observer *o)
-{
+void Board::detach(Observer *o) {
     for (auto it = observers.begin(); it != observers.end();)
     {
         if (*it == o)
@@ -51,8 +48,7 @@ void Board::detach(Observer *o)
     }
 }
 
-void Board::notify_observers()
-{
+void Board::notify_observers() {
     for (auto &ob : observers)
         ob->notify();
 }
@@ -181,11 +177,10 @@ void Board::setup_mode() {
     if (f.is_open())
         std::cout << f.rdbuf();
 
+
     bool done = false;
-    std::vector<std::unique_ptr<Observer>> observers;
-    observers.push_back(std::make_unique<TextObserver>(this));
     while (!done) {
-        observers[0]->notify();
+        notify_observers();
         std::string command;
         char piece;
         std::string position;
