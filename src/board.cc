@@ -454,38 +454,65 @@ bool Board::in_check_after_move(Move &mv) {
 
     bool will_be_in_check = false;
 
-    std::vector<std::vector<Spot> > init_positions = positions;
+    // get en passant information in case of en passant
+    Spot *taken_pawn_spot_ep = nullptr;
+    Piece *killed_pawn_ep = nullptr;
 
+    if (valid_en_passant(mv)) {
+        if (white_move) {
+            taken_pawn_spot_ep = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() - 1);
+        } else {
+            taken_pawn_spot_ep = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() + 1);
+        }
+
+        killed_pawn_ep = taken_pawn_spot_ep->get_piece();
+    }
+
+    // perform the move
     execute_move(mv);
-    white_move = !white_move;
+
+    // readjust move order
+    white_move = !white_move; 
     if (in_check()) will_be_in_check = true;
 
     // undo execute move side effects
     moves.pop_back();
-    positions = init_positions;
 
-    Spot *starting_spot = get_spot((mv.start_pos)->get_x(), (mv.start_pos)->get_y());
-    if (same_spot(white_king_spot, mv.start_pos)) {
+    // move piece back to original position
+    Spot *starting_spot = mv.start_pos;
+    Spot *ending_spot = mv.end_pos;
+    starting_spot->set_piece(mv.piece_moved);
+
+    // adjust end position
+    if (mv.piece_killed) {
+        (mv.piece_killed)->set_alive();
+        ending_spot->set_piece(mv.piece_killed);
+    } else {
+        // blank spot
+        ending_spot->set_piece(nullptr);
+    }
+
+    // adjust if king moves
+    if (same_spot(white_king_spot, starting_spot)) {
         white_king_spot = starting_spot;
     }
-    if (same_spot(black_king_spot, mv.start_pos)) {
+    if (same_spot(black_king_spot, starting_spot)) {
         black_king_spot = starting_spot;
     }
 
-    if (mv.piece_killed) {
-        (mv.piece_killed)->set_alive();
+    // if castle, move rook back to original square
+    if (valid_castle(mv)) {
+        std::pair<Spot*, Spot*> rook_spots = get_rook_castle_spots(ending_spot);
+        Spot *rook_start_spot = rook_spots.first;
+        Spot *rook_end_spot = rook_spots.second;
+        rook_start_spot->set_piece(rook_end_spot->get_piece());
+        rook_end_spot->set_piece(nullptr);
     }
 
-    // if en passant, set taken pawn back to alive
+    // if en passant, set taken pawn back to alive and reattach piece to initial spot
     if (valid_en_passant(mv)) {
-        Spot *taken_pawn_spot;
-        if (white_move) {
-            taken_pawn_spot = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() - 1);
-        } else {
-            taken_pawn_spot = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() + 1);
-        }
-
-        (taken_pawn_spot->get_piece())->set_alive();
+        taken_pawn_spot_ep->set_piece(killed_pawn_ep);
+        (taken_pawn_spot_ep->get_piece())->set_alive();
     }
 
     // if promotion, delete new piece and set original pawn to be alive
@@ -502,16 +529,27 @@ bool Board::in_check_after_move(Move &mv) {
     return will_be_in_check;
 }
 
-Spot *Board::get_rook_end_spot_castle(Spot *king_end) {
+std::pair<Spot*, Spot*> Board::get_rook_castle_spots(Spot *king_end) {
+
+    // <start, end>
+    Spot *start = nullptr;
+    Spot *end = nullptr;
+
     if (same_spot(king_end, get_spot(6, 0))) {
-        return get_spot(5, 0);
+        start = get_spot(7, 0);
+        end = get_spot(5, 0);
     } else if (same_spot(king_end, get_spot(2, 0))) {
-        return get_spot(3, 0);
+        start = get_spot(0, 0);
+        end = get_spot(3, 0);
     } else if (same_spot(king_end, get_spot(2, 7))) {
-        return get_spot(3, 7);
+        start = get_spot(0, 7);
+        end = get_spot(3, 7);
     } else {
-        return get_spot(5, 7);
+        start = get_spot(7, 7);
+        end = get_spot(5, 7);
     }
+
+    return std::make_pair(start, end);
 }
 
 void Board::execute_castle(Move &mv) {

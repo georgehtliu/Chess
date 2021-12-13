@@ -36,7 +36,7 @@ class Board
     bool check_valid_move(Move &mv);
     void execute_en_passant(Move &mv);
     void execute_castle(Move &mv);
-    Spot *get_rook_end_spot_castle(Spot *king_end);
+    std::pair<Spot*, Spot*> get_rook_castle_spots(Spot *king_end);
     void execute_promotion(Move &mv);
     bool has_moved(Piece *p);
     bool valid_castle(Move &mv);
