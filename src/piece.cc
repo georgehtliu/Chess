@@ -34,6 +34,17 @@ void Piece::set_alive()
     alive = true;
 }
 
+bool Piece::in_board(int x, int y) {
+    return (x >= 0 && x < 8 && y >= 0 && y < 8);
+}
+
+void Piece::increment(int x_inc, int y_inc, int x_start, int y_start, std::vector<std::pair<int, int>> * paths) {
+    while (x_start < 8 && y_start < 8 && x_start >= 0 && y_start >= 0) {
+        paths->push_back(std::make_pair(x_start, y_start));
+        x_start += x_inc;
+        y_start += y_inc;
+    }
+}
 std::string Piece::get_white_square_img() const {
     return white_square;
 }

@@ -1,6 +1,8 @@
 #ifndef _PAWN_H_
 #define _PAWN_H_
 
+#include <memory>
+#include <utility>
 #include "piece.h"
 #include "move.h"
 
@@ -15,6 +17,7 @@ public:
     bool is_pawn() const override;
     bool get_has_moved();
     bool get_moved_two();
+    std::vector<std::pair<int, int>> generate_paths(std::pair<int, int> pos) override;
 };
 
 #endif
