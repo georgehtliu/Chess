@@ -3,6 +3,8 @@
 
 #include "../piece.h"
 #include "../move.h"
+#include <memory>
+#include <utility>
 
 class Pawn : public Piece
 {
@@ -15,6 +17,7 @@ public:
     bool is_pawn() const override;
     bool get_has_moved();
     bool get_moved_two();
+    std::vector<std::pair<int, int>> generate_paths(std::pair<int, int> pos) override;
 };
 
 #endif

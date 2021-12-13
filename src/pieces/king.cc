@@ -33,3 +33,18 @@ bool King::valid_path(Move mv) {
 bool King::is_king() const {
     return true;
 }
+
+std::vector<std::pair<int, int>> King::generate_paths(std::pair<int, int> pos) {
+    std::vector<std::pair<int, int>> paths;
+    
+    int x = pos.first;
+    int y = pos.second;
+
+    for (int i = -1; i <= 1; i++) {
+        for (int j = -1; j <= 1; j++) {
+            if (this->in_board(x + i, y + j)) paths.push_back(std::make_pair(x + i, y + j));
+        }
+    }
+    
+    return paths;
+}
