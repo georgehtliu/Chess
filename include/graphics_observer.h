@@ -12,6 +12,8 @@
 #include "window.h"
 
 #include <memory>
+#include <unordered_map>
+
 
 class GraphicsObserver : public Observer {
     Board *subject;
@@ -20,14 +22,14 @@ class GraphicsObserver : public Observer {
    public:
     GraphicsObserver(Board *board);
     void notify() override;
-    void notify(Spot &s) override;
+    void notify(Spot *s) override;
     ~GraphicsObserver() override;
 
     // Graphics Constants
     const static int WIDTH = 100;
     const static int HEIGHT = 100;
 
-    const static int WHITE_COL = Xwindow::Red;
+    const static int WHITE_COL = Xwindow::Green;
     const static int BLACK_COL = Xwindow::Brown;
 };
 

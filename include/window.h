@@ -8,6 +8,7 @@
 class Xwindow {
     Display *d;
     Window w;
+    Visual *v;
     int s;
     GC gc;
     unsigned long colours[10];
@@ -33,10 +34,15 @@ class Xwindow {
         Brown
     };
 
+    Display* get_display();
+    Visual* get_visual();
+
     // Draws a rectangle
     void fillRectangle(int x, int y, int width, int height, int colour = Black);
 
-    // Draws an image
+    // Draw an image
+    void drawImage(int x, int y, XImage *img);
+
 
     // Draws a string
     void drawString(int x, int y, std::string msg);

@@ -3,9 +3,13 @@
 King::King(bool white) {
     this->white = white;
     if (white) {
-        this->text_repr = 'K';
+        text_repr = 'K';
+        white_square = "assets/pieces/king_w_bg_w.png";
+        black_square = "assets/pieces/king_w_bg_b.png";
     } else {
-        this->text_repr = 'k';
+        text_repr = 'k';
+        white_square = "assets/pieces/king_b_bg_w.png";
+        black_square = "assets/pieces/king_b_bg_b.png";
     }
 }
 

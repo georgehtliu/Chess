@@ -67,6 +67,7 @@ public:
     void attach(Observer *o);
     void detach(Observer *o);
     void notify_observers();
+    void notify_observers(Spot *s);
     // void notify_observers(Move m); // TODO
 
     // Board info

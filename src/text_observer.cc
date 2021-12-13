@@ -31,3 +31,8 @@ void TextObserver::notify() {
     std::cout << "  abcdefgh" << std::endl;
     std::cout << "------------" << std::endl;
 }
+
+void TextObserver::notify(Spot *s) {
+    (void)s;
+    notify();
+}
