@@ -3,9 +3,13 @@
 Queen::Queen(bool white) {
     this->white = white;
     if (white) {
-        this->text_repr = 'Q';
+        text_repr = 'Q';
+        white_square = "assets/pieces/queen_w_bg_w.png";
+        black_square = "assets/pieces/queen_w_bg_b.png";
     } else {
-        this->text_repr = 'q';
+        text_repr = 'q';
+        white_square = "assets/pieces/queen_b_bg_w.png";
+        black_square = "assets/pieces/queen_b_bg_b.png";
     }
 }
 

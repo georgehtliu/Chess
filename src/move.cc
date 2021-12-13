@@ -1,5 +1,5 @@
 #include "move.h"
-#include "player.h"
+//#include "player.h"
 #include "spot.h"
 #include "piece.h"
 

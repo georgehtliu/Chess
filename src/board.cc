@@ -53,6 +53,11 @@ void Board::notify_observers() {
         ob->notify();
 }
 
+void Board::notify_observers(Spot *s) {
+    for (auto &ob : observers)
+        ob->notify(s);
+}
+
 int position_getX(std::string pos) {
     return pos.at(0) - 'a';
 }
@@ -132,6 +137,8 @@ void Board::add_piece(char piece, std::string position) {
         white->add_piece(std::make_shared<Rook>(true));
         get_spot(x, y)->set_piece(white->get_last_piece());
     }
+
+    notify_observers(get_spot(x, y));
 }
 
 bool Board::setup_complete() {
@@ -179,8 +186,8 @@ void Board::setup_mode() {
 
 
     bool done = false;
+    notify_observers();
     while (!done) {
-        notify_observers();
         std::string command;
         char piece;
         std::string position;
@@ -200,7 +207,9 @@ void Board::setup_mode() {
             add_piece(piece, position);
         } else if (command == "-") {
             std::cin >> position;
-            get_spot(position_getX(position), position_getY(position))->remove_piece();
+            Spot *s = get_spot(position_getX(position), position_getY(position));
+            s->remove_piece();
+            notify_observers(s);
         }
     }
 }
@@ -647,3 +656,4 @@ Player* Board::get_black() {
 Player* Board::get_white() {
     return white;
 }
+

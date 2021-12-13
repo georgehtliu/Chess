@@ -3,9 +3,13 @@
 Pawn::Pawn(bool white) {
     this->white = white;
     if (white) {
-        this->text_repr = 'P';
+        text_repr = 'P';
+        white_square = "assets/pieces/pawn_w_bg_w.png";
+        black_square = "assets/pieces/pawn_w_bg_b.png";
     } else {
-        this->text_repr = 'p';
+        text_repr = 'p';
+        white_square = "assets/pieces/pawn_b_bg_w.png";
+        black_square = "assets/pieces/pawn_b_bg_b.png";
     }
 }
 

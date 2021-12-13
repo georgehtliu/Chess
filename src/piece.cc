@@ -33,3 +33,11 @@ void Piece::set_alive()
 {
     alive = true;
 }
+
+std::string Piece::get_white_square_img() const {
+    return white_square;
+}
+
+std::string Piece::get_black_square_img() const {
+    return black_square;
+}

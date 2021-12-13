@@ -15,6 +15,8 @@ class TextObserver : public Observer {
    public:
     TextObserver(Board *board);
     void notify() override;
+    void notify(Spot *s) override;
+    void notify(Move *m) override;
     ~TextObserver();
 };
 
