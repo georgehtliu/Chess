@@ -11,7 +11,6 @@
 #include "pieces/pawn.h"
 #include "pieces/queen.h"
 #include "pieces/rook.h"
-#include "text_observer.h"
 
 Board::Board(Player* white, Player* black): 
     white{white}, 
@@ -35,13 +34,11 @@ bool in_bounds(int x, int y) {
     return (x >= 0 && x < 8) && (y >= 0 && y < 8);
 }
 
-void Board::attach(Observer *o)
-{
+void Board::attach(Observer *o) {
     observers.push_back(o);
 }
 
-void Board::detach(Observer *o)
-{
+void Board::detach(Observer *o) {
     for (auto it = observers.begin(); it != observers.end();)
     {
         if (*it == o)
@@ -51,8 +48,7 @@ void Board::detach(Observer *o)
     }
 }
 
-void Board::notify_observers()
-{
+void Board::notify_observers() {
     for (auto &ob : observers)
         ob->notify();
 }
