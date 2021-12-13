@@ -8,7 +8,12 @@
 
 GraphicsObserver::GraphicsObserver(Board *board) : subject{board} {
     subject->attach(this);
-    w = std::make_unique<Xwindow>(GraphicsObserver::HEIGHT * Board::ROWS, GraphicsObserver::WIDTH * Board::COLS);
+
+    int width = GraphicsObserver::WIDTH * Board::COLS + GraphicsObserver::BOARD_OFFSET * 2;
+    int height = GraphicsObserver::HEIGHT * Board::ROWS + GraphicsObserver::BOARD_OFFSET * 2;
+    w = std::make_unique<Xwindow>(width, height);
+    w->fillRectangle(0, 0, width, height, 7);
+    w->fillRectangle((0.9 * BOARD_OFFSET), (0.9 * BOARD_OFFSET), width - (1.8 * BOARD_OFFSET), height - (1.8 * BOARD_OFFSET));
 }
 
 GraphicsObserver::~GraphicsObserver() {
@@ -23,11 +28,23 @@ void GraphicsObserver::notify() {
             notify(s);
         }
     }
+
+    for (int j = 0; j < Board::COLS; j++) {
+        w->drawString(((j + 0.45) * WIDTH) + BOARD_OFFSET,
+                      HEIGHT * Board::ROWS + (1.55 * BOARD_OFFSET),
+                      std::string(1, (char)('a' + j)));
+    }
+
+    for (int i = 0; i < Board::ROWS; i++) {
+        w->drawString(WIDTH * Board::COLS + (1.5 * BOARD_OFFSET),
+                      ((i + 0.5) * HEIGHT) + BOARD_OFFSET,
+                      std::to_string(i + 1));
+    }
 }
 
 void GraphicsObserver::notify(Spot *s) {
-    int window_x = s->get_x() * GraphicsObserver::WIDTH;
-    int window_y = s->get_y() * GraphicsObserver::HEIGHT;
+    int window_x = s->get_x() * GraphicsObserver::WIDTH + GraphicsObserver::BOARD_OFFSET;
+    int window_y = s->get_y() * GraphicsObserver::HEIGHT + GraphicsObserver::BOARD_OFFSET;
 
     int colour = (s->is_white()) ? GraphicsObserver::WHITE_COL : GraphicsObserver::BLACK_COL;
     w->fillRectangle(window_x, window_y, GraphicsObserver::WIDTH, GraphicsObserver::HEIGHT, colour);

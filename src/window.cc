@@ -43,7 +43,7 @@ Xwindow::Xwindow(int width, int height) {
     XColor xcolour;
     Colormap cmap;
     char color_vals[10][20] = {"white", "black",  "red",     "papaya whip",  "blue",
-                               "cyan",  "yellow", "magenta", "orange", "olive"};
+                               "cyan",  "yellow", "seashell", "orange", "olive"};
 
     cmap = DefaultColormap(d, DefaultScreen(d));
     for (int i = 0; i < 10; ++i) {
@@ -91,7 +91,9 @@ void Xwindow::drawImage(int x, int y, XImage *img) {
 }
 
 void Xwindow::drawString(int x, int y, string msg) {
+    XSetForeground(d, gc, colours[White]);
     XDrawString(d, w, DefaultGC(d, s), x, y, msg.c_str(), msg.length());
+    XSetForeground(d, gc, colours[Black]);
 }
 
 

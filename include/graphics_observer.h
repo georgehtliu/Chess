@@ -28,6 +28,8 @@ class GraphicsObserver : public Observer {
     const static int WIDTH = 100;
     const static int HEIGHT = 100;
 
+    const static int BOARD_OFFSET = 30;
+
     const static int WHITE_COL = Xwindow::Green;
     const static int BLACK_COL = Xwindow::Brown;
 };
