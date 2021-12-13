@@ -3,9 +3,13 @@
 Knight::Knight(bool white) {
     this->white = white;
     if (white) {
-        this->text_repr = 'N';
+        text_repr = 'N';
+        white_square = "assets/pieces/knight_w_bg_w.png";
+        black_square = "assets/pieces/knight_w_bg_b.png";
     } else {
-        this->text_repr = 'n';
+        text_repr = 'n';
+        white_square = "assets/pieces/knight_b_bg_w.png";
+        black_square = "assets/pieces/knight_b_bg_b.png";
     }
 }
 

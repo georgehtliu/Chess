@@ -45,3 +45,10 @@ void Piece::increment(int x_inc, int y_inc, int x_start, int y_start, std::vecto
         y_start += y_inc;
     }
 }
+std::string Piece::get_white_square_img() const {
+    return white_square;
+}
+
+std::string Piece::get_black_square_img() const {
+    return black_square;
+}

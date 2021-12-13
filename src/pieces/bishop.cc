@@ -3,10 +3,15 @@
 
 Bishop::Bishop(bool white) {
     this->white = white;
+
     if (white) {
-        this->text_repr = 'B';
+        text_repr = 'B';
+        white_square = "assets/pieces/bishop_w_bg_w.png";
+        black_square = "assets/pieces/bishop_w_bg_b.png";
     } else {
-        this->text_repr = 'b';
+        text_repr = 'b';
+        white_square = "assets/pieces/bishop_b_bg_w.png";
+        black_square = "assets/pieces/bishop_b_bg_b.png";
     }
 }
 

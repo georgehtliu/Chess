@@ -3,9 +3,13 @@
 Rook::Rook(bool white) {
     this->white = white;
     if (white) {
-        this->text_repr = 'R';
+        text_repr = 'R';
+        white_square = "assets/pieces/rook_w_bg_w.png";
+        black_square = "assets/pieces/rook_w_bg_b.png";
     } else {
-        this->text_repr = 'r';
+        text_repr = 'r';
+        white_square = "assets/pieces/rook_b_bg_w.png";
+        black_square = "assets/pieces/rook_b_bg_b.png";
     }
 }
 

@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <utility>
+#include "image_loader.h"
 
 class Move;
 
@@ -11,6 +12,10 @@ protected:
     bool white;
     bool alive;
     char text_repr;
+
+    // File paths for PNGs to load
+    std::string white_square;
+    std::string black_square;
 public:
     bool is_white() const;
     bool is_alive();
@@ -25,6 +30,10 @@ public:
     virtual ~Piece() = default;
     bool in_board(int x, int y);
     void increment(int x_inc, int y_inc, int x_start, int y_start, std::vector<std::pair<int, int>> * paths);
+
+    std::string get_white_square_img() const;
+    std::string get_black_square_img() const;
+
 };
 
 #endif

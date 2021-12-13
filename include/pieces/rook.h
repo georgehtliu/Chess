@@ -1,9 +1,10 @@
 #ifndef _ROOK_H_
 #define _ROOK_H_
-#include "../piece.h"
-#include "../move.h"
+
 #include <memory>
 #include <utility>
+#include "piece.h"
+#include "move.h"
 
 class Rook : public Piece {
     bool has_moved;

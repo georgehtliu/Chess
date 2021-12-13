@@ -37,6 +37,7 @@ int main() {
     };
 
     while (true) {
+        std::cout << "Enter a command: ";
         std::cin >> cmd;
         if (cmd == "game") {
             std::string white_player;
@@ -54,7 +55,7 @@ int main() {
             }
 
             if (games.empty() || games.back().get_game_mode() == Mode::Finished) {
-                games.push_back(Game(white_player_type, black_player_type));
+                games.emplace_back(white_player_type, black_player_type);
             } else if (games.back().get_game_mode() == Mode::Setup) {
                 games.back().set_white_type(white_player_type);
                 games.back().set_black_type(black_player_type);
@@ -65,7 +66,7 @@ int main() {
 
         } else if (cmd == "setup") {
             if (games.empty() || games.back().get_game_mode() == Mode::Finished) {
-                games.push_back(Game());
+                games.emplace_back();
                 games.back().set_game_mode(Mode::Setup);
                 games.back().get_board()->setup_mode();
             } else if (games.back().get_game_mode() == Mode::Setup || games.back().get_game_mode() == Mode::Ready) {
@@ -78,6 +79,7 @@ int main() {
         } else {
             std::cout << "Invalid command. Try again." << std::endl;
         }
+        std::cout << std::endl;
     }
 
     // Final Score output

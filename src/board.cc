@@ -53,41 +53,46 @@ void Board::notify_observers() {
         ob->notify();
 }
 
+void Board::notify_observers(Spot *s) {
+    for (auto &ob : observers)
+        ob->notify(s);
+}
+
 int position_getX(std::string pos) {
     return pos.at(0) - 'a';
 }
 
 int position_getY(std::string pos) {
-    return 8 - (pos.at(1) - '0');
+    return pos.at(1) - '0' - 1;
 }
 
 void Board::gen_standard_layout() {
     // White pieces
     white->gen_standard_pieces();
-    get_spot(3, 7)->set_piece(white->get_nth_piece(0));
-    get_spot(4, 7)->set_piece(white->get_nth_piece(1));
-    get_spot(0, 7)->set_piece(white->get_nth_piece(2));
-    get_spot(7, 7)->set_piece(white->get_nth_piece(3));
-    get_spot(1, 7)->set_piece(white->get_nth_piece(4));
-    get_spot(6, 7)->set_piece(white->get_nth_piece(5));
-    get_spot(2, 7)->set_piece(white->get_nth_piece(6));
-    get_spot(5, 7)->set_piece(white->get_nth_piece(7));
+    get_spot(4, 0)->set_piece(white->get_nth_piece(0));
+    get_spot(3, 0)->set_piece(white->get_nth_piece(1));
+    get_spot(0, 0)->set_piece(white->get_nth_piece(2));
+    get_spot(7, 0)->set_piece(white->get_nth_piece(3));
+    get_spot(1, 0)->set_piece(white->get_nth_piece(4));
+    get_spot(6, 0)->set_piece(white->get_nth_piece(5));
+    get_spot(2, 0)->set_piece(white->get_nth_piece(6));
+    get_spot(5, 0)->set_piece(white->get_nth_piece(7));
     for (int i = 0; i < 8; i++) {
-        get_spot(i, 6)->set_piece(white->get_nth_piece(8 + i));
+        get_spot(i, 1)->set_piece(white->get_nth_piece(8 + i));
     }
 
     // Black pieces
     black->gen_standard_pieces();
-    get_spot(3, 0)->set_piece(black->get_nth_piece(0));
-    get_spot(4, 0)->set_piece(black->get_nth_piece(1));
-    get_spot(0, 0)->set_piece(black->get_nth_piece(2));
-    get_spot(7, 0)->set_piece(black->get_nth_piece(3));
-    get_spot(1, 0)->set_piece(black->get_nth_piece(4));
-    get_spot(6, 0)->set_piece(black->get_nth_piece(5));
-    get_spot(2, 0)->set_piece(black->get_nth_piece(6));
-    get_spot(5, 0)->set_piece(black->get_nth_piece(7));
+    get_spot(4, 7)->set_piece(black->get_nth_piece(0));
+    get_spot(3, 7)->set_piece(black->get_nth_piece(1));
+    get_spot(0, 7)->set_piece(black->get_nth_piece(2));
+    get_spot(7, 7)->set_piece(black->get_nth_piece(3));
+    get_spot(1, 7)->set_piece(black->get_nth_piece(4));
+    get_spot(6, 7)->set_piece(black->get_nth_piece(5));
+    get_spot(2, 7)->set_piece(black->get_nth_piece(6));
+    get_spot(5, 7)->set_piece(black->get_nth_piece(7));
     for (int i = 0; i < 8; i++) {
-        get_spot(i, 1)->set_piece(black->get_nth_piece(8 + i));
+        get_spot(i, 6)->set_piece(black->get_nth_piece(8 + i));
     }
 }
 
@@ -132,6 +137,8 @@ void Board::add_piece(char piece, std::string position) {
         white->add_piece(std::make_shared<Rook>(true));
         get_spot(x, y)->set_piece(white->get_last_piece());
     }
+
+    notify_observers(get_spot(x, y));
 }
 
 bool Board::setup_complete() {
@@ -179,8 +186,8 @@ void Board::setup_mode() {
 
 
     bool done = false;
+    notify_observers();
     while (!done) {
-        notify_observers();
         std::string command;
         char piece;
         std::string position;
@@ -200,13 +207,15 @@ void Board::setup_mode() {
             add_piece(piece, position);
         } else if (command == "-") {
             std::cin >> position;
-            get_spot(position_getX(position), position_getY(position))->remove_piece();
+            Spot *s = get_spot(position_getX(position), position_getY(position));
+            s->remove_piece();
+            notify_observers(s);
         }
     }
 }
 
 Spot * Board::get_spot(int x, int y) {
-    return &positions[x][y];
+    return &positions[x][7 - y];
 }
 
 bool Board::same_team(Spot *s1, Spot *s2) {
@@ -647,3 +656,4 @@ Player* Board::get_black() {
 Player* Board::get_white() {
     return white;
 }
+
