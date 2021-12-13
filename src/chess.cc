@@ -37,6 +37,7 @@ int main() {
     };
 
     while (true) {
+        std::cout << "Enter a command: ";
         std::cin >> cmd;
         if (cmd == "game") {
             std::string white_player;
@@ -78,6 +79,7 @@ int main() {
         } else {
             std::cout << "Invalid command. Try again." << std::endl;
         }
+        std::cout << std::endl;
     }
 
     // Final Score output

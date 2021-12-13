@@ -7,10 +7,8 @@
 #include "graphics_observer.h"
 
 GraphicsObserver::GraphicsObserver(Board *board) : subject{board} {
-
     subject->attach(this);
     w = std::make_unique<Xwindow>(GraphicsObserver::HEIGHT * Board::ROWS, GraphicsObserver::WIDTH * Board::COLS);
-    printf("Default Depth: %d\n", DefaultDepth(w->get_display(), 0));
 }
 
 GraphicsObserver::~GraphicsObserver() {

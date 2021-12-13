@@ -11,25 +11,43 @@ TextObserver::~TextObserver() {
 }
 
 void TextObserver::notify() {
-    std::cout << "------------" << std::endl;
-    for (int i = 0; i < Board::ROWS; i++) {
-        std::cout << Board::ROWS - i << " ";
-        for (int j = 0; j < Board::COLS; j++) {
-            if (subject->get_spot(j, i)->get_piece()) {
-                std::cout << subject->get_spot(j, i)->get_spot_text();
-                continue;
+    std::cout << "   A      B      C      D      E      F      G      H\n\n";
+    for (int i = Board::ROWS - 1; i >= 0; i--) {
+        for (int m = 0; m < 3; m++) {
+            for (int j = 0; j < Board::COLS; j++) {
+                Spot *s = subject->get_spot(j, i);
+
+                if (s->is_white()) {
+                    if (s->get_piece() && m == 1) {
+                        for (int n = 0; n < 2; n++)
+                            std::cout << "\u2588";
+                        std::cout << " " << s->get_piece()->get_text() << " ";
+                        for (int n = 0; n < 2; n++)
+                            std::cout << "\u2588";
+                    } else {
+                        for (int n = 0; n < 7; n++)
+                            std::cout << "\u2588";
+                    }
+                } else {
+                    if (s->get_piece() && m == 1) {
+
+                        for (int n = 0; n < 3; n++)
+                            std::cout << " ";
+                        std::cout << s->get_piece()->get_text();
+                        for (int n = 0; n < 3; n++)
+                            std::cout << " ";
+                    } else {
+                        for (int n = 0; n < 7; n++)
+                            std::cout << " ";
+                    }
+                }
             }
-            if (subject->get_spot(j, i)->is_white()) {
-               std::cout << " ";
-            } else {
-                std::cout << "-";
+            if (m == 1) {
+                std::cout << "  " << i + 1;
             }
+            std::cout << std::endl;
         }
-        std::endl (std::cout);
     }
-    std::endl (std::cout);
-    std::cout << "  abcdefgh" << std::endl;
-    std::cout << "------------" << std::endl;
 }
 
 void TextObserver::notify(Spot *s) {
