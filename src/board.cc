@@ -332,11 +332,48 @@ bool Board::is_en_passant(Move &mv) {
     return (mv.piece_moved)->is_pawn() && mv.is_diagonal() && mv.end_pos->is_blank() && mv.euclid_dist() == mv.DIAG_UNIT;
 }
 
-// TODO: !!!!!!
 bool Board::valid_castle(Move &mv) {
 
+    Piece *king = mv.piece_moved;
+    Spot *king_start = mv.start_pos;
+    Spot *king_end = mv.end_pos;
+    std::pair<Spot*, Spot*> rook_spots = get_rook_castle_spots(mv.end);
+    Spot *rook_start = rook_spots.first;
+    Spot *rook_end = rook_spots.second;
+
+    // if start and end spots are invalid
+    if(!is_valid_king_castle_spots(king_start, king_end)) return false;
+
+    // if king does not exist on starting spot or another piece is on it
+    if (king_start->is_blank() || !(king_start->get_piece())->is_king()) return false; 
+
+    // if king is not in a position for castle
+    if (!rook_start || !rook_end) return false;
+
+    // if rook does not exist
+    if (rook_start->is_blank() || !(rook_start->get_piece())->is_rook()) return false;
+
+    Piece *rook = rook_start->get_piece();
+
+    // if in check
     if (in_check()) return false;
+
     if (!mv.is_castle()) return false;
+
+    // if king or rook has moved
+    if (has_moved(rook) || has_moved(king)) return false;
+
+    // check if there are pieces between king and rook and spot under attack
+    int inc_x = (king_start->get_x() < rook_start->get_x()) ? 1 : -1;
+    for (int x = king_start->get_x(); x != king_start->get_x(); x += inc_x) {
+        Spot *between_spot = get_spot(x, king_start->get_y();
+        if (!between_spot->is_blank()) {
+            return false;
+        }
+        if (under_attack(between_spot)) {
+            return false;
+        }
+    }
 
     return true;
 }
@@ -404,7 +441,7 @@ bool Board::check_valid_move(Move &mv) {
         return false;
     } else if (mv.is_promotion() && !valid_promotion(mv)) {
         return false;
-    } else if (!valid_en_passant(mv)) {
+    } else if (is_en_passant(mv) && !valid_en_passant(mv)) {
         return false;
     } else {
         // check if piece can move path
@@ -542,12 +579,25 @@ std::pair<Spot*, Spot*> Board::get_rook_castle_spots(Spot *king_end) {
     } else if (same_spot(king_end, get_spot(2, 7))) {
         start = get_spot(0, 7);
         end = get_spot(3, 7);
-    } else {
+    } else if (same_spot(king_end, get_spot(6, 7))) {
         start = get_spot(7, 7);
         end = get_spot(5, 7);
     }
 
     return std::make_pair(start, end);
+}
+
+bool Board::is_valid_king_castle_spots(Spot *start, Spot *end) {
+
+    if (white_move) {
+        if (same_spot(start, get_spot(5, 0) && same_spot(start, get_spot(2, 0)))) return true;
+        if (same_spot(start, get_spot(5, 0) && same_spot(start, get_spot(6, 0)))) return true;
+    } else {
+        if (same_spot(start, get_spot(5, 7) && same_spot(start, get_spot(2, 7)))) return true;
+        if (same_spot(start, get_spot(5, 7) && same_spot(start, get_spot(6, 7)))) return true;
+    }
+    
+    return false;
 }
 
 void Board::execute_castle(Move &mv) {
