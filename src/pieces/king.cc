@@ -26,7 +26,7 @@ bool King::valid_castle(Move mv) {
 bool King::valid_path(Move mv) {
     int mvEuclidDist = mv.euclid_dist();
 
-    if (!mv.is_castle)
+    if (!mv.is_castle())
     {
         return (mv.is_diagonal() && mvEuclidDist == mv.DIAG_UNIT) || ((mv.is_vertical() || mv.is_horizontal()) && mvEuclidDist == mv.FORWARD_UNIT);
     }

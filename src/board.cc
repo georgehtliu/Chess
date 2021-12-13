@@ -328,11 +328,15 @@ bool Board::under_attack(Spot *spot)
     return (under_attack_vertical(spot) || under_attack_horizontal(spot) || under_attack_diagonal(spot) || under_attack_knight(spot));
 }
 
+bool Board::is_en_passant(Move &mv) {
+    return (mv.piece_moved)->is_pawn() && mv.is_diagonal() && mv.end_pos->is_blank() && mv.euclid_dist() == mv.DIAG_UNIT;
+}
+
 // TODO: !!!!!!
 bool Board::valid_castle(Move &mv) {
 
     if (in_check()) return false;
-    if (!mv.is_castle) return false;
+    if (!mv.is_castle()) return false;
 
     return true;
 }
@@ -342,7 +346,7 @@ bool Board::valid_promotion(Move &mv) {
 }
 
 bool Board::valid_en_passant(Move &mv) {
-    if (mv.is_en_passant) return false;
+    if (!is_en_passant(mv)) return false;
     return true;
 }
 
@@ -350,6 +354,8 @@ bool Board::move_blocked(Move &mv) {
 
     int inc_x = 0;
     int inc_y = 0;
+
+    if (!(mv.is_diagonal() || mv.is_horizontal() || mv.is_vertical())) return false;
 
     Spot *end = mv.end_pos;
     Spot *start = mv.start_pos;
@@ -393,25 +399,17 @@ bool Board::check_valid_move(Move &mv) {
     // cannot move into own pieces
     if (same_team(mv.start_pos, mv.end_pos)) return false;
 
-    // check if piece can move path
-    if (!(valid_path(mv.start_pos, mv.end_pos))) return false;
-
-    // cannot move other pieces if in check and can only
-    // get king to safety/block/capture attack - should be covered by in check after move
-
-    // cannot take king - should already be covered since you must be in check beforehand
-
-    // cannot move somewhere if blocked 
-    if (move_blocked(mv)) return false;
-
-    // castle
-    if (!valid_castle(mv)) return false;
-
-    // promotion: must be last row
-    if (!valid_promotion(mv)) return false;
-
-    // en passant
-    if (!valid_en_passant(mv)) return false;
+    // castle, promotion, en passant
+    if (mv.is_castle() && !valid_castle(mv)) {
+        return false;
+    } else if (mv.is_promotion() && !valid_promotion(mv)) {
+        return false;
+    } else if (!valid_en_passant(mv)) {
+        return false;
+    } else {
+        // check if piece can move path
+        if (!valid_path(mv.start_pos, mv.end_pos) || move_blocked(mv)) return false;
+    }
 
     // cannot be in check after move ** should be done last **
     if (in_check_after_move(mv)) return false;
@@ -616,24 +614,24 @@ void Board::execute_move(Move &mv) {
     Spot *start = mv.start_pos;
     Spot *end = mv.end_pos;
 
-    // place piece for generic move
-    if (!(mv.is_castle || mv.is_en_passant || mv.is_promotion())) {
-        place_piece(start, end);
-    }
-
     // perform castle
-    if (mv.is_castle) {
+    if (mv.is_castle()) {
         execute_castle(mv);
     }
 
     // perform en passant
-    if (mv.is_en_passant) {
+    if (is_en_passant(mv)) {
         execute_en_passant(mv);
     }
     
     // promotion
     if (mv.is_promotion()) {
         execute_promotion(mv);
+    }
+
+    // place piece for generic move
+    if (!(mv.is_castle() || is_en_passant(mv) || mv.is_promotion())) {
+        place_piece(start, end);
     }
 
     // add move to array
