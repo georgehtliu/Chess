@@ -3,7 +3,7 @@
 #include "spot.h"
 #include "piece.h"
 
-Move::Move(Player *p, Spot *start_p, Spot *end_p, Piece *p_moved, Piece *p_killed, bool castle, bool ep, char p_promote, bool res) : player{p}, start_pos{start_p}, end_pos{end_p}, piece_moved{p_moved}, piece_killed{p_killed}, is_castle{castle}, is_en_passant{ep}, promotion_piece{p_promote}, is_resign{res} {}
+Move::Move(Player *p, Spot *start_p, Spot *end_p, Piece *p_moved, Piece *p_killed, char p_promote, bool res) : player{p}, start_pos{start_p}, end_pos{end_p}, piece_moved{p_moved}, piece_killed{p_killed}, promotion_piece{p_promote}, is_resign{res} {}
 
 bool Move::is_diagonal()
 {
@@ -50,5 +50,9 @@ int Move::y_dist()
 }
 
 bool Move::is_promotion() {
-    return promotion_piece != 'x';
+    return promotion_piece == 'q' || promotion_piece == 'b' || promotion_piece == 'r' || promotion_piece == 'n';
+}
+
+bool Move::is_castle() {
+    return piece_moved->is_king() && euclid_dist() == 2 && is_horizontal();
 }

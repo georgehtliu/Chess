@@ -13,8 +13,8 @@ Rook::Rook(bool white) {
     }
 }
 
-bool Rook::get_has_moved() {
-    return has_moved;
+bool Rook::is_rook() const {
+    return true;
 }
 
 bool Rook::valid_path(Move mv) {
