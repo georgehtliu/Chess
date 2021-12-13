@@ -371,7 +371,31 @@ bool Board::valid_castle(Move &mv) {
     return true;
 }
 bool Board::valid_promotion(Move &mv) {
+
     if (!mv.is_promotion()) return false;
+    int second_last_rank_white = 6;
+    int second_last_rank_black = 1;
+
+    Piece *pawn = mv.start_pos->get_piece();
+
+    // starting piece must be pawn
+    if ((mv.start_pos)->is_blank() || !(pawn->is_pawn())) return false;
+
+    // move must be forward and one unit
+    if (!mv.is_forward() || mv.euclid_dist() != 1) return false;
+
+    // check pawn must be on second last rank
+    if (white_move) {
+        if ((mv.start_pos)->get_y() != second_last_rank_white) return false;
+    } else {
+        if ((mv.start_pos)->get_y() != second_last_rank_black) return false;
+    }
+
+    if (!mv.end_pos->is_blank()) return false; 
+
+    // pawn must be able to move in front
+    if (!pawn->valid_path(mv)) return false;
+
     return true;
 }
 
