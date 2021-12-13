@@ -25,6 +25,8 @@ class Board
 
     std::vector<Move> moves;
 
+    std::vector<Observer *> observers;
+
     std::vector<std::vector<Spot>> positions;
     bool white_move;
     Spot *white_king_spot;
@@ -86,7 +88,6 @@ public:
     Player* get_black();
     Player* get_white();
 
-    std::vector<Observer *> observers;
 };
 
 #endif // CHESS_INCLUDE_BOARD_H_
