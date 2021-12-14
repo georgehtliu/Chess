@@ -16,7 +16,7 @@ int Spot::get_x() const
 
 int Spot::get_y() const
 {
-    return y;
+    return 7-y;
 }
 
 bool Spot::is_white() const
