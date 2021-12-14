@@ -619,7 +619,7 @@ bool Board::in_check_after_move(Move &mv) {
         }
 
         starting_spot->set_piece(mv.piece_moved);
-        (starting_spot->get_piece())->set_alive(true);
+        (starting_spot->get_piece())->set_alive();
     }
 
     return will_be_in_check;
