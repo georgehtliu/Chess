@@ -757,6 +757,26 @@ void Board::execute_promotion(Move &mv) {
     end->set_piece(player->get_last_piece());
 }
 
+Spot* Board::get_king_spot() {
+
+    Spot *king_spot = nullptr;
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 7; j++) {
+            Spot *candidate = get_spot(int i, int j);
+            if (!candidate->get_piece()) continue;
+            if (white_move && candidate->get_piece()->is_king() && candidate->get_piece()->is_white()) {
+                king_spot = candidate;
+                break;
+            }
+            if (!white_move && candidate->get_piece()->is_king() && !candidate->get_piece()->is_white()) {
+                king_spot = candidate;
+                break;
+            }
+        }
+    }
+    return king_spot;
+}
+
 void Board::execute_move(Move &mv) {
 
     Spot *start = mv.start_pos;
