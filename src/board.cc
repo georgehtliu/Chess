@@ -479,6 +479,9 @@ bool Board::check_valid_move(Move &mv) {
     // can only move if it's your turn
     bool piece_is_white = ((mv.start_pos)->get_piece())->is_white();
     if ((piece_is_white && !white_move) || (!piece_is_white && white_move)) return false;
+
+    // have to move somewhere, not stay in one place
+    if (same_spot(mv.start_pos, mv.end_pos)) return false;
     
     // start and end cannot be out of bounds
     if (!(mv.end_pos)->in_bounds() || !(mv.start_pos)->in_bounds()) return false;
