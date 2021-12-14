@@ -36,6 +36,8 @@ public:
     Piece* get_nth_piece(size_t n);
 
     virtual Move get_next_move(const Board *b);
+    std::vector<Move> all_next_moves(Board *b);
+
 };
 
 #endif

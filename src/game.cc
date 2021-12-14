@@ -12,6 +12,7 @@
 
 // TEMP
 #include <iostream>
+#include <vector>
 
 Game::Game(PlayerType white_lvl, PlayerType black_lvl): white_lvl{white_lvl}, black_lvl{black_lvl} {
     switch (white_lvl) {
@@ -71,13 +72,19 @@ Game::Game() {
 
     // Initialize Observers
     t = std::make_shared<TextObserver>(board.get());
-    g = std::make_shared<GraphicsObserver>(board.get());
+    // g = std::make_shared<GraphicsObserver>(board.get());
 
     mode = Mode::Setup;
 }
 
 void Game::run_game() {
     board->notify_observers();
+    auto vec = white->all_next_moves(board.get());
+    std::cout << "TEMPORARY" << std::endl;
+    for (auto i : vec) {
+        std::cout << i.end_pos->get_x() << i.end_pos->get_y() << i.piece_moved->get_text() << std::endl;
+    }
+
 
     char c;
     std::cin >> c;

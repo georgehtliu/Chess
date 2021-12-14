@@ -33,7 +33,6 @@ class Board
     Spot *black_king_spot;
 
     // Manage/execute moves
-    bool check_valid_move(Move &mv);
     void execute_en_passant(Move &mv);
     void execute_castle(Move &mv);
     bool is_valid_king_castle_spots(Spot *start, Spot *end);
@@ -89,6 +88,7 @@ public:
     void set_black(Player* black);
     Player* get_black();
     Player* get_white();
+    bool check_valid_move(Move &mv);
 
 };
 

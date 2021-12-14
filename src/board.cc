@@ -15,8 +15,8 @@
 Board::Board(Player* white, Player* black): 
     white{white}, 
     black{black}, 
-    white_king_spot{std::make_shared<Spot>(4, 7).get()}, 
-    black_king_spot{std::make_shared<Spot>(0, 7).get()}
+    white_king_spot{std::make_shared<Spot>(4, 0).get()}, 
+    black_king_spot{std::make_shared<Spot>(4, 7).get()}
 {
     // y=7 is the bottom of the board (d1)
     for (int i = 0; i < ROWS; i++)
@@ -215,7 +215,7 @@ void Board::setup_mode() {
 }
 
 Spot * Board::get_spot(int x, int y) {
-    return &positions[x][7 - y];
+    return &positions[x][y];
 }
 
 bool Board::same_team(Spot *s1, Spot *s2) {
@@ -447,7 +447,7 @@ bool Board::move_blocked(Move &mv) {
     Spot *end = mv.end_pos;
     Spot *start = mv.start_pos;
     int dx = end->get_x() - start->get_x();
-    int dy = end->get_x() - start->get_x();
+    int dy = end->get_y() - start->get_y();
 
     Spot *runner = start; // only checks for vertical, horizontal and diagonal
 
@@ -502,7 +502,7 @@ bool Board::check_valid_move(Move &mv) {
     }
 
     // cannot be in check after move ** should be done last **
-    if (in_check_after_move(mv)) return false;
+    // if (in_check_after_move(mv)) return false;
 
     return true;
 }

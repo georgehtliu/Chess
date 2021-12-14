@@ -1,4 +1,6 @@
 #include "knight.h"
+#include <utility>
+#include <memory>
 
 Knight::Knight(bool white) {
     this->white = white;
@@ -23,12 +25,16 @@ std::vector<std::pair<int, int>> Knight::generate_paths(std::pair<int, int> pos)
     int x = pos.first;
     int y = pos.second;
 
-    for (int i = 1; i <= 2; i++) {
-        for (int j = -2; j <= -1; j++) {
-            if (this->in_board(x + i, y + j)) paths.push_back(std::make_pair(x + i, y + j));
-            if (this->in_board(x + j, y + i)) paths.push_back(std::make_pair(x + j, y + i));
-        }
-    }
+    // 8 moves
+    if (this->in_board(x - 2, y - 1)) paths.push_back(std::make_pair(x - 2, y - 1));
+    if (this->in_board(x - 2, y + 1)) paths.push_back(std::make_pair(x - 2, y + 1));
+    if (this->in_board(x + 2, y - 1)) paths.push_back(std::make_pair(x + 2, y - 1));
+    if (this->in_board(x + 2, y + 1)) paths.push_back(std::make_pair(x + 2, y + 1));
+    if (this->in_board(x - 1, y - 2)) paths.push_back(std::make_pair(x - 1, y - 2));
+    if (this->in_board(x - 1, y + 2)) paths.push_back(std::make_pair(x - 1, y + 2));
+    if (this->in_board(x + 1, y - 2)) paths.push_back(std::make_pair(x + 1, y - 2));
+    if (this->in_board(x + 1, y + 2)) paths.push_back(std::make_pair(x + 1, y + 2));
+
     
     return paths;
 }
