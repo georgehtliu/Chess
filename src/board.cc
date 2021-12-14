@@ -14,19 +14,20 @@
 
 Board::Board(Player* white, Player* black): 
     white{white}, 
-    black{black}, 
-    white_king_spot{std::make_shared<Spot>(4, 0).get()}, 
-    black_king_spot{std::make_shared<Spot>(4, 7).get()}
+    black{black}
 {
     // y=7 is the bottom of the board (d1)
     for (int i = 0; i < ROWS; i++)
     {
-        positions.push_back(std::vector<Spot>());
+        positions.emplace_back();
         for (int j = 0; j < COLS; j++)
         {
             positions[i].push_back(Spot(i, j));
         }
     }
+
+    white_king_spot = get_spot(4, 0);
+    black_king_spot = get_spot(4, 7);
     white_move = true;
 }
 
@@ -506,7 +507,7 @@ bool Board::check_valid_move(Move &mv) {
     }
 
     // cannot be in check after move ** should be done last **
-    // if (in_check_after_move(mv)) return false;
+    if (in_check_after_move(mv)) return false;
 
     return true;
 }
