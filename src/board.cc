@@ -788,6 +788,7 @@ bool Board::white_to_move() {
     return white_move;
 }
 
+bool Board::any_path_available() {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             Piece * p = get_spot(i, j)->get_piece();
