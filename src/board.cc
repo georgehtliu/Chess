@@ -307,19 +307,38 @@ bool Board::under_attack_diagonal(Spot *spot)
 bool Board::under_attack_knight(Spot *spot) {
 
     // should be 8 positions
-    for (int i = 1; i <= 2; i++) {
-        for (int j = -2; j <= -1; j++) {
-            if (in_bounds(spot->get_x() + i, spot->get_y() + j)) {
-                Spot *spot1 = get_spot(spot->get_x() + i, spot->get_y() + j);
-                if (is_attacking_path(spot, spot1)) return true;
-            }
-            if (in_bounds(spot->get_x() + j, spot->get_y() + i)) {
-                Spot *spot2 = get_spot(spot->get_x() + j, spot->get_y() + i);
-                if (is_attacking_path(spot, spot2)) return true;
-            }
-        }
+    if (in_bounds(spot->get_x() - 2, spot->get_y() - 1)) {
+        Spot *spot1 = get_spot(spot->get_x() - 2, spot->get_y() - 1);
+        if (is_attacking_path(spot, spot1)) return true;
     }
-
+    if (in_bounds(spot->get_x() - 2, spot->get_y() + 1)) {
+        Spot *spot2 = get_spot(spot->get_x() - 2, spot->get_y() + 1);
+        if (is_attacking_path(spot, spot2)) return true;
+    }
+    if (in_bounds(spot->get_x() + 2, spot->get_y() - 1)) {
+        Spot *spot2 = get_spot(spot->get_x() + 2, spot->get_y() - 1);
+        if (is_attacking_path(spot, spot2)) return true;
+    }
+    if (in_bounds(spot->get_x() + 2, spot->get_y() + 1)) {
+        Spot *spot2 = get_spot(spot->get_x() + 2, spot->get_y() + 1);
+        if (is_attacking_path(spot, spot2)) return true;
+    }
+    if (in_bounds(spot->get_x() - 1, spot->get_y() - 2)) {
+        Spot *spot2 = get_spot(spot->get_x() - 1, spot->get_y() - 2);
+        if (is_attacking_path(spot, spot2)) return true;
+    }
+    if (in_bounds(spot->get_x() - 1, spot->get_y() + 2)) {
+        Spot *spot2 = get_spot(spot->get_x() - 1, spot->get_y() + 2);
+        if (is_attacking_path(spot, spot2)) return true;
+    }
+    if (in_bounds(spot->get_x() + 1, spot->get_y() - 2)) {
+        Spot *spot2 = get_spot(spot->get_x() + 1, spot->get_y() - 2);
+        if (is_attacking_path(spot, spot2)) return true;
+    }
+    if (in_bounds(spot->get_x() + 1, spot->get_y() + 2)) {
+        Spot *spot2 = get_spot(spot->get_x() + 1, spot->get_y() + 2);
+        if (is_attacking_path(spot, spot2)) return true;
+    }
     return false;
 }
 
