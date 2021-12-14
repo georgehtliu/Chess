@@ -85,9 +85,9 @@ std::vector<Move> Player::all_next_moves(Board *b) {
                 std::vector<std::pair<int, int>> paths = p->generate_paths(std::make_pair(i, j));
                 for (auto path : paths) {
                     Move m{this, b->get_spot(i, j), b->get_spot(path.first, path.second), p};
-                    // if (b->check_valid_move(m)) {
+                    if (b->check_valid_move(m)) {
                         all_moves.push_back(m);
-                    // }
+                    }
                 }
             }
         }

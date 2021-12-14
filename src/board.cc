@@ -215,7 +215,7 @@ void Board::setup_mode() {
 }
 
 Spot * Board::get_spot(int x, int y) {
-    return &positions[x][7 - y];
+    return &positions[x][y];
 }
 
 bool Board::same_team(Spot *s1, Spot *s2) {
@@ -447,7 +447,7 @@ bool Board::move_blocked(Move &mv) {
     Spot *end = mv.end_pos;
     Spot *start = mv.start_pos;
     int dx = end->get_x() - start->get_x();
-    int dy = end->get_x() - start->get_x();
+    int dy = end->get_y() - start->get_y();
 
     Spot *runner = start; // only checks for vertical, horizontal and diagonal
 
