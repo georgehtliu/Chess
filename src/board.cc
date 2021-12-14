@@ -126,9 +126,11 @@ void Board::add_piece(char piece, std::string position) {
     } else if (piece == 'k') {
         black->add_piece(std::make_shared<King>(false));
         get_spot(x, y)->set_piece(black->get_last_piece());
+        black_king_spot = get_spot(x, y);
     } else if (piece == 'K') {
         white->add_piece(std::make_shared<King>(true));
         get_spot(x, y)->set_piece(white->get_last_piece());
+        white_king_spot = get_spot(x, y);
     } else if (piece == 'q') {
         black->add_piece(std::make_shared<Queen>(false));
         get_spot(x, y)->set_piece(black->get_last_piece());
@@ -480,6 +482,8 @@ bool Board::move_blocked(Move &mv) {
 
 // TODO
 bool Board::check_valid_move(Move &mv) {
+    // check that the start spot actually has a piece
+    if (!((mv.start_pos)->get_piece())) return false;
 
     // can only move if it's your turn
     bool piece_is_white = ((mv.start_pos)->get_piece())->is_white();
