@@ -15,8 +15,8 @@
 Board::Board(Player* white, Player* black): 
     white{white}, 
     black{black}, 
-    white_king_spot{std::make_shared<Spot>(4, 7).get()}, 
-    black_king_spot{std::make_shared<Spot>(0, 7).get()}
+    white_king_spot{std::make_shared<Spot>(4, 0).get()}, 
+    black_king_spot{std::make_shared<Spot>(4, 7).get()}
 {
     // y=7 is the bottom of the board (d1)
     for (int i = 0; i < ROWS; i++)
@@ -499,7 +499,7 @@ bool Board::check_valid_move(Move &mv) {
     }
 
     // cannot be in check after move ** should be done last **
-    if (in_check_after_move(mv)) return false;
+    // if (in_check_after_move(mv)) return false;
 
     return true;
 }
