@@ -53,19 +53,19 @@ Game::Game(PlayerType white_lvl, PlayerType black_lvl): white_lvl{white_lvl}, bl
 
 
     // Make new board
-    board = std::make_shared<Board>(this->white.get(), this->black.get());    
+    board = std::make_shared<Board>(this->white.get(), this->black.get());
     board->gen_standard_layout();
 
     // Initialize observers
-    t = std::make_shared<TextObserver>(board.get());
-    g = std::make_shared<GraphicsObserver>(board.get());
+    t = std::make_unique<TextObserver>(board.get());
+    g = std::make_unique<GraphicsObserver>(board.get());
 
     mode = Mode::Ready;
 }
 
 Game::Game() {
-    white = std::make_shared<Player>();
-    black = std::make_shared<Player>();
+    white = std::make_shared<Human>(true);
+    black = std::make_shared<Human>(false);
 
     // Make new board
     board = std::make_shared<Board>(white.get(), black.get());
@@ -77,25 +77,42 @@ Game::Game() {
     mode = Mode::Setup;
 }
 
-void Game::run_game() {
+GameResult Game::run_game() {
     board->notify_observers();
+    /*
     auto vec = white->all_next_moves(board.get());
     std::cout << "TEMPORARY" << std::endl;
     for (auto i : vec) {
         std::cout << i.end_pos->get_x() << i.end_pos->get_y() << i.piece_moved->get_text() << std::endl;
     }
+     */
 
 
-    char c;
-    std::cin >> c;
-}
+    // Main Game loop
+    while (true) {
+        Move m = board->get_current_player()->get_next_move(board.get());
 
-int Game::get_white_score() {
-    return white->get_score();
-}
+        if (m.is_resign) {
+            if (board->white_to_move()) {
+                return GameResult::BlackWin;
+            } else {
+                return GameResult::WhiteWin;
+            }
+        }
 
-int Game::get_black_score() {
-    return black->get_score();
+        board->execute_move(m);
+        board->notify_observers(m);
+
+        if (board->in_checkmate()) {
+            if (board->white_to_move()) {
+                return GameResult::BlackWin;
+            } else {
+                return GameResult::WhiteWin;
+            }
+        } else if (board->in_stalemate()) {
+            return GameResult::Tie;
+        }
+    }
 }
 
 PlayerType Game::get_white_player_type() {

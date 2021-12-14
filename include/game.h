@@ -22,6 +22,7 @@
 
 enum Mode{Setup, Ready, InGame, Finished};
 enum PlayerType{HumanType, AI1, AI2, AI3, AI4};
+enum GameResult{WhiteWin, BlackWin, Tie};
 
 class Game {
     std::shared_ptr<Player> white;
@@ -46,7 +47,7 @@ public:
 
     ~Game() = default;
 
-    void run_game();
+    GameResult run_game();
 
     int get_white_score();
     int get_black_score();

@@ -9,7 +9,7 @@
 
 class Computer1 : public Player {
 public:
-    Computer1(bool white);
+    explicit Computer1(bool white);
 
     Move get_next_move(Board *b) override;
 };

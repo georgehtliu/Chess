@@ -61,8 +61,26 @@ int main() {
                 games.back().set_black_type(black_player_type);
             }
 
-            games.back().run_game();
-            break;
+            games.back().set_game_mode(Mode::InGame);
+            GameResult res = games.back().run_game();
+
+            switch (res) {
+                case GameResult::WhiteWin:
+                    white_score++;
+                    std::cout << "White wins!" << std::endl;
+                    break;
+                case GameResult::BlackWin:
+                    black_score++;
+                    std::cout << "Black wins!" << std::endl;
+                    break;
+                case GameResult::Tie:
+                    white_score += 0.5;
+                    black_score += 0.5;
+                    std::cout << "Stalemate!" << std::endl;
+                    break;
+            }
+            games.back().set_game_mode(Mode::Finished);
+            games.back().get_board()->detach_all();
 
         } else if (cmd == "setup") {
             if (games.empty() || games.back().get_game_mode() == Mode::Finished) {

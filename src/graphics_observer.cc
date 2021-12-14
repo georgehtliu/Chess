@@ -38,7 +38,7 @@ void GraphicsObserver::notify() {
     for (int i = 0; i < Board::ROWS; i++) {
         w->drawString(WIDTH * Board::COLS + (1.5 * BOARD_OFFSET),
                       ((i + 0.5) * HEIGHT) + BOARD_OFFSET,
-                      std::to_string(i + 1));
+                      std::to_string( 8 - i));
     }
 }
 

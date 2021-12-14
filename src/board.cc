@@ -48,6 +48,10 @@ void Board::detach(Observer *o) {
     }
 }
 
+void Board::detach_all() {
+    observers.clear();
+}
+
 void Board::notify_observers() {
     for (auto &ob : observers)
         ob->notify();
@@ -215,7 +219,7 @@ void Board::setup_mode() {
 }
 
 Spot * Board::get_spot(int x, int y) {
-    return &positions[x][y];
+    return &positions[x][7 - y];
 }
 
 bool Board::same_team(Spot *s1, Spot *s2) {
@@ -769,5 +773,30 @@ Player* Board::get_black() {
 
 Player* Board::get_white() {
     return white;
+}
+
+Player *Board::get_current_player() {
+    if (white_move) {
+        return white;
+    } else {
+        return black;
+    }
+}
+
+bool Board::white_to_move() {
+    return white_move;
+}
+
+bool Board::in_checkmate() {
+    return false;
+}
+
+bool Board::in_stalemate() {
+    return false;
+}
+
+void Board::notify_observers(Move &m) {
+    notify_observers(m.start_pos);
+    notify_observers(m.end_pos);
 }
 

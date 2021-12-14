@@ -10,5 +10,6 @@ Computer3::Computer3(bool white) {
 }
 
 Move Computer3::get_next_move(Board *b) {
-    return Player::get_next_move(b);
+    (void)b;
+    return {this, nullptr, nullptr, nullptr};
 }

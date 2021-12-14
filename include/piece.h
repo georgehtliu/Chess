@@ -1,7 +1,7 @@
 #ifndef _PIECE_H_
 #define _PIECE_H_
 
-#include <memory>
+//#include <memory>
 #include <utility>
 #include <vector>
 #include "image_loader.h"
