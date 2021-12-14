@@ -36,9 +36,8 @@ int main() {
         {"computer4", PlayerType::AI4},
     };
 
-    while (true) {
-        std::cout << "Enter a command: ";
-        std::cin >> cmd;
+    std::cout << "Enter a command: ";
+    while (std::cin >> cmd) {
         if (cmd == "game") {
             std::string white_player;
             std::string black_player;
@@ -81,6 +80,7 @@ int main() {
             }
             games.back().set_game_mode(Mode::Finished);
             games.back().get_board()->detach_all();
+            games.back().destroy_observers();
 
         } else if (cmd == "setup") {
             if (games.empty() || games.back().get_game_mode() == Mode::Finished) {
@@ -91,13 +91,13 @@ int main() {
                 games.back().set_game_mode(Mode::Setup);
                 games.back().get_board()->setup_mode();
             }
-
         } else if (cmd == "quit") {
             break;
         } else {
             std::cout << "Invalid command. Try again." << std::endl;
         }
         std::cout << std::endl;
+        std::cout << "Enter a command: ";
     }
 
     // Final Score output

@@ -1,5 +1,5 @@
-#include "../include/piece.h"
-#include "../include/move.h"
+#include "piece.h"
+#include "move.h"
 
 void Piece::set_white(bool white) {
     this->white = white;

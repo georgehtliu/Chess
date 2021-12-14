@@ -62,10 +62,10 @@ public:
     Board* get_board();
 
     void set_game_mode(Mode m);
-
     void set_white_type(PlayerType type);
-
     void set_black_type(PlayerType type);
+
+    void destroy_observers();
 };
 
 #endif // CHESS_INCLUDE_GAME_H_
