@@ -72,7 +72,7 @@ Game::Game() {
 
     // Initialize Observers
     t = std::make_shared<TextObserver>(board.get());
-    // g = std::make_shared<GraphicsObserver>(board.get());
+    g = std::make_shared<GraphicsObserver>(board.get());
 
     mode = Mode::Setup;
 }
@@ -182,4 +182,9 @@ void Game::set_black_type(PlayerType type) {
             break;
     }
 
+}
+
+void Game::destroy_observers() {
+    t.reset();
+    g.reset();
 }
