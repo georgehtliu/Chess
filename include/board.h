@@ -66,9 +66,10 @@ public:
     // Observers
     void attach(Observer *o);
     void detach(Observer *o);
+    void detach_all();
     void notify_observers();
     void notify_observers(Spot *s);
-    // void notify_observers(Move m); // TODO
+    void notify_observers(Move &m); // TODO
 
     // Board info
     const static int ROWS = 8;
@@ -81,15 +82,21 @@ public:
     // Manage spots
     Spot* get_spot(int x, int y);
 
+    bool check_valid_move(Move &mv);
     void execute_move(Move &mv);
     void place_piece(Spot *start, Spot *end);
 
+    // Manage game
+    bool in_checkmate();
+    bool in_stalemate();
+
+    // Manage Players
     void set_white(Player* white);
     void set_black(Player* black);
     Player* get_black();
     Player* get_white();
-    bool check_valid_move(Move &mv);
-
+    Player* get_current_player();
+    bool white_to_move();
 };
 
 #endif // CHESS_INCLUDE_BOARD_H_

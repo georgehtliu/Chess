@@ -35,7 +35,7 @@ public:
     Piece* get_last_piece();
     Piece* get_nth_piece(size_t n);
 
-    virtual Move get_next_move(const Board *b);
+    virtual Move get_next_move(Board *b) = 0;
     std::vector<Move> all_next_moves(Board *b);
 
 };

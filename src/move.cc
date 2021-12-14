@@ -24,11 +24,11 @@ bool Move::is_forward()
 {
     if (piece_moved->is_white())
     {
-        return (start_pos->get_y() < end_pos->get_y());
+        return (start_pos->get_y() > end_pos->get_y());
     }
     else
     {
-        return (start_pos->get_y() > end_pos->get_y());
+        return (start_pos->get_y() < end_pos->get_y());
     }
 }
 

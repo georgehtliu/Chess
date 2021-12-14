@@ -9,6 +9,7 @@ Computer4::Computer4(bool white) {
     this->white = white;
 }
 
-Move Computer4::get_next_move(const Board *b) {
-    return Player::get_next_move(b);
+Move Computer4::get_next_move(Board *b) {
+    (void)b;
+    return {this, nullptr, nullptr, nullptr};
 }

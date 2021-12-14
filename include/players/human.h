@@ -10,9 +10,9 @@
 class Human : public Player {
 
 public:
-    Human(bool white);
+    explicit Human(bool white);
 
-    Move get_next_move(const Board *b) override;
+    Move get_next_move(Board *b) override;
 };
 
 
