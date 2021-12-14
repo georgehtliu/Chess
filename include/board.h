@@ -11,6 +11,7 @@
 #include <fstream>
 #include <vector>
 #include <memory>
+#include <utility>
 
 #include "observer.h"
 #include "spot.h"
@@ -57,6 +58,7 @@ class Board
     bool in_check_after_move(Move &mv);
     void add_piece(char piece, std::string position);
     bool setup_complete();
+    bool any_path_available();
 
 public:
     // Constructor / Destructor

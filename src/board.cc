@@ -788,13 +788,40 @@ bool Board::white_to_move() {
     return white_move;
 }
 
-bool Board::in_checkmate() {
-    return false;
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            Piece * p = get_spot(i, j)->get_piece();
+            if (p && ((p->is_white() && white_move) || (!p->is_white() && !white_move))) {
+                std::vector<std::pair<int, int>> paths = p->generate_paths(std::make_pair(i, j));
+                for (auto path : paths) {
+                    if (white_move) {
+                        Move m{white, get_spot(i, j), get_spot(path.first, path.second), p};
+                        if (check_valid_move(m)) {
+                            return false;
+                        }
+                    } else {
+                        Move m{black, get_spot(i, j), get_spot(path.first, path.second), p};
+                        if (check_valid_move(m)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return true;
 }
 
 bool Board::in_stalemate() {
-    return false;
+    if (in_check()) return false;
+    return any_path_available();
 }
+
+bool Board::in_checkmate() {
+    if (!in_check()) return false;
+    return any_path_available();
+}
+
 
 void Board::notify_observers(Move &m) {
     notify_observers(m.start_pos);
