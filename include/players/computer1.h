@@ -11,7 +11,7 @@ class Computer1 : public Player {
 public:
     Computer1(bool white);
 
-    Move get_next_move(const Board *b) override;
+    Move get_next_move(Board *b) override;
 };
 
 #endif //CS246_CHESS_COMPUTER1_H

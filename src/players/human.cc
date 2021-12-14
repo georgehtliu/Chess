@@ -9,7 +9,7 @@ Human::Human(bool white) {
     this->white = white;
 }
 
-Move Human::get_next_move(const Board *b) {
+Move Human::get_next_move(Board *b) {
     (void)b;
     return Move(this, nullptr, nullptr, nullptr);
 }

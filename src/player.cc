@@ -66,7 +66,7 @@ bool Player::has_valid_moves() {
     return false;
 }
 
-Move Player::get_next_move(const Board *b) {
+Move Player::get_next_move(Board *b) {
     (void)b;
     return Move(nullptr, nullptr, nullptr, nullptr);
 }
