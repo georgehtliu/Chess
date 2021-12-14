@@ -573,6 +573,12 @@ bool Board::in_check_after_move(Move &mv) {
     Spot *starting_spot = mv.start_pos;
     Spot *ending_spot = mv.end_pos;
 
+    // original king spots
+    int white_king_x = white_king_spot->get_x();
+    int white_king_y = white_king_spot->get_y();
+    int black_king_x = black_king_spot->get_x();
+    int black_king_y = black_king_spot->get_y();
+
     bool will_be_in_check = false;
 
     // get en passant information in case of en passant
@@ -618,10 +624,10 @@ bool Board::in_check_after_move(Move &mv) {
     }
 
     // adjust if king moves
-    if (same_spot(white_king_spot, starting_spot)) {
+    if (same_spot(get_spot(white_king_x, white_king_y), starting_spot)) {
         white_king_spot = starting_spot;
     }
-    if (same_spot(black_king_spot, starting_spot)) {
+    if (same_spot(get_spot(black_king_x, black_king_y), starting_spot)) {
         black_king_spot = starting_spot;
     }
 
