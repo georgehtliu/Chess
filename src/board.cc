@@ -25,9 +25,6 @@ Board::Board(Player* white, Player* black):
             positions[i].push_back(Spot(i, j));
         }
     }
-
-    white_king_spot = get_spot(4, 0);
-    black_king_spot = get_spot(4, 7);
     white_move = true;
 }
 
@@ -126,11 +123,9 @@ void Board::add_piece(char piece, std::string position) {
     } else if (piece == 'k') {
         black->add_piece(std::make_shared<King>(false));
         get_spot(x, y)->set_piece(black->get_last_piece());
-        black_king_spot = get_spot(x, y);
     } else if (piece == 'K') {
         white->add_piece(std::make_shared<King>(true));
         get_spot(x, y)->set_piece(white->get_last_piece());
-        white_king_spot = get_spot(x, y);
     } else if (piece == 'q') {
         black->add_piece(std::make_shared<Queen>(false));
         get_spot(x, y)->set_piece(black->get_last_piece());
@@ -552,32 +547,17 @@ void Board::place_piece(Spot *start, Spot *end) {
     // end spot now has start's piece
     end->set_piece(start->get_piece());
     start->set_piece(nullptr);
-
-    // if king moves, update king spot
-    if (white_move && same_spot(white_king_spot, start)) {
-        white_king_spot = end;
-    } else if (same_spot(black_king_spot, start)) {
-        black_king_spot = end;
-    }
 }
 
 bool Board::in_check() {
 
-    if (white_move) return under_attack(white_king_spot);
-
-    return under_attack(black_king_spot);
+    return under_attack(get_king_spot(white_move));
 }
 
 bool Board::in_check_after_move(Move &mv) {
 
     Spot *starting_spot = mv.start_pos;
     Spot *ending_spot = mv.end_pos;
-
-    // original king spots
-    int white_king_x = white_king_spot->get_x();
-    int white_king_y = white_king_spot->get_y();
-    int black_king_x = black_king_spot->get_x();
-    int black_king_y = black_king_spot->get_y();
 
     bool will_be_in_check = false;
 
@@ -621,14 +601,6 @@ bool Board::in_check_after_move(Move &mv) {
     } else {
         // blank spot
         ending_spot->set_piece(nullptr);
-    }
-
-    // adjust if king moves
-    if (same_spot(get_spot(white_king_x, white_king_y), starting_spot)) {
-        white_king_spot = starting_spot;
-    }
-    if (same_spot(get_spot(black_king_x, black_king_y), starting_spot)) {
-        black_king_spot = starting_spot;
     }
 
     // if castle, move rook back to original square
@@ -757,18 +729,18 @@ void Board::execute_promotion(Move &mv) {
     end->set_piece(player->get_last_piece());
 }
 
-Spot* Board::get_king_spot() {
+Spot* Board::get_king_spot(bool white) {
 
     Spot *king_spot = nullptr;
-    for (int i = 0; i < 7; i++) {
-        for (int j = 0; j < 7; j++) {
-            Spot *candidate = get_spot(int i, int j);
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            Spot *candidate = get_spot(i, j);
             if (!candidate->get_piece()) continue;
-            if (white_move && candidate->get_piece()->is_king() && candidate->get_piece()->is_white()) {
+            if (white && candidate->get_piece()->is_king() && candidate->get_piece()->is_white()) {
                 king_spot = candidate;
                 break;
             }
-            if (!white_move && candidate->get_piece()->is_king() && !candidate->get_piece()->is_white()) {
+            if (!white && candidate->get_piece()->is_king() && !candidate->get_piece()->is_white()) {
                 king_spot = candidate;
                 break;
             }

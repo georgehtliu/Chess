@@ -30,8 +30,6 @@ class Board
 
     std::vector<std::vector<Spot>> positions;
     bool white_move;
-    Spot *white_king_spot;
-    Spot *black_king_spot;
 
     // Manage/execute moves
     void execute_en_passant(Move &mv);
@@ -57,7 +55,7 @@ class Board
     bool in_check();
     bool in_check_after_move(Move &mv);
     void add_piece(char piece, std::string position);
-    Spot *get_king_spot();
+    Spot *get_king_spot(bool white);
     bool setup_complete();
     bool any_path_available();
 
