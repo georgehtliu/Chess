@@ -53,9 +53,15 @@ int main() {
                 std::cout << "Invalid entry for player type. Try again"; 
             }
 
-            if (games.empty() || games.back().get_game_mode() == Mode::Finished) {
+            if (games.empty()) {
+                games.emplace_back(white_player_type, black_player_type);
+            } else if (games.back().get_game_mode() == Mode::Finished) {
+                games.back().get_board()->detach_all();
+                games.back().destroy_observers();
                 games.emplace_back(white_player_type, black_player_type);
             } else if (games.back().get_game_mode() == Mode::Setup) {
+                games.back().get_board()->detach_all();
+                games.back().destroy_observers();
                 games.back().set_white_type(white_player_type);
                 games.back().set_black_type(black_player_type);
             }
@@ -79,8 +85,6 @@ int main() {
                     break;
             }
             games.back().set_game_mode(Mode::Finished);
-            games.back().get_board()->detach_all();
-            games.back().destroy_observers();
 
         } else if (cmd == "setup") {
             if (games.empty() || games.back().get_game_mode() == Mode::Finished) {
