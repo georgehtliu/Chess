@@ -2,6 +2,7 @@
 
 Pawn::Pawn(bool white) {
     this->white = white;
+    this->value = (white ? 1 : -1) * 10;
     if (white) {
         text_repr = 'P';
         white_square = "assets/pieces/pawn_w_bg_w.png";

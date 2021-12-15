@@ -9,6 +9,10 @@ bool Piece::is_white() const {
     return white;
 }
 
+int Piece::get_value() const {
+    return value;
+}
+
 bool Piece::is_alive() {
     return alive;
 }

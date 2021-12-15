@@ -928,3 +928,26 @@ void Board::notify_observers(Move &m) {
     notify_observers(m.end_pos);
 }
 
+int Board::evaluate_move(Move &mv) {
+    int value = 0;
+
+    // If this kills a piece, get that piece's value
+    if (mv.piece_killed) {
+        value += mv.piece_killed->get_value();
+    }
+
+    // If a pawn is promoted as a result of this move
+    if (mv.is_promotion()) {
+        value += 100;
+    }
+
+    // If this places the opposite king in check
+    white_move = !white_move;
+    if (in_check_after_move(mv)) {
+        value += 300;
+    }
+    white_move = !white_move;
+
+    return value;
+}
+

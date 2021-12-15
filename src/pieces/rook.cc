@@ -2,6 +2,7 @@
 
 Rook::Rook(bool white) {
     this->white = white;
+    this->value = (white ? 1 : -1) * 50;
     if (white) {
         text_repr = 'R';
         white_square = "assets/pieces/rook_w_bg_w.png";

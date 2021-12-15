@@ -2,6 +2,8 @@
 
 King::King(bool white) {
     this->white = white;
+    this->value = (white ? 1 : -1) * 900;
+
     if (white) {
         text_repr = 'K';
         white_square = "assets/pieces/king_w_bg_w.png";

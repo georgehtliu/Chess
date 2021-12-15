@@ -3,6 +3,7 @@
 
 Bishop::Bishop(bool white) {
     this->white = white;
+    this->value = (white ? 1 : -1) * 30;
 
     if (white) {
         text_repr = 'B';
