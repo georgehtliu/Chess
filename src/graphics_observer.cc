@@ -67,4 +67,7 @@ void GraphicsObserver::notify(Spot *s) {
 void GraphicsObserver::notify(Move *m) {
     notify(m->start_pos);
     notify(m->end_pos);
+    if (m->end_pos->get_piece() && m->end_pos->get_piece() != m->piece_killed) {
+        notify();
+    }
 }

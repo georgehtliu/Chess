@@ -3,7 +3,6 @@
 //
 
 #include "computer1.h"
-#include "move.h"
 
 #include <vector>
 #include <random>
@@ -23,11 +22,7 @@ Iter select_randomly(Iter start, Iter end) {
     return select_randomly(start, end, gen);
 }
 
-Computer1::Computer1(bool white) {
-    this->white = white;
-}
-
-Move Computer1::get_next_move(Board *b) {
-    std::vector<Move> possible_moves = Player::all_next_moves(b);
+Move computer1_get_next_move(Player *p, Board *b) {
+    std::vector<Move> possible_moves = p->all_next_moves(b);
     return *select_randomly(possible_moves.begin(), possible_moves.end());
 }

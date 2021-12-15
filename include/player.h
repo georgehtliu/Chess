@@ -15,19 +15,21 @@
 class Board;
 class Move;
 
+enum PlayerType{Human, AI1, AI2, AI3, AI4};
+
 class Player {
-protected:
-    int score;
-    bool white;
+public:
     std::vector<std::shared_ptr<Piece>> pieces;
 
-public:
-    virtual ~Player() = default;
+    bool white;
+    PlayerType type;
+
+    Player(bool white, PlayerType type);
+    ~Player() = default;
 
     bool is_white() const;
-    int get_score();
-    int incr_score();
 
+    void set_type(PlayerType type);
     bool has_valid_moves();
     void gen_standard_pieces();
     void add_piece(std::shared_ptr<Piece> p);
@@ -35,7 +37,7 @@ public:
     Piece* get_last_piece();
     Piece* get_nth_piece(size_t n);
 
-    virtual Move get_next_move(Board *b) = 0;
+    Move get_next_move(Board *b);
     std::vector<Move> all_next_moves(Board *b);
 
 };
