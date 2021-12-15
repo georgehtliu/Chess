@@ -49,8 +49,14 @@ int Move::y_dist()
     return abs(start_pos->get_y() - end_pos->get_y());
 }
 
-bool Move::is_promotion() {
-    return promotion_piece == 'q' || promotion_piece == 'b' || promotion_piece == 'r' || promotion_piece == 'n';
+bool Move::is_promotion() { 
+    // pawn moving to last rank
+    if (!piece_moved->is_pawn()) return false;
+    int last_rank = 0;
+    if (piece_moved->is_white()) {
+        last_rank = 7;
+    }
+    return end_pos->get_y() == last_rank;
 }
 
 bool Move::is_castle() {
