@@ -51,11 +51,11 @@ void TextObserver::notify() {
 }
 
 void TextObserver::notify(Spot *s) {
-    (void)s;
+    (void) s;
     notify();
 }
 
 void TextObserver::notify(Move *m) {
-    (void)m;
+    (void) m;
     notify();
 }

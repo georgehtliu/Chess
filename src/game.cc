@@ -78,11 +78,11 @@ GameResult Game::run_game() {
     }
 }
 
-Player* Game::get_white_player() {
+Player *Game::get_white_player() {
     return white.get();
 }
 
-Player* Game::get_black_player() {
+Player *Game::get_black_player() {
     return black.get();
 }
 
@@ -90,7 +90,7 @@ Mode Game::get_game_mode() {
     return mode;
 }
 
-Board* Game::get_board() {
+Board *Game::get_board() {
     return board.get();
 }
 

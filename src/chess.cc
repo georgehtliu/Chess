@@ -29,11 +29,11 @@ int main() {
 
     // Convert player type command (string) to PlayerType
     std::unordered_map<std::string, PlayerType> player_str_to_type = {
-        {"human", PlayerType::Human},
-        {"computer1", PlayerType::AI1},
-        {"computer2", PlayerType::AI2},
-        {"computer3", PlayerType::AI3},
-        {"computer4", PlayerType::AI4},
+            {"human",     PlayerType::Human},
+            {"computer1", PlayerType::AI1},
+            {"computer2", PlayerType::AI2},
+            {"computer3", PlayerType::AI3},
+            {"computer4", PlayerType::AI4},
     };
 
     std::cout << "Enter a command: ";
@@ -49,8 +49,8 @@ int main() {
             try {
                 white_player_type = player_str_to_type[white_player];
                 black_player_type = player_str_to_type[black_player];
-            } catch (const std::out_of_range& oor) {
-                std::cout << "Invalid entry for player type. Try again"; 
+            } catch (const std::out_of_range &oor) {
+                std::cout << "Invalid entry for player type. Try again";
             }
 
             if (games.empty()) {
