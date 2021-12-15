@@ -431,8 +431,8 @@ bool Board::valid_promotion(Move &mv) {
     // starting piece must be pawn
     if ((mv.start_pos)->is_blank() || !(pawn->is_pawn())) return false;
 
-    // move must be forward and one unit
-    if (!mv.is_forward() || mv.euclid_dist() != 1) return false;
+    // move must be forward or diagonal and one unit
+    if (!(mv.is_forward() || mv.euclid_dist() == mv.FORWARD_UNIT) || !(mv.is_diagonal() || mv.euclid_dist() == mv.DIAG_UNIT)) return false;
 
     // check pawn must be on second last rank
     if (white_move) {
@@ -441,9 +441,7 @@ bool Board::valid_promotion(Move &mv) {
         if ((mv.start_pos)->get_y() != second_last_rank_black) return false;
     }
 
-    if (!mv.end_pos->is_blank()) return false; 
-
-    // pawn must be able to move in front
+    // pawn must be able to move in front or take piece
     if (!pawn->valid_path(mv)) return false;
 
     return true;
