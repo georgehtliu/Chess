@@ -599,7 +599,6 @@ void Board::place_piece(Spot *start, Spot *end) {
 
     // capture piece
     if (!end->is_blank() && !same_team(start, end)) {
-       (end->get_piece())->set_killed();
        std::cout << "piece captured!" << std::endl;
     }
     
@@ -663,7 +662,6 @@ bool Board::in_check_after_move(Move &mv) {
 
     // adjust end position
     if (mv.piece_killed) {
-        (mv.piece_killed)->set_alive();
         ending_spot->set_piece(mv.piece_killed);
     } else {
         // blank spot
@@ -879,12 +877,14 @@ bool Board::any_path_available() {
                 std::vector<std::pair<int, int>> paths = p->generate_paths(std::make_pair(i, j));
                 for (auto path : paths) {
                     if (white_move) {
-                        Move m{white, get_spot(i, j), get_spot(path.first, path.second), p};
+                        Piece * killed = get_spot(path.first, path.second)->get_piece();
+                        Move m{white, get_spot(i, j), get_spot(path.first, path.second), p, killed};
                         if (check_valid_move(m)) {
                             return false;
                         }
                     } else {
-                        Move m{black, get_spot(i, j), get_spot(path.first, path.second), p};
+                        Piece * killed = get_spot(path.first, path.second)->get_piece();
+                        Move m{black, get_spot(i, j), get_spot(path.first, path.second), p, killed};
                         if (check_valid_move(m)) {
                             return false;
                         }
