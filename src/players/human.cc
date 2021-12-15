@@ -9,9 +9,9 @@
 Move human_get_next_move(Player *p, Board *b) {
     while (true) {
         if (p->white) {
-            std::cout << "Enter (WHITE) move: ";
+            std::cout << "Enter (WHITE) move: " << std::endl;
         } else {
-            std::cout << "Enter (BLACK) move: ";
+            std::cout << "Enter (BLACK) move: " << std::endl;
         }
 
         std::string input;

@@ -18,6 +18,10 @@ GraphicsObserver::GraphicsObserver(Board *board) : subject{board} {
 }
 
 GraphicsObserver::~GraphicsObserver() {
+    for (auto& img : images) {
+        XDestroyImage(img.second);
+    }
+    XDestroyWindow(w->get_display(), w->get_window());
     w.reset();
     subject->detach(this);
 }

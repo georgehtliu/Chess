@@ -76,6 +76,10 @@ Display *Xwindow::get_display() {
     return d;
 }
 
+Window Xwindow::get_window() {
+    return w;
+}
+
 Visual *Xwindow::get_visual() {
     return v;
 }

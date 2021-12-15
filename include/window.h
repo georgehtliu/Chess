@@ -1,6 +1,7 @@
 #ifndef CHESS_INCLUDE_WINDOW_H_
 #define CHESS_INCLUDE_WINDOW_H_
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 
 #include <iostream>
 #include <string>
@@ -35,6 +36,7 @@ class Xwindow {
     };
 
     Display* get_display();
+    Window get_window();
     Visual* get_visual();
 
     // Draws a rectangle

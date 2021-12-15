@@ -93,6 +93,8 @@ void Board::gen_standard_layout() {
     for (int i = 0; i < 8; i++) {
         get_spot(i, 6)->set_piece(black->get_nth_piece(8 + i));
     }
+
+    auto pos_new = positions;
 }
 
 void Board::add_piece(char piece, std::string position) {
@@ -215,7 +217,10 @@ void Board::setup_mode() {
 }
 
 Spot *Board::get_spot(int x, int y) {
-    return &positions[x][7 - y];
+    if (0 <= x && x <= 7 && 0 <= y && y <= 7) {
+        return &positions[x][7 - y];
+    }
+    return nullptr;
 }
 
 bool Board::same_team(Spot *s1, Spot *s2) {
@@ -921,11 +926,12 @@ bool Board::in_checkmate() {
 
 
 void Board::notify_observers(Move &m) {
-    notify_observers(m.start_pos);
-    notify_observers(m.end_pos);
+    for (auto& ob : observers) {
+        ob->notify(&m);
+    }
 }
 
-int Board::evaluate_move(Move &mv) {
+int Board::evaluate_move(Move &mv, bool defensive) {
     int value = 0;
 
     // If this kills a piece, get that piece's value
@@ -944,6 +950,15 @@ int Board::evaluate_move(Move &mv) {
         value += 300;
     }
     white_move = !white_move;
+
+    if (defensive) {
+        white_move = !white_move;
+        if (under_attack(mv.end_pos)) {
+            value -= std::min(value, mv.piece_moved->get_value() / 5);
+        }
+        white_move = !white_move;
+
+    }
 
     return value;
 }

@@ -84,7 +84,7 @@ public:
     Spot* get_spot(int x, int y);
 
     bool check_valid_move(Move &mv);
-    int evaluate_move(Move &mv);
+    int evaluate_move(Move &mv, bool defensive=false);
     void execute_move(Move &mv);
     void place_piece(Spot *start, Spot *end);
 

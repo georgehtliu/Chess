@@ -42,14 +42,6 @@ Game::Game() {
 
 GameResult Game::run_game() {
     board->notify_observers();
-    /*
-    auto vec = white->all_next_moves(board.get());
-    std::cout << "TEMPORARY" << std::endl;
-    for (auto i : vec) {
-        std::cout << i.end_pos->get_x() << i.end_pos->get_y() << i.piece_moved->get_text() << std::endl;
-    }
-     */
-
 
     // Main Game loop
     while (true) {

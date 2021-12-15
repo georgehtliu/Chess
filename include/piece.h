@@ -47,7 +47,7 @@ public:
 
     void set_has_moved(bool has_moved);
 
-    virtual bool valid_path(Move mv) = 0;
+    virtual bool valid_path(Move mv);
 
     virtual std::vector<std::pair<int, int>> generate_paths(std::pair<int, int> pos);
 

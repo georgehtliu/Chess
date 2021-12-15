@@ -61,6 +61,11 @@ void Piece::set_has_moved(bool has_moved) {
     moved = has_moved;
 }
 
+bool Piece::valid_path(Move mv) {
+    (void)mv;
+    return false;
+}
+
 std::string Piece::get_white_square_img() const {
     return white_square;
 }
