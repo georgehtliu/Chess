@@ -11,6 +11,7 @@
 #include "pieces/pawn.h"
 #include "pieces/queen.h"
 #include "pieces/rook.h"
+#include <iostream>
 
 Board::Board(Player* white, Player* black): 
     white{white}, 
@@ -496,36 +497,67 @@ bool Board::move_blocked(Move &mv) {
 
 // TODO
 bool Board::check_valid_move(Move &mv) {
+    std::cout << "check_valid_move called" << std::endl;
+
     // check that the start spot actually has a piece
-    if (!((mv.start_pos)->get_piece())) return false;
+    if (!((mv.start_pos)->get_piece())) {
+        std::cout << "start move doesnt have piece" << std::endl;
+        return false;
+    }
 
     // can only move if it's your turn
     bool piece_is_white = ((mv.start_pos)->get_piece())->is_white();
-    if ((piece_is_white && !white_move) || (!piece_is_white && white_move)) return false;
+    if ((piece_is_white && !white_move) || (!piece_is_white && white_move)) {
+        std::cout << "not your turn" << std::endl;
+        return false;
+    }
 
     // have to move somewhere, not stay in one place
-    if (same_spot(mv.start_pos, mv.end_pos)) return false;
+    if (same_spot(mv.start_pos, mv.end_pos)) {
+        std::cout << "cannot move to the same starting spot" << std::endl;
+        return false;
+    }
     
     // start and end cannot be out of bounds
-    if (!(mv.end_pos)->in_bounds() || !(mv.start_pos)->in_bounds()) return false;
+    if (!(mv.end_pos)->in_bounds() || !(mv.start_pos)->in_bounds()) {
+        std::cout << "start or end out of bounds" << std::endl;
+        return false;
+    }
 
     // cannot move into own pieces
-    if (same_team(mv.start_pos, mv.end_pos)) return false;
+    if (same_team(mv.start_pos, mv.end_pos)) {
+        std::cout << "cannot attack same team" << std::endl;
+        return false;
+    }
 
     // castle, promotion, en passant
     if (mv.is_castle() && !valid_castle(mv)) {
+        std::cout << "invalid castle" << std::endl;
         return false;
     } else if (mv.is_promotion() && !valid_promotion(mv)) {
+        std::cout << "invalid promotion" << std::endl;
         return false;
     } else if (is_en_passant(mv) && !valid_en_passant(mv)) {
+        std::cout << "invalid en passant" << std::endl;
         return false;
     } else {
         // check if piece can move path
-        if (!valid_path(mv.start_pos, mv.end_pos) || move_blocked(mv)) return false;
+        if (!valid_path(mv.start_pos, mv.end_pos)) {
+            std::cout << "invalid path" << std::endl;
+            return false;
+        }
+
+        if (move_blocked(mv)) {
+            std::cout << "path blocked" << std::endl;
+            return false;
+        }
     }
 
     // cannot be in check after move ** should be done last **
-    if (in_check_after_move(mv)) return false;
+    if (in_check_after_move(mv)) 
+        std::cout << "in check after move" << std::endl;{
+        return false;
+    }
 
     return true;
 }
