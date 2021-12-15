@@ -898,8 +898,9 @@ bool Board::any_path_available() {
 bool Board::in_stalemate() {
 
     if (in_check()) return false;
+
+    bool two_kings_only = false;
     
-    // TODO: check if only 2 pieces left on board
     int count = 0;
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -907,13 +908,13 @@ bool Board::in_stalemate() {
             if (p) {
                 count++;
             }
-            if (count > 2) return false;
+            if (count > 2) break;
         }
     }
 
-    if (count == 2) return true;
+    if (count == 2) two_kings_only = true;
     
-    return any_path_available();
+    return two_kings_only || any_path_available();
 }
 
 bool Board::in_checkmate() {
