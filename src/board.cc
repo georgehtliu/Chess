@@ -633,7 +633,7 @@ bool Board::in_check_after_move(Move &mv) {
     // set initial has_moved for piece
     bool has_moved = (starting_spot->get_piece())->has_moved();
 
-    if (valid_en_passant(mv)) {
+    if (is_en_passant(mv)) {
         if (white_move) {
             taken_pawn_spot_ep = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() - 1);
         } else {
