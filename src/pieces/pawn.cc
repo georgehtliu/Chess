@@ -24,6 +24,9 @@ bool Pawn::valid_path(Move mv) {
     else if (mv.is_vertical() && mv.euclid_dist() == mv.FORWARD_UNIT)
     {
         // 1 forward case
+        if (mv.end_pos->get_piece()) {
+            return false;
+        }
         return true;
     }
     else if (mv.is_diagonal() && mv.euclid_dist() == mv.DIAG_UNIT)
