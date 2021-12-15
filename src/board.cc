@@ -379,7 +379,7 @@ bool Board::valid_castle(Move &mv) {
         std::cout << "king is not in a position for castle" << std::endl;
         return false;
     }
-    
+
     if (!(rook_start->get_piece())->is_rook()) {
         std::cout << "rook starting spot piece is not a rook" << std::endl;
         return false;
@@ -767,7 +767,6 @@ void Board::execute_en_passant(Move &mv) {
         taken_pawn_spot = get_spot(end->get_x(), end->get_y() + 1);
     }
 
-    (taken_pawn_spot->get_piece())->set_killed();
     taken_pawn_spot->set_piece(nullptr);
 }
 
@@ -775,8 +774,6 @@ void Board::execute_promotion(Move &mv) {
 
     Spot *start = mv.start_pos;
     Spot *end = mv.end_pos;
-
-    (start->get_piece())->set_killed();
 
     bool init_pawn_white = (start->get_piece())->is_white();
     place_piece(start, end);
@@ -817,30 +814,28 @@ Spot* Board::get_king_spot(bool white) {
 }
 
 void Board::execute_move(Move &mv) {
-
     Spot *start = mv.start_pos;
     Spot *end = mv.end_pos;
 
     // perform castle
-    if (mv.is_castle()) {
+    if (mv.is_castle()) 
+    {
         execute_castle(mv);
     }
-
     // perform en passant
-    if (is_en_passant(mv)) {
+    else if (is_en_passant(mv)) 
+    {
         execute_en_passant(mv);
     }
-    
     // promotion
-    if (mv.is_promotion()) {
+    else if (mv.is_promotion()) 
+    {
         execute_promotion(mv);
     }
-
     // place piece for generic move
-    if (!(mv.is_castle() || is_en_passant(mv) || mv.is_promotion())) {
+    else {
         place_piece(start, end);
     }
-
     // add move to array
     moves.push_back(mv);
 
