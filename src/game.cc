@@ -35,7 +35,7 @@ Game::Game() {
 
     // Initialize Observers
     t = std::make_shared<TextObserver>(board.get());
-    // g = std::make_shared<GraphicsObserver>(board.get());
+    g = std::make_shared<GraphicsObserver>(board.get());
 
     mode = Mode::Setup;
 }
