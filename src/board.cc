@@ -29,17 +29,9 @@ Board::Board(Player *white, Player *black) :
 Board::Board( const Board &other ) : 
     white{other.white}, 
     black{other.black},
+    positions{other.positions},
     white_move{other.white_move}
-
-     {
-
-    for (int i = 0; i < ROWS; i++) {
-        for (int j = 0; j < COLS; j++) {
-            Spot copy_spot = *(other.positions[i][j]);
-            positions[i][j] = copy_spot;
-        }
-    }
-}
+    {}
 
 bool in_bounds(int x, int y) {
     return (x >= 0 && x < 8) && (y >= 0 && y < 8);
@@ -630,9 +622,6 @@ bool Board::in_check() {
 }
 
 bool Board::in_check_after_move(Move &mv) {
-
-    Spot *starting_spot = mv.start_pos;
-    Spot *ending_spot = mv.end_pos;
 
     Board board_copy = Board(*this);
 
