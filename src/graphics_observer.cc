@@ -54,11 +54,22 @@ void GraphicsObserver::notify(Spot *s) {
         XImage *img;
 
         if (s->is_white()) {
-            img = load_image(s->get_piece()->get_white_square_img(), w.get());
-        } else {
-            img = load_image(s->get_piece()->get_black_square_img(), w.get());
-        }
+            std::string white_square_img = s->get_piece()->get_white_square_img();
 
+            if (images.find(white_square_img) == images.end()) {
+                images.insert({white_square_img, load_image(white_square_img, w.get())});
+            }
+
+            img = images[white_square_img];
+        } else {
+            std::string black_square_img = s->get_piece()->get_black_square_img();
+
+            if (images.find(black_square_img) == images.end()) {
+                images.insert({black_square_img, load_image(black_square_img, w.get())});
+            }
+
+            img = images[black_square_img];
+        }
         w->drawImage(window_x, window_y, img);
     }
 

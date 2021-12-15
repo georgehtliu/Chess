@@ -56,6 +56,8 @@ int main() {
             if (games.empty()) {
                 games.emplace_back(white_player_type, black_player_type);
             } else if (games.back().get_game_mode() == Mode::Finished) {
+                games.back().get_board()->detach_all();
+                games.back().destroy_observers();
                 games.emplace_back(white_player_type, black_player_type);
             } else if (games.back().get_game_mode() == Mode::Setup) {
                 games.back().set_white_type(white_player_type);
@@ -88,6 +90,8 @@ int main() {
                 games.back().set_game_mode(Mode::Setup);
                 games.back().get_board()->setup_mode();
             } else if (games.back().get_game_mode() == Mode::Finished) {
+                games.back().get_board()->detach_all();
+                games.back().destroy_observers();
                 games.emplace_back();
                 games.back().set_game_mode(Mode::Setup);
                 games.back().get_board()->setup_mode();

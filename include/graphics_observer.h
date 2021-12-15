@@ -12,10 +12,12 @@
 #include "window.h"
 
 #include <memory>
+#include <unordered_map>
 
 class GraphicsObserver : public Observer {
     Board *subject;
     std::unique_ptr<Xwindow> w;
+    std::unordered_map<std::string, XImage*> images;
 
    public:
     explicit GraphicsObserver(Board *board);
