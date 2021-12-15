@@ -63,6 +63,7 @@ public:
     // Constructor / Destructor
     Board(Player* white, Player* black);
     ~Board() = default; // FIXME
+    Board( const Board &other );
 
     // Observers
     void attach(Observer *o);
