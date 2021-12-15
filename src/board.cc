@@ -356,36 +356,64 @@ bool Board::valid_castle(Move &mv) {
     Spot *rook_start = rook_spots.first;
     Spot *rook_end = rook_spots.second;
 
+    // if rook does not exist
+    if (rook_start->is_blank()) {
+        std::cout << "rook starting spot is blank" << std::endl;
+        return false;
+    }
+
     // if start and end spots are invalid
-    if(!is_valid_king_castle_spots(king_start, king_end)) return false;
+    if(!is_valid_king_castle_spots(king_start, king_end)) {
+        std::cout << "start and end spots are not valid" << std::endl;
+        return false;
+    }
 
     // if king does not exist on starting spot or another piece is on it
-    if (king_start->is_blank() || !(king_start->get_piece())->is_king()) return false; 
+    if (king_start->is_blank() || !(king_start->get_piece())->is_king()) {
+        std::cout << "king does not exist on starting spot or another piece is on it" << std::endl;
+        return false;
+    } 
 
     // if king is not in a position for castle
-    if (!rook_start || !rook_end) return false;
-
-    // if rook does not exist
-    if (rook_start->is_blank() || !(rook_start->get_piece())->is_rook()) return false;
+    if (!rook_start || !rook_end) {
+        std::cout << "king is not in a position for castle" << std::endl;
+        return false;
+    }
+    
+    if (!(rook_start->get_piece())->is_rook()) {
+        std::cout << "rook starting spot piece is not a rook" << std::endl;
+        return false;
+    }
 
     Piece *rook = rook_start->get_piece();
 
     // if in check
-    if (in_check()) return false;
+    if (in_check()) {
+        std::cout << "you are in check so you cannot castle" << std::endl;
+        return false;
+    } 
 
-    if (!mv.is_castle()) return false;
+    if (!mv.is_castle()) {
+        std::cout << "not a castling move" << std::endl;
+        return false;
+    }
 
     // if king or rook has moved
-    if (rook->has_moved() || king->has_moved()) return false;
+    if (rook->has_moved() || king->has_moved()) {
+        std::cout << "king or rook has moved" << std::endl;
+        return false;
+    }
 
     // check if there are pieces between king and rook and spot under attack
     int inc_x = (king_start->get_x() < rook_start->get_x()) ? 1 : -1;
     for (int x = king_start->get_x(); x != king_start->get_x(); x += inc_x) {
         Spot *between_spot = get_spot(x, king_start->get_y());
         if (!between_spot->is_blank()) {
+            std::cout << "piece on between spot" << std::endl;
             return false;
         }
         if (under_attack(between_spot)) {
+            std::cout << "between spot under attack" << std::endl;
             return false;
         }
     }
@@ -572,7 +600,9 @@ void Board::place_piece(Spot *start, Spot *end) {
     // capture piece
     if (!end->is_blank() && !same_team(start, end)) {
        (end->get_piece())->set_killed();
+       std::cout << "piece captured!" << std::endl;
     }
+    
 
     (start->get_piece())->set_has_moved(true);
 
@@ -583,7 +613,12 @@ void Board::place_piece(Spot *start, Spot *end) {
 
 bool Board::in_check() {
 
-    return under_attack(get_king_spot(white_move));
+    if (under_attack(get_king_spot(white_move))) {
+        std::cout << "in check" << std::endl;
+        return true;
+    }
+
+    return false;
 }
 
 bool Board::in_check_after_move(Move &mv) {
@@ -636,7 +671,7 @@ bool Board::in_check_after_move(Move &mv) {
     }
 
     // if castle, move rook back to original square
-    if (valid_castle(mv)) {
+    if (mv.is_castle() && valid_castle(mv)) {
         std::pair<Spot*, Spot*> rook_spots = get_rook_castle_spots(ending_spot);
         Spot *rook_start_spot = rook_spots.first;
         Spot *rook_end_spot = rook_spots.second;
@@ -646,13 +681,13 @@ bool Board::in_check_after_move(Move &mv) {
     }
 
     // if en passant, set taken pawn back to alive and reattach piece to initial spot
-    if (valid_en_passant(mv)) {
+    if (is_en_passant(mv) && valid_en_passant(mv)) {
         taken_pawn_spot_ep->set_piece(killed_pawn_ep);
         (taken_pawn_spot_ep->get_piece())->set_alive();
     }
 
     // if promotion, delete new piece and set original pawn to be alive
-    if (valid_promotion(mv)) {
+    if (mv.is_promotion() && valid_promotion(mv)) {
         if (white_move) {
             white->remove_last_piece();
         } else {
@@ -692,11 +727,11 @@ std::pair<Spot*, Spot*> Board::get_rook_castle_spots(Spot *king_end) {
 bool Board::is_valid_king_castle_spots(Spot *start, Spot *end) {
 
     if (white_move) {
-        if (same_spot(start, get_spot(5, 0)) && same_spot(end, get_spot(2, 0))) return true;
-        if (same_spot(start, get_spot(5, 0)) && same_spot(end, get_spot(6, 0))) return true;
+        if (same_spot(start, get_spot(4, 0)) && same_spot(end, get_spot(2, 0))) return true;
+        if (same_spot(start, get_spot(4, 0)) && same_spot(end, get_spot(6, 0))) return true;
     } else {
-        if (same_spot(start, get_spot(5, 7)) && same_spot(end, get_spot(2, 7))) return true;
-        if (same_spot(start, get_spot(5, 7)) && same_spot(end, get_spot(6, 7))) return true;
+        if (same_spot(start, get_spot(4, 7)) && same_spot(end, get_spot(2, 7))) return true;
+        if (same_spot(start, get_spot(4, 7)) && same_spot(end, get_spot(6, 7))) return true;
     }
     
     return false;

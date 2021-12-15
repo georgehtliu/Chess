@@ -15,6 +15,7 @@ King::King(bool white) {
 
 bool King::valid_path(Move mv) {
     int mvEuclidDist = mv.euclid_dist();
+    if (mvEuclidDist == 2 && mv.is_horizontal()) return true;
     return (mv.is_diagonal() && mvEuclidDist == mv.DIAG_UNIT) || ((mv.is_vertical() || mv.is_horizontal()) && mvEuclidDist == mv.FORWARD_UNIT);
 }
 
