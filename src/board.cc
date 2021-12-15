@@ -358,30 +358,25 @@ bool Board::valid_castle(Move &mv) {
 
     // if rook does not exist
     if (rook_start->is_blank()) {
-        std::cout << "rook starting spot is blank" << std::endl;
         return false;
     }
 
     // if start and end spots are invalid
     if (!is_valid_king_castle_spots(king_start, king_end)) {
-        std::cout << "start and end spots are not valid" << std::endl;
         return false;
     }
 
     // if king does not exist on starting spot or another piece is on it
     if (king_start->is_blank() || !(king_start->get_piece())->is_king()) {
-        std::cout << "king does not exist on starting spot or another piece is on it" << std::endl;
         return false;
     }
 
     // if king is not in a position for castle
     if (!rook_start || !rook_end) {
-        std::cout << "king is not in a position for castle" << std::endl;
         return false;
     }
 
     if (!(rook_start->get_piece())->is_rook()) {
-        std::cout << "rook starting spot piece is not a rook" << std::endl;
         return false;
     }
 
@@ -389,18 +384,15 @@ bool Board::valid_castle(Move &mv) {
 
     // if in check
     if (in_check()) {
-        std::cout << "you are in check so you cannot castle" << std::endl;
         return false;
     }
 
     if (!mv.is_castle()) {
-        std::cout << "not a castling move" << std::endl;
         return false;
     }
 
     // if king or rook has moved
     if (rook->has_moved() || king->has_moved()) {
-        std::cout << "king or rook has moved" << std::endl;
         return false;
     }
 
@@ -409,11 +401,9 @@ bool Board::valid_castle(Move &mv) {
     for (int x = king_start->get_x(); x != king_start->get_x(); x += inc_x) {
         Spot *between_spot = get_spot(x, king_start->get_y());
         if (!between_spot->is_blank()) {
-            std::cout << "piece on between spot" << std::endl;
             return false;
         }
         if (under_attack(between_spot)) {
-            std::cout << "between spot under attack" << std::endl;
             return false;
         }
     }
@@ -523,70 +513,56 @@ bool Board::move_blocked(Move &mv) {
     return true; // if input is valid then should never land here
 }
 
-// TODO
 bool Board::check_valid_move(Move &mv) {
-    std::cout << std::endl;
 
     // check that the start spot actually has a piece
     if (!((mv.start_pos)->get_piece())) {
-        std::cout << "start move doesnt have piece" << std::endl;
         return false;
     }
 
     // can only move if it's your turn
     bool piece_is_white = ((mv.start_pos)->get_piece())->is_white();
     if ((piece_is_white && !white_move) || (!piece_is_white && white_move)) {
-        std::cout << "not your turn" << std::endl;
         return false;
     }
 
     // have to move somewhere, not stay in one place
     if (same_spot(mv.start_pos, mv.end_pos)) {
-        std::cout << "cannot move to the same starting spot" << std::endl;
         return false;
     }
 
     // start and end cannot be out of bounds
     if (!(mv.end_pos)->in_bounds() || !(mv.start_pos)->in_bounds()) {
-        std::cout << "start or end out of bounds" << std::endl;
         return false;
     }
 
     // cannot move into own pieces
     if (same_team(mv.start_pos, mv.end_pos)) {
-        std::cout << "cannot attack same team" << std::endl;
         return false;
     }
 
     // castle, promotion, en passant
     if (mv.is_castle() && !valid_castle(mv)) {
-        std::cout << "invalid castle" << std::endl;
         return false;
     } else if (mv.is_promotion() && !valid_promotion(mv)) {
-        std::cout << "invalid promotion" << std::endl;
         return false;
     } else if (is_en_passant(mv) && !valid_en_passant(mv)) {
-        std::cout << "invalid en passant" << std::endl;
         return false;
     } else {
         // check if piece can move path
         if (!valid_path(mv.start_pos, mv.end_pos)) {
-            std::cout << "invalid path" << std::endl;
             return false;
         }
 
         if (move_blocked(mv)) {
-            std::cout << "path blocked" << std::endl;
             return false;
         }
     }
 
     // cannot be in check after move ** should be done last **
     if (in_check_after_move(mv)) {
-        std::cout << "in check after move" << std::endl;
         return false;
     }
-    std::cout << "Success" << std::endl;
 
     return true;
 }
@@ -600,7 +576,6 @@ void Board::place_piece(Spot *start, Spot *end) {
 
     // capture piece
     if (!end->is_blank() && !same_team(start, end)) {
-        std::cout << "piece captured!" << std::endl;
     }
 
 
@@ -618,7 +593,6 @@ bool Board::in_check() {
     }
 
     if (under_attack(get_king_spot(white_move))) {
-        std::cout << "in check" << std::endl;
         return true;
     }
 
