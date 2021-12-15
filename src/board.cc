@@ -748,6 +748,8 @@ void Board::execute_castle(Move &mv) {
     Spot *end_rook_spot = rook_spots.second;
 
     place_piece(start_rook_spot, end_rook_spot);
+    notify_observers(start_rook_spot);
+    notify_observers(end_rook_spot);
 }
 
 void Board::execute_en_passant(Move &mv) {
@@ -764,6 +766,7 @@ void Board::execute_en_passant(Move &mv) {
     }
 
     taken_pawn_spot->set_piece(nullptr);
+    notify_observers(taken_pawn_spot);
 }
 
 void Board::execute_promotion(Move &mv) {
