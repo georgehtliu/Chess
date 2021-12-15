@@ -1,6 +1,5 @@
 /*
     graphics_observer.cc
-    David Gurevich
     CS 246
 */
 
@@ -82,13 +81,6 @@ void GraphicsObserver::notify(Spot *s) {
 }
 
 void GraphicsObserver::notify(Move *m) {
-    (void)m;
-    notify();
-    /*
     notify(m->start_pos);
     notify(m->end_pos);
-    if (m->end_pos->get_piece() && m->end_pos->get_piece() != m->piece_killed) {
-        notify();
-    }
-    */
 }

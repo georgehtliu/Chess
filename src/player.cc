@@ -114,7 +114,7 @@ Move Player::get_next_move(Board *b) {
                         case AI2: return computer2_get_next_move(this, b);
                         case AI3: return computer3_get_next_move(this, b);
                     }
-                } else if (s == "resign") {
+                } else if (s == "resign" || std::cin.eof()) {
                     return {this, nullptr, nullptr, nullptr, nullptr, 'x', true}; 
                 } else {
                     std::cout << "Invalid entry. Please try again." << std::endl;

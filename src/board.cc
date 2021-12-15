@@ -1,6 +1,5 @@
 /*
     board.cc
-    David Gurevich
     CS 246
 */
 
@@ -941,6 +940,19 @@ int Board::evaluate_move(Move &mv, bool defensive) {
             value -= std::min(value, mv.piece_moved->get_value() / 5);
         }
         white_move = !white_move;
+
+        if (4 <= mv.end_pos->get_y() && mv.end_pos->get_y() <= 5) {
+            value += 5;
+        }
+        if (4 <= mv.end_pos->get_x() && mv.end_pos->get_x() <= 5) {
+            value += 5;
+        }
+
+        if (mv.is_castle()) {
+            value += 200;
+        } else if (mv.start_pos->get_piece()->is_king()) {
+            value -= std::min(value, 200);
+        }
 
     }
 
