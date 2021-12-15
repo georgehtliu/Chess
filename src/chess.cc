@@ -33,7 +33,6 @@ int main() {
             {"computer1", PlayerType::AI1},
             {"computer2", PlayerType::AI2},
             {"computer3", PlayerType::AI3},
-            {"computer4", PlayerType::AI4},
     };
 
     std::cout << "Enter a command: ";

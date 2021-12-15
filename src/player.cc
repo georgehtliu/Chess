@@ -19,7 +19,6 @@
 #include "computer1.h"
 #include "computer2.h"
 #include "computer3.h"
-#include "computer4.h"
 
 Player::Player(bool white, PlayerType type) : white{white}, type{type} {}
 
@@ -100,14 +99,27 @@ Move Player::get_next_move(Board *b) {
     switch (this->type) {
         case Human:
             return human_get_next_move(this, b);
-        case AI1:
-            return computer1_get_next_move(this, b);
-        case AI2:
-            return computer2_get_next_move(this, b);
-        case AI3:
-            return computer3_get_next_move(this, b);
-        case AI4:
-            return computer4_get_next_move(this, b);
+        default:
+            while (true) {
+                if (b->white_to_move())
+                    std::cout << "Enter (WHITE AI) move: ";
+                else
+                    std::cout << "Enter (BLACK AI) move: ";
+                std::string s;
+                std::cin >> s;
+                if (s == "move") {
+                    switch (this->type) {
+                        case Human: return human_get_next_move(this, b);
+                        case AI1: return computer1_get_next_move(this, b);
+                        case AI2: return computer2_get_next_move(this, b);
+                        case AI3: return computer3_get_next_move(this, b);
+                    }
+                } else if (s == "resign") {
+                    return {this, nullptr, nullptr, nullptr, nullptr, 'x', true}; 
+                } else {
+                    std::cout << "Invalid entry. Please try again." << std::endl;
+                }
+            }
     }
     return {this, nullptr, nullptr, nullptr};
 }

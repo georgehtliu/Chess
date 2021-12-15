@@ -36,7 +36,7 @@ Iter select_randomly(Iter start, Iter end) {
 class Board;
 class Move;
 
-enum PlayerType{Human, AI1, AI2, AI3, AI4};
+enum PlayerType{Human, AI1, AI2, AI3};
 
 class Player {
 public:
