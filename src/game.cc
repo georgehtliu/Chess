@@ -21,7 +21,7 @@ Game::Game(PlayerType white_lvl, PlayerType black_lvl) {
 
     // Initialize observers
     t = std::make_unique<TextObserver>(board.get());
-    g = std::make_unique<GraphicsObserver>(board.get());
+    // g = std::make_unique<GraphicsObserver>(board.get());
 
     mode = Mode::Ready;
 }
@@ -35,7 +35,7 @@ Game::Game() {
 
     // Initialize Observers
     t = std::make_shared<TextObserver>(board.get());
-    g = std::make_shared<GraphicsObserver>(board.get());
+    // g = std::make_shared<GraphicsObserver>(board.get());
 
     mode = Mode::Setup;
 }

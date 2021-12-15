@@ -82,7 +82,8 @@ std::vector<Move> Player::all_next_moves(Board *b) {
             if (p && p->is_white() == white) {
                 std::vector<std::pair<int, int>> paths = p->generate_paths(std::make_pair(i, j));
                 for (auto path : paths) {
-                    Move m{this, b->get_spot(i, j), b->get_spot(path.first, path.second), p};
+                    Piece * killed = b->get_spot(path.first, path.second)->get_piece();
+                    Move m{this, b->get_spot(i, j), b->get_spot(path.first, path.second), p, killed};
                     if (b->check_valid_move(m)) {
                         all_moves.push_back(m);
                     }
