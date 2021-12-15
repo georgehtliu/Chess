@@ -70,7 +70,8 @@ bool Player::has_valid_moves() {
 }
 
 void Player::remove_last_piece() {
-    pieces.pop_back();
+    if (!pieces.empty())
+        pieces.pop_back();
 }
 
 std::vector<Move> Player::all_next_moves(Board *b) {

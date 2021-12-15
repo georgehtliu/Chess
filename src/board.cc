@@ -479,7 +479,6 @@ bool Board::valid_en_passant(Move &mv) {
     }
 
     if (taken_pawn_spot->is_blank()) return false;
-    if (!((taken_pawn_spot->get_piece())->is_pawn())) return false;
 
     // last move must be the double up pawn about to be taken
     Move &last_move = moves.back();
