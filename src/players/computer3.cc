@@ -1,13 +1,8 @@
-//
-// Created by david on 12/12/21.
-//
-
 #include <map>
 
 #include "computer3.h"
 #include "move.h"
 #include "board.h"
-
 
 Move computer3_get_next_move(Player *p, Board *b) {
     std::vector<Move> possible_moves = p->all_next_moves(b);

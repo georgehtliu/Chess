@@ -1,14 +1,12 @@
-#ifndef _MOVE_H_
-#define _MOVE_H_
+#ifndef MOVE_H_
+#define MOVE_H_
 
 #include "math.h"
 #include "player.h"
 #include "spot.h"
 #include "piece.h"
 
-class Move
-{
-
+class Move {
 public:
     int FORWARD_UNIT = 1;
     int DIAG_UNIT = sqrt(2);

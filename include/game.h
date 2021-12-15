@@ -1,9 +1,3 @@
-/*
-    game.h
-    David Gurevich
-    CS 246
-*/
-
 #ifndef CHESS_INCLUDE_GAME_H_
 #define CHESS_INCLUDE_GAME_H_
 
@@ -28,19 +22,12 @@ class Game {
 
     Mode mode;
 
-public: 
-    // Default game
-    Game(PlayerType white_lvl, PlayerType black_lvl);
-
-    // Setup game
+public:
     Game();
-
+    Game(PlayerType white_lvl, PlayerType black_lvl);
     ~Game() = default;
 
     GameResult run_game();
-
-    Player* get_white_player();
-    Player* get_black_player();
 
     Mode get_game_mode();
     Board* get_board();

@@ -1,9 +1,3 @@
-/*
-    observer.h
-    David Gurevich
-    CS 246
-*/
-
 #ifndef CHESS_INCLUDE_OBSERVER_H_
 #define CHESS_INCLUDE_OBSERVER_H_
 

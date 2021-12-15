@@ -13,10 +13,6 @@ int Piece::get_value() const {
     return value;
 }
 
-bool Piece::is_alive() {
-    return alive;
-}
-
 bool Piece::is_pawn() const {
     return false;
 }

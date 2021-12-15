@@ -1,7 +1,3 @@
-//
-// Created by david on 12/15/21.
-//
-
 #include <sstream>
 #include "human.h"
 #include "board.h"

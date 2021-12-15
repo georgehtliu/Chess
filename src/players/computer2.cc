@@ -1,7 +1,3 @@
-//
-// Created by david on 12/12/21.
-//
-
 #include <map>
 #include "computer2.h"
 #include "move.h"

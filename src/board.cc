@@ -1,8 +1,3 @@
-/*
-    board.cc
-    CS 246
-*/
-
 #include "board.h"
 #include "pieces/king.h"
 #include "pieces/bishop.h"

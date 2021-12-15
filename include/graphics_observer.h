@@ -1,9 +1,3 @@
-/*
-    graphics_observer.h
-    David Gurevich
-    CS 246
-*/
-
 #ifndef CHESS_INCLUDE_GRAPHICS_OBSERVER_H_
 #define CHESS_INCLUDE_GRAPHICS_OBSERVER_H_
 

@@ -1,7 +1,3 @@
-//
-// Created by david on 12/12/21.
-//
-
 #ifndef CS246_CHESS_COMPUTER2_H
 #define CS246_CHESS_COMPUTER2_H
 

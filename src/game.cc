@@ -1,15 +1,8 @@
-/*
-    game.cc
-    David Gurevich
-    CS 246
-*/
-
 #include "game.h"
 #include "player.h"
 
 #include "text_observer.h"
 #include "graphics_observer.h"
-
 
 Game::Game(PlayerType white_lvl, PlayerType black_lvl) {
     white = std::make_shared<Player>(true, white_lvl);
@@ -68,14 +61,6 @@ GameResult Game::run_game() {
             return GameResult::Tie;
         }
     }
-}
-
-Player *Game::get_white_player() {
-    return white.get();
-}
-
-Player *Game::get_black_player() {
-    return black.get();
 }
 
 Mode Game::get_game_mode() {

@@ -1,11 +1,3 @@
-/*
-    chess.cc
-    November 29, 2021
-
-    Authors:
-    David Gurevich
-*/
-
 #include <iostream>
 #include <unordered_map>
 

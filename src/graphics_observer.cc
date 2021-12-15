@@ -1,8 +1,3 @@
-/*
-    graphics_observer.cc
-    CS 246
-*/
-
 #include "graphics_observer.h"
 #include "board.h"
 

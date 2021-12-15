@@ -1,7 +1,3 @@
-//
-// Created by david on 12/15/21.
-//
-
 #ifndef CS246_CHESS_HUMAN_H
 #define CS246_CHESS_HUMAN_H
 

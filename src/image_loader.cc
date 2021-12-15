@@ -1,7 +1,3 @@
-//
-// Created by david on 12/12/21.
-//
-
 #include "image_loader.h"
 
 #define STB_IMAGE_IMPLEMENTATION

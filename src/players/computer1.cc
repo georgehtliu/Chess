@@ -1,7 +1,3 @@
-//
-// Created by david on 12/12/21.
-//
-
 #include "computer1.h"
 
 #include <vector>

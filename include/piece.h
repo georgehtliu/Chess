@@ -1,7 +1,6 @@
-#ifndef _PIECE_H_
-#define _PIECE_H_
+#ifndef PIECE_H_
+#define PIECE_H_
 
-//#include <memory>
 #include <utility>
 #include <vector>
 #include "image_loader.h"
@@ -24,8 +23,6 @@ protected:
 
 public:
     bool is_white() const;
-
-    bool is_alive();
 
     int get_value() const;
 

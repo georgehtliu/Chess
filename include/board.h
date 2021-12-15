@@ -1,9 +1,3 @@
-/*
-    board.h
-    David Gurevich
-    CS 246
-*/
-
 #ifndef CHESS_INCLUDE_BOARD_H_
 #define CHESS_INCLUDE_BOARD_H_
 
@@ -20,8 +14,7 @@
 #include "move.h"
 #include "piece.h"
 
-class Board
-{
+class Board {
     Player* white;
     Player* black;
 

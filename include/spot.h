@@ -1,9 +1,3 @@
-/*
-    spot.h
-    David Gurevich
-    CS 246
-*/
-
 #ifndef CHESS_INCLUDE_SPOT_H_
 #define CHESS_INCLUDE_SPOT_H_
 
@@ -17,7 +11,7 @@ class Spot {
 public:
     Spot(int x, int y);
     Spot(int x, int y, Piece *p);
-    ~Spot() = default; // TEMP
+    ~Spot() = default;
 
     int get_x() const;
     int get_y() const;
@@ -26,7 +20,6 @@ public:
     void set_piece(Piece *p);
     bool is_blank();
     bool in_bounds() const;
-    char get_spot_text() const;
     void remove_piece();
 };
 

@@ -1,10 +1,4 @@
-/*
-    spot.cc
-    David Gurevich
-    CS 246
-*/
-
-#include "../include/spot.h"
+#include "spot.h"
 
 Spot::Spot(int x, int y, Piece *p) : p{p}, x{x}, y{y}, white{(x + y) % 2 == 0} {}
 
@@ -36,14 +30,6 @@ bool Spot::is_blank() {
 
 bool Spot::in_bounds() const {
     return (x >= 0 && x < 8) && (y >= 0 && y < 8);
-}
-
-char Spot::get_spot_text() const {
-    if (this->p) {
-        return p->get_text();
-    }
-
-    return ' ';
 }
 
 void Spot::remove_piece() {

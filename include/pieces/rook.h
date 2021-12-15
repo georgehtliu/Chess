@@ -1,13 +1,10 @@
-#ifndef _ROOK_H_
-#define _ROOK_H_
+#ifndef ROOK_H_
+#define ROOK_H_
 
-#include <memory>
-#include <utility>
 #include "piece.h"
 #include "move.h"
 
 class Rook : public Piece {
-
 public:
     Rook(bool white);
     bool valid_path(Move mv) override;
