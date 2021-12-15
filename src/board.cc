@@ -792,22 +792,24 @@ void Board::execute_promotion(Move &mv) {
 
 Spot* Board::get_king_spot(bool white) {
 
-    Spot *king_spot = nullptr;
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            Spot *candidate = get_spot(i, j);
-            if (!candidate->get_piece()) continue;
-            if (white && candidate->get_piece()->is_king() && candidate->get_piece()->is_white()) {
-                king_spot = candidate;
-                break;
+    for (int x = 0; x < Board::COLS; x++) {
+        for (int y = 0; y < Board::ROWS; y++) {
+            Spot *candidate = get_spot(x, y);
+            if (!candidate->get_piece()) {
+                continue;
             }
-            if (!white && candidate->get_piece()->is_king() && !candidate->get_piece()->is_white()) {
-                king_spot = candidate;
-                break;
+            if (candidate->get_piece()->is_king()) {
+                if (white && candidate->get_piece()->is_white()) {
+                    return candidate;
+                } else if (!white && !(candidate->get_piece()->is_white())) {
+                    return candidate;
+                }
             }
         }
     }
-    return king_spot;
+
+    std::cout << "WE COULDN'T FIND THE KING!!!" << std::endl;
+    return nullptr;
 }
 
 void Board::execute_move(Move &mv) {
