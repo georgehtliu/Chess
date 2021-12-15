@@ -21,7 +21,7 @@
 #include "computer3.h"
 #include "computer4.h"
 
-Player::Player(bool white, PlayerType type): white{white}, type{type} {}
+Player::Player(bool white, PlayerType type) : white{white}, type{type} {}
 
 void Player::gen_standard_pieces() {
     pieces.push_back(std::make_shared<King>(white));
@@ -42,14 +42,14 @@ void Player::add_piece(std::shared_ptr<Piece> p) {
     pieces.push_back(p);
 }
 
-Piece* Player::get_last_piece() {
+Piece *Player::get_last_piece() {
     if (!pieces.empty()) {
         return pieces.back().get();
     }
     return nullptr;
 }
 
-Piece* Player::get_nth_piece(size_t n) {
+Piece *Player::get_nth_piece(size_t n) {
     if (n >= pieces.size()) {
         return nullptr;
     }
@@ -78,11 +78,11 @@ std::vector<Move> Player::all_next_moves(Board *b) {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             // if there is a piece at the spot and the piece is the player's color
-            Piece * p = b->get_spot(i, j)->get_piece();
+            Piece *p = b->get_spot(i, j)->get_piece();
             if (p && p->is_white() == white) {
                 std::vector<std::pair<int, int>> paths = p->generate_paths(std::make_pair(i, j));
-                for (auto path : paths) {
-                    Piece * killed = b->get_spot(path.first, path.second)->get_piece();
+                for (auto path: paths) {
+                    Piece *killed = b->get_spot(path.first, path.second)->get_piece();
                     Move m{this, b->get_spot(i, j), b->get_spot(path.first, path.second), p, killed};
 
                     if (b->check_valid_move(m)) {

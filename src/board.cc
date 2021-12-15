@@ -13,16 +13,13 @@
 #include "pieces/rook.h"
 #include <iostream>
 
-Board::Board(Player* white, Player* black): 
-    white{white}, 
-    black{black}
-{
+Board::Board(Player *white, Player *black) :
+        white{white},
+        black{black} {
     // y=7 is the bottom of the board (d1)
-    for (int i = 0; i < ROWS; i++)
-    {
+    for (int i = 0; i < ROWS; i++) {
         positions.emplace_back();
-        for (int j = 0; j < COLS; j++)
-        {
+        for (int j = 0; j < COLS; j++) {
             positions[i].push_back(Spot(i, j));
         }
     }
@@ -38,8 +35,7 @@ void Board::attach(Observer *o) {
 }
 
 void Board::detach(Observer *o) {
-    for (auto it = observers.begin(); it != observers.end();)
-    {
+    for (auto it = observers.begin(); it != observers.end();) {
         if (*it == o)
             it = observers.erase(it);
         else
@@ -52,12 +48,12 @@ void Board::detach_all() {
 }
 
 void Board::notify_observers() {
-    for (auto &ob : observers)
+    for (auto &ob: observers)
         ob->notify();
 }
 
 void Board::notify_observers(Spot *s) {
-    for (auto &ob : observers)
+    for (auto &ob: observers)
         ob->notify(s);
 }
 
@@ -160,7 +156,8 @@ bool Board::setup_complete() {
     int black_y = 0;
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            if (get_spot(i, j)->get_piece() && get_spot(i, j)->get_piece()->is_king() && get_spot(i, j)->get_piece()->is_white()) {
+            if (get_spot(i, j)->get_piece() && get_spot(i, j)->get_piece()->is_king() &&
+                get_spot(i, j)->get_piece()->is_white()) {
                 white_king_count += 1;
                 white_x = i;
                 white_y = j;
@@ -203,7 +200,7 @@ void Board::setup_mode() {
             } else {
                 std::cout << "Ensure that all requirements for setup are met!" << std::endl;
             }
-            
+
         } else if (command == "+") {
             std::cin >> piece;
             std::cin >> position;
@@ -217,7 +214,7 @@ void Board::setup_mode() {
     }
 }
 
-Spot * Board::get_spot(int x, int y) {
+Spot *Board::get_spot(int x, int y) {
     return &positions[x][7 - y];
 }
 
@@ -228,8 +225,7 @@ bool Board::same_team(Spot *s1, Spot *s2) {
     return p1->is_white() == p2->is_white();
 }
 
-bool Board::valid_path(Spot *from, Spot *to)
-{
+bool Board::valid_path(Spot *from, Spot *to) {
     if (from->is_blank()) return false;
     Player *p;
     Piece *piece_from = from->get_piece();
@@ -237,8 +233,7 @@ bool Board::valid_path(Spot *from, Spot *to)
 
     if (white_move) {
         p = white;
-    }
-    else {
+    } else {
         p = black;
     }
 
@@ -260,22 +255,16 @@ bool Board::search_attacker(Spot *spot, int x_inc, int y_inc) {
 
     Spot *runner = spot;
 
-    while (true)
-    {
+    while (true) {
         bool out_of_bounds = !in_bounds(runner->get_x() + x_inc, runner->get_y() + y_inc);
         if (out_of_bounds) break;
-        
+
         runner = get_spot(runner->get_x() + x_inc, runner->get_y() + y_inc);
-        if (is_attacking_path(spot, runner))
-        {
+        if (is_attacking_path(spot, runner)) {
             return true;
-        }
-        else if (runner->is_blank())
-        {
+        } else if (runner->is_blank()) {
             continue;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -284,20 +273,18 @@ bool Board::search_attacker(Spot *spot, int x_inc, int y_inc) {
 
 }
 
-bool Board::under_attack_vertical(Spot *spot)
-{
+bool Board::under_attack_vertical(Spot *spot) {
     return search_attacker(spot, 0, 1) || search_attacker(spot, 0, -1);
 }
 
-bool Board::under_attack_horizontal(Spot *spot)
-{
+bool Board::under_attack_horizontal(Spot *spot) {
 
     return search_attacker(spot, 1, 0) || search_attacker(spot, -1, 0);
 }
 
-bool Board::under_attack_diagonal(Spot *spot)
-{
-    return search_attacker(spot, 1, 1) || search_attacker(spot, -1, 1) || search_attacker(spot, -1, -1) || search_attacker(spot, 1, -1);
+bool Board::under_attack_diagonal(Spot *spot) {
+    return search_attacker(spot, 1, 1) || search_attacker(spot, -1, 1) || search_attacker(spot, -1, -1) ||
+           search_attacker(spot, 1, -1);
 }
 
 bool Board::under_attack_knight(Spot *spot) {
@@ -338,13 +325,14 @@ bool Board::under_attack_knight(Spot *spot) {
     return false;
 }
 
-bool Board::under_attack(Spot *spot)
-{
-    return (under_attack_vertical(spot) || under_attack_horizontal(spot) || under_attack_diagonal(spot) || under_attack_knight(spot));
+bool Board::under_attack(Spot *spot) {
+    return (under_attack_vertical(spot) || under_attack_horizontal(spot) || under_attack_diagonal(spot) ||
+            under_attack_knight(spot));
 }
 
 bool Board::is_en_passant(Move &mv) {
-    return mv.piece_moved && (mv.piece_moved)->is_pawn() && mv.is_diagonal() && mv.end_pos->is_blank() && mv.euclid_dist() == mv.DIAG_UNIT;
+    return mv.piece_moved && (mv.piece_moved)->is_pawn() && mv.is_diagonal() && mv.end_pos->is_blank() &&
+           mv.euclid_dist() == mv.DIAG_UNIT;
 }
 
 bool Board::valid_castle(Move &mv) {
@@ -352,7 +340,7 @@ bool Board::valid_castle(Move &mv) {
     Piece *king = mv.piece_moved;
     Spot *king_start = mv.start_pos;
     Spot *king_end = mv.end_pos;
-    std::pair<Spot*, Spot*> rook_spots = get_rook_castle_spots(king_end);
+    std::pair<Spot *, Spot *> rook_spots = get_rook_castle_spots(king_end);
     Spot *rook_start = rook_spots.first;
     Spot *rook_end = rook_spots.second;
 
@@ -363,7 +351,7 @@ bool Board::valid_castle(Move &mv) {
     }
 
     // if start and end spots are invalid
-    if(!is_valid_king_castle_spots(king_start, king_end)) {
+    if (!is_valid_king_castle_spots(king_start, king_end)) {
         std::cout << "start and end spots are not valid" << std::endl;
         return false;
     }
@@ -372,7 +360,7 @@ bool Board::valid_castle(Move &mv) {
     if (king_start->is_blank() || !(king_start->get_piece())->is_king()) {
         std::cout << "king does not exist on starting spot or another piece is on it" << std::endl;
         return false;
-    } 
+    }
 
     // if king is not in a position for castle
     if (!rook_start || !rook_end) {
@@ -391,7 +379,7 @@ bool Board::valid_castle(Move &mv) {
     if (in_check()) {
         std::cout << "you are in check so you cannot castle" << std::endl;
         return false;
-    } 
+    }
 
     if (!mv.is_castle()) {
         std::cout << "not a castling move" << std::endl;
@@ -420,6 +408,7 @@ bool Board::valid_castle(Move &mv) {
 
     return true;
 }
+
 bool Board::valid_promotion(Move &mv) {
 
     if (!mv.is_promotion()) return false;
@@ -432,7 +421,9 @@ bool Board::valid_promotion(Move &mv) {
     if ((mv.start_pos)->is_blank() || !(pawn->is_pawn())) return false;
 
     // move must be forward or diagonal and one unit
-    if (!(mv.is_forward() || mv.euclid_dist() == mv.FORWARD_UNIT) || !(mv.is_diagonal() || mv.euclid_dist() == mv.DIAG_UNIT)) return false;
+    if (!(mv.is_forward() || mv.euclid_dist() == mv.FORWARD_UNIT) ||
+        !(mv.is_diagonal() || mv.euclid_dist() == mv.DIAG_UNIT))
+        return false;
 
     // check pawn must be on second last rank
     if (white_move) {
@@ -544,7 +535,7 @@ bool Board::check_valid_move(Move &mv) {
         std::cout << "cannot move to the same starting spot" << std::endl;
         return false;
     }
-    
+
     // start and end cannot be out of bounds
     if (!(mv.end_pos)->in_bounds() || !(mv.start_pos)->in_bounds()) {
         std::cout << "start or end out of bounds" << std::endl;
@@ -599,9 +590,9 @@ void Board::place_piece(Spot *start, Spot *end) {
 
     // capture piece
     if (!end->is_blank() && !same_team(start, end)) {
-       std::cout << "piece captured!" << std::endl;
+        std::cout << "piece captured!" << std::endl;
     }
-    
+
 
     (start->get_piece())->set_has_moved(true);
 
@@ -611,6 +602,10 @@ void Board::place_piece(Spot *start, Spot *end) {
 }
 
 bool Board::in_check() {
+    Spot *king_spot = get_king_spot(white_move);
+    if (!king_spot) {
+        return true;
+    }
 
     if (under_attack(get_king_spot(white_move))) {
         std::cout << "in check" << std::endl;
@@ -629,7 +624,7 @@ bool Board::in_check_after_move(Move &mv) {
 
     // get en passant information in case of en passant
     Spot *taken_pawn_spot_ep = nullptr;
-    Piece *killed_pawn_ep = nullptr;
+    Pawn *killed_pawn_ep = nullptr;
 
     // set initial has_moved for piece
     bool has_moved = (starting_spot->get_piece())->has_moved();
@@ -641,14 +636,14 @@ bool Board::in_check_after_move(Move &mv) {
             taken_pawn_spot_ep = get_spot((mv.end_pos)->get_x(), (mv.end_pos)->get_y() + 1);
         }
 
-        killed_pawn_ep = taken_pawn_spot_ep->get_piece();
+        killed_pawn_ep = (Pawn *) (taken_pawn_spot_ep->get_piece());
     }
 
     // perform the move
     execute_move(mv);
 
     // readjust move order
-    white_move = !white_move; 
+    white_move = !white_move;
     if (in_check()) will_be_in_check = true;
 
     // undo execute move side effects
@@ -670,7 +665,7 @@ bool Board::in_check_after_move(Move &mv) {
 
     // if castle, move rook back to original square
     if (mv.is_castle()) {
-        std::pair<Spot*, Spot*> rook_spots = get_rook_castle_spots(ending_spot);
+        std::pair<Spot *, Spot *> rook_spots = get_rook_castle_spots(ending_spot);
         Spot *rook_start_spot = rook_spots.first;
         Spot *rook_end_spot = rook_spots.second;
         rook_start_spot->set_piece(rook_end_spot->get_piece());
@@ -681,6 +676,7 @@ bool Board::in_check_after_move(Move &mv) {
     // if en passant, set taken pawn back to alive and reattach piece to initial spot
     if (is_en_passant(mv)) {
         taken_pawn_spot_ep->set_piece(killed_pawn_ep);
+        //(taken_pawn_spot_ep->get_piece())->set_alive();
     }
 
     // if promotion, delete new piece and set original pawn to be alive
@@ -698,7 +694,7 @@ bool Board::in_check_after_move(Move &mv) {
     return will_be_in_check;
 }
 
-std::pair<Spot*, Spot*> Board::get_rook_castle_spots(Spot *king_end) {
+std::pair<Spot *, Spot *> Board::get_rook_castle_spots(Spot *king_end) {
 
     // <start, end>
     Spot *start = nullptr;
@@ -730,7 +726,7 @@ bool Board::is_valid_king_castle_spots(Spot *start, Spot *end) {
         if (same_spot(start, get_spot(4, 7)) && same_spot(end, get_spot(2, 7))) return true;
         if (same_spot(start, get_spot(4, 7)) && same_spot(end, get_spot(6, 7))) return true;
     }
-    
+
     return false;
 }
 
@@ -742,7 +738,7 @@ void Board::execute_castle(Move &mv) {
     // place king
     place_piece(start, end);
 
-    std::pair<Spot*, Spot*> rook_spots = get_rook_castle_spots(end);
+    std::pair<Spot *, Spot *> rook_spots = get_rook_castle_spots(end);
 
     // place rook
     Spot *start_rook_spot = rook_spots.first;
@@ -778,9 +774,9 @@ void Board::execute_promotion(Move &mv) {
     Player *player = init_pawn_white ? white : black;
 
     if (mv.promotion_piece == 'n') {
-        player->add_piece(std::make_shared<Knight>(init_pawn_white)); 
+        player->add_piece(std::make_shared<Knight>(init_pawn_white));
     } else if (mv.promotion_piece == 'r') {
-        player->add_piece(std::make_shared<Rook>(init_pawn_white)); 
+        player->add_piece(std::make_shared<Rook>(init_pawn_white));
     } else if (mv.promotion_piece == 'b') {
         player->add_piece(std::make_shared<Bishop>(init_pawn_white));
     } else {
@@ -790,8 +786,7 @@ void Board::execute_promotion(Move &mv) {
     end->set_piece(player->get_last_piece());
 }
 
-Spot* Board::get_king_spot(bool white) {
-
+Spot *Board::get_king_spot(bool white) {
     for (int x = 0; x < Board::COLS; x++) {
         for (int y = 0; y < Board::ROWS; y++) {
             Spot *candidate = get_spot(x, y);
@@ -817,21 +812,18 @@ void Board::execute_move(Move &mv) {
     Spot *end = mv.end_pos;
 
     // perform castle
-    if (mv.is_castle()) 
-    {
+    if (mv.is_castle()) {
         execute_castle(mv);
     }
-    // perform en passant
-    else if (is_en_passant(mv)) 
-    {
+        // perform en passant
+    else if (is_en_passant(mv)) {
         execute_en_passant(mv);
     }
-    // promotion
-    else if (mv.is_promotion()) 
-    {
+        // promotion
+    else if (mv.is_promotion()) {
         execute_promotion(mv);
     }
-    // place piece for generic move
+        // place piece for generic move
     else {
         place_piece(start, end);
     }
@@ -842,19 +834,19 @@ void Board::execute_move(Move &mv) {
     white_move = !white_move;
 }
 
-void Board::set_white(Player* white) {
+void Board::set_white(Player *white) {
     this->white = white;
 }
 
-void Board::set_black(Player* black) {
+void Board::set_black(Player *black) {
     this->black = black;
 }
 
-Player* Board::get_black() {
+Player *Board::get_black() {
     return black;
 }
 
-Player* Board::get_white() {
+Player *Board::get_white() {
     return white;
 }
 
@@ -873,23 +865,28 @@ bool Board::white_to_move() {
 bool Board::any_path_available() {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            Piece * p = get_spot(i, j)->get_piece();
+            Piece *p = get_spot(i, j)->get_piece();
             if (p && ((p->is_white() && white_move) || (!p->is_white() && !white_move))) {
-                std::vector<std::pair<int, int>> paths = p->generate_paths(std::make_pair(i, j));
-                for (auto path : paths) {
-                    if (white_move) {
-                        Piece * killed = get_spot(path.first, path.second)->get_piece();
-                        Move m{white, get_spot(i, j), get_spot(path.first, path.second), p, killed};
-                        if (check_valid_move(m)) {
-                            return false;
-                        }
-                    } else {
-                        Piece * killed = get_spot(path.first, path.second)->get_piece();
-                        Move m{black, get_spot(i, j), get_spot(path.first, path.second), p, killed};
-                        if (check_valid_move(m)) {
-                            return false;
+                try {
+                    std::vector<std::pair<int, int>> paths = p->generate_paths(std::make_pair(i, j));
+
+                    for (auto path: paths) {
+                        if (white_move) {
+                            Piece *killed = get_spot(path.first, path.second)->get_piece();
+                            Move m{white, get_spot(i, j), get_spot(path.first, path.second), p, killed};
+                            if (check_valid_move(m)) {
+                                return false;
+                            }
+                        } else {
+                            Piece *killed = get_spot(path.first, path.second)->get_piece();
+                            Move m{black, get_spot(i, j), get_spot(path.first, path.second), p, killed};
+                            if (check_valid_move(m)) {
+                                return false;
+                            }
                         }
                     }
+                } catch (...) {
+                    continue;
                 }
             }
         }
@@ -902,11 +899,11 @@ bool Board::in_stalemate() {
     if (in_check()) return false;
 
     bool two_kings_only = false;
-    
+
     int count = 0;
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            Piece * p = get_spot(i, j)->get_piece();
+            Piece *p = get_spot(i, j)->get_piece();
             if (p) {
                 count++;
             }
@@ -915,7 +912,7 @@ bool Board::in_stalemate() {
     }
 
     if (count == 2) two_kings_only = true;
-    
+
     return two_kings_only || any_path_available();
 }
 

@@ -2,7 +2,6 @@
 // Created by david on 12/12/21.
 //
 
-#include <algorithm>
 #include <map>
 #include "computer2.h"
 #include "move.h"
@@ -12,7 +11,7 @@ Move computer2_get_next_move(Player *p, Board *b) {
     std::vector<Move> possible_moves = p->all_next_moves(b);
 
     std::map<int, std::vector<Move>> sorted_possible_moves;
-    for (auto& m : possible_moves) {
+    for (auto &m: possible_moves) {
         int eval = b->evaluate_move(m);
         auto it = sorted_possible_moves.find(eval);
         if (it == sorted_possible_moves.end()) {

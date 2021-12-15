@@ -24,8 +24,8 @@ Xwindow::Xwindow(int width, int height) {
     XMapRaised(d, w);
 
     Pixmap pix =
-        XCreatePixmap(d, w, width, height, DefaultDepth(d, DefaultScreen(d)));
-    gc = XCreateGC(d, pix, 0, (XGCValues *)0);
+            XCreatePixmap(d, w, width, height, DefaultDepth(d, DefaultScreen(d)));
+    gc = XCreateGC(d, pix, 0, (XGCValues *) 0);
 
     XFlush(d);
     XFlush(d);
@@ -35,15 +35,15 @@ Xwindow::Xwindow(int width, int height) {
     // window every time, I need to set its class name, and then address that
     // class in my i3wm config file.
     XClassHint hint;
-    hint.res_class = (char *)"cs246";
-    hint.res_name = (char *)"cs246";
+    hint.res_class = (char *) "cs246";
+    hint.res_name = (char *) "cs246";
     XSetClassHint(d, w, &hint);
 
     // Set up colours.
     XColor xcolour;
     Colormap cmap;
-    char color_vals[10][20] = {"white", "black",  "red",     "papaya whip",  "blue",
-                               "cyan",  "yellow", "seashell", "orange", "olive"};
+    char color_vals[10][20] = {"white", "black", "red", "papaya whip", "blue",
+                               "cyan", "yellow", "seashell", "orange", "olive"};
 
     cmap = DefaultColormap(d, DefaultScreen(d));
     for (int i = 0; i < 10; ++i) {
@@ -58,7 +58,7 @@ Xwindow::Xwindow(int width, int height) {
     XSizeHints hints;
     hints.flags = (USPosition | PSize | PMinSize | PMaxSize);
     hints.height = hints.base_height = hints.min_height = hints.max_height =
-        height;
+            height;
     hints.width = hints.base_width = hints.min_width = hints.max_width = width;
     XSetNormalHints(d, w, &hints);
 

@@ -7,7 +7,7 @@
 
 
 Move computer4_get_next_move(Player *p, Board *b) {
-    (void)p;
-    (void)b;
+    (void) p;
+    (void) b;
     return {nullptr, nullptr, nullptr, nullptr};
 }
