@@ -1,0 +1,8 @@
+game 0 0
+move c2 c3
+move h7 h6
+move d1 a4
+move h6 h5
+move a4 d7
+move h5 h4
+resign
