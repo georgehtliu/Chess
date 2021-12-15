@@ -30,31 +30,37 @@ bool in_bounds(int x, int y) {
     return (x >= 0 && x < 8) && (y >= 0 && y < 8);
 }
 
-void Board::attach(Observer *o) {
-    observers.push_back(o);
+void Board::attach_graphics(GraphicsObserver *g) {
+    this->g = g;
+}
+
+void Board::attach_text(TextObserver *t) {
+    this->t = t;
 }
 
 void Board::detach(Observer *o) {
-    for (auto it = observers.begin(); it != observers.end();) {
-        if (*it == o)
-            it = observers.erase(it);
-        else
-            ++it;
+    if (o == g) {
+        g = nullptr;
+    }
+
+    if (o == t) {
+        t = nullptr;
     }
 }
 
 void Board::detach_all() {
-    observers.clear();
+    g = nullptr;
+    t = nullptr;
 }
 
 void Board::notify_observers() {
-    for (auto &ob: observers)
-        ob->notify();
+    if (g) g->notify();
+    if (t) t->notify();
 }
 
 void Board::notify_observers(Spot *s) {
-    for (auto &ob: observers)
-        ob->notify(s);
+    if (g) g->notify(s);
+    if (t) t->notify(s);
 }
 
 int position_getX(std::string pos) {
@@ -188,6 +194,7 @@ void Board::setup_mode() {
 
 
     bool done = false;
+
     notify_observers();
     while (!done) {
         std::string command;
@@ -748,8 +755,10 @@ void Board::execute_castle(Move &mv) {
     Spot *end_rook_spot = rook_spots.second;
 
     place_piece(start_rook_spot, end_rook_spot);
-    notify_observers(start_rook_spot);
-    notify_observers(end_rook_spot);
+    if (g) {
+        g->notify(start_rook_spot);
+        g->notify(end_rook_spot);
+    }
 }
 
 void Board::execute_en_passant(Move &mv) {
@@ -766,7 +775,7 @@ void Board::execute_en_passant(Move &mv) {
     }
 
     taken_pawn_spot->set_piece(nullptr);
-    notify_observers(taken_pawn_spot);
+    if (g) g->notify(taken_pawn_spot);
 }
 
 void Board::execute_promotion(Move &mv) {
@@ -809,7 +818,6 @@ Spot *Board::get_king_spot(bool white) {
         }
     }
 
-    std::cout << "WE COULDN'T FIND THE KING!!!" << std::endl;
     return nullptr;
 }
 
@@ -929,9 +937,8 @@ bool Board::in_checkmate() {
 
 
 void Board::notify_observers(Move &m) {
-    for (auto& ob : observers) {
-        ob->notify(&m);
-    }
+    if (g) g->notify(&m);
+    if (t) t->notify(&m);
 }
 
 int Board::evaluate_move(Move &mv, bool defensive) {

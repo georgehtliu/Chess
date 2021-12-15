@@ -5,9 +5,10 @@
 */
 
 #include "graphics_observer.h"
+#include "board.h"
 
 GraphicsObserver::GraphicsObserver(Board *board) : subject{board} {
-    subject->attach(this);
+    subject->attach_graphics(this);
 
     int width = GraphicsObserver::WIDTH * Board::COLS + GraphicsObserver::BOARD_OFFSET * 2;
     int height = GraphicsObserver::HEIGHT * Board::ROWS + GraphicsObserver::BOARD_OFFSET * 2;
@@ -81,9 +82,13 @@ void GraphicsObserver::notify(Spot *s) {
 }
 
 void GraphicsObserver::notify(Move *m) {
+    (void)m;
+    notify();
+    /*
     notify(m->start_pos);
     notify(m->end_pos);
     if (m->end_pos->get_piece() && m->end_pos->get_piece() != m->piece_killed) {
         notify();
     }
+    */
 }

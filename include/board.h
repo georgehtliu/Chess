@@ -13,7 +13,8 @@
 #include <memory>
 #include <utility>
 
-#include "observer.h"
+#include "graphics_observer.h"
+#include "text_observer.h"
 #include "spot.h"
 #include "player.h"
 #include "move.h"
@@ -26,7 +27,8 @@ class Board
 
     std::vector<Move> moves;
 
-    std::vector<Observer *> observers;
+    GraphicsObserver* g;
+    TextObserver* t;
 
     std::vector<std::vector<Spot>> positions;
     bool white_move;
@@ -65,7 +67,8 @@ public:
     ~Board() = default; // FIXME
 
     // Observers
-    void attach(Observer *o);
+    void attach_graphics(GraphicsObserver *g);
+    void attach_text(TextObserver *t);
     void detach(Observer *o);
     void detach_all();
     void notify_observers();

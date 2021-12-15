@@ -7,12 +7,13 @@
 #ifndef CHESS_INCLUDE_GRAPHICS_OBSERVER_H_
 #define CHESS_INCLUDE_GRAPHICS_OBSERVER_H_
 
-#include "board.h"
 #include "observer.h"
 #include "window.h"
 
 #include <memory>
 #include <unordered_map>
+
+class Board;
 
 class GraphicsObserver : public Observer {
     Board *subject;

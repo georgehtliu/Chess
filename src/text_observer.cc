@@ -1,9 +1,10 @@
 #include "text_observer.h"
+#include "board.h"
 
 #include <iostream>
 
 TextObserver::TextObserver(Board *board) : subject{board} {
-    subject->attach(this);
+    subject->attach_text(this);
 }
 
 TextObserver::~TextObserver() {
