@@ -1,19 +1,13 @@
 //
-// Created by david on 12/12/21.
+// Created by david on 12/15/21.
 //
 
 #ifndef CS246_CHESS_HUMAN_H
 #define CS246_CHESS_HUMAN_H
 
 #include "player.h"
+#include "move.h"
 
-class Human : public Player {
-
-public:
-    explicit Human(bool white);
-
-    Move get_next_move(Board *b) override;
-};
-
+Move human_get_next_move(Player *p, Board *b);
 
 #endif //CS246_CHESS_HUMAN_H

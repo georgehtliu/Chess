@@ -29,7 +29,7 @@ int main() {
 
     // Convert player type command (string) to PlayerType
     std::unordered_map<std::string, PlayerType> player_str_to_type = {
-        {"human", PlayerType::HumanType},
+        {"human", PlayerType::Human},
         {"computer1", PlayerType::AI1},
         {"computer2", PlayerType::AI2},
         {"computer3", PlayerType::AI3},
@@ -56,12 +56,8 @@ int main() {
             if (games.empty()) {
                 games.emplace_back(white_player_type, black_player_type);
             } else if (games.back().get_game_mode() == Mode::Finished) {
-                games.back().get_board()->detach_all();
-                games.back().destroy_observers();
                 games.emplace_back(white_player_type, black_player_type);
             } else if (games.back().get_game_mode() == Mode::Setup) {
-                games.back().get_board()->detach_all();
-                games.back().destroy_observers();
                 games.back().set_white_type(white_player_type);
                 games.back().set_black_type(black_player_type);
             }
@@ -87,7 +83,11 @@ int main() {
             games.back().set_game_mode(Mode::Finished);
 
         } else if (cmd == "setup") {
-            if (games.empty() || games.back().get_game_mode() == Mode::Finished) {
+            if (games.empty()) {
+                games.emplace_back();
+                games.back().set_game_mode(Mode::Setup);
+                games.back().get_board()->setup_mode();
+            } else if (games.back().get_game_mode() == Mode::Finished) {
                 games.emplace_back();
                 games.back().set_game_mode(Mode::Setup);
                 games.back().get_board()->setup_mode();

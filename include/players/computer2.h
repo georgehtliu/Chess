@@ -7,12 +7,6 @@
 
 #include "player.h"
 
-class Computer2 : public Player {
-public:
-    explicit Computer2(bool white);
-
-    Move get_next_move(Board *b) override;
-};
-
+Move computer2_get_next_move(Player *p, Board *b);
 
 #endif //CS246_CHESS_COMPUTER2_H

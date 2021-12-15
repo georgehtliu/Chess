@@ -5,11 +5,9 @@
 #include "computer3.h"
 #include "move.h"
 
-Computer3::Computer3(bool white) {
-    this->white = white;
-}
 
-Move Computer3::get_next_move(Board *b) {
+Move computer3_get_next_move(Player *p, Board *b) {
+    (void)p;
     (void)b;
-    return {this, nullptr, nullptr, nullptr};
+    return {nullptr, nullptr, nullptr, nullptr};
 }

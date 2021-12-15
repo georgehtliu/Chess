@@ -1,20 +1,14 @@
 //
-// Created by david on 12/12/21.
+// Created by david on 12/15/21.
 //
 
 #include <sstream>
 #include "human.h"
-#include "move.h"
 #include "board.h"
 
-
-Human::Human(bool white) {
-    this->white = white;
-}
-
-Move Human::get_next_move(Board *b) {
+Move human_get_next_move(Player *p, Board *b) {
     while (true) {
-        if (white) {
+        if (p->white) {
             std::cout << "Enter (WHITE) move: ";
         } else {
             std::cout << "Enter (BLACK) move: ";
@@ -30,7 +24,7 @@ Move Human::get_next_move(Board *b) {
 
         // Check for resign
         if (cmd == "resign") {
-            Move m = Move(this, nullptr, nullptr, nullptr, nullptr, 'x', true);
+            Move m = Move(p, nullptr, nullptr, nullptr, nullptr, 'x', true);
             return m;
         } else if (cmd == "move") {
             int x1, y1, x2, y2;
@@ -48,7 +42,7 @@ Move Human::get_next_move(Board *b) {
                 x2 = pos2.at(0) - 'a';
                 y2 = pos2.at(1) - '0' - 1;
 
-                Move m = Move(this,
+                Move m = Move(p,
                               b->get_spot(x1, y1),
                               b->get_spot(x2, y2),
                               b->get_spot(x1, y1)->get_piece(),

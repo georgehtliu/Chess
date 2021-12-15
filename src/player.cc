@@ -1,6 +1,7 @@
 //
 // Created by david on 12/10/21.
 //
+#include <sstream>
 #include <iostream>
 #include <vector>
 #include <utility>
@@ -14,7 +15,13 @@
 #include "pawn.h"
 #include "move.h"
 #include "board.h"
+#include "human.h"
+#include "computer1.h"
+#include "computer2.h"
+#include "computer3.h"
+#include "computer4.h"
 
+Player::Player(bool white, PlayerType type): white{white}, type{type} {}
 
 void Player::gen_standard_pieces() {
     pieces.push_back(std::make_shared<King>(white));
@@ -33,10 +40,6 @@ void Player::gen_standard_pieces() {
 
 void Player::add_piece(std::shared_ptr<Piece> p) {
     pieces.push_back(p);
-}
-
-int Player::get_score() {
-    return score;
 }
 
 Piece* Player::get_last_piece() {
@@ -58,8 +61,8 @@ bool Player::is_white() const {
     return white;
 }
 
-int Player::incr_score() {
-    return ++score;
+void Player::set_type(PlayerType type) {
+    this->type = type;
 }
 
 bool Player::has_valid_moves() {
@@ -91,3 +94,18 @@ std::vector<Move> Player::all_next_moves(Board *b) {
     return all_moves;
 }
 
+Move Player::get_next_move(Board *b) {
+    switch (this->type) {
+        case Human:
+            return human_get_next_move(this, b);
+        case AI1:
+            return computer1_get_next_move(this, b);
+        case AI2:
+            return computer2_get_next_move(this, b);
+        case AI3:
+            return computer3_get_next_move(this, b);
+        case AI4:
+            return computer4_get_next_move(this, b);
+    }
+    return {this, nullptr, nullptr, nullptr};
+}
