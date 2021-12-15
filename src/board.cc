@@ -554,8 +554,8 @@ bool Board::check_valid_move(Move &mv) {
     }
 
     // cannot be in check after move ** should be done last **
-    if (in_check_after_move(mv)) 
-        std::cout << "in check after move" << std::endl;{
+    if (in_check_after_move(mv)) {
+        std::cout << "in check after move" << std::endl;
         return false;
     }
 
@@ -867,7 +867,23 @@ bool Board::any_path_available() {
 }
 
 bool Board::in_stalemate() {
+
     if (in_check()) return false;
+    
+    // TODO: check if only 2 pieces left on board
+    int count = 0;
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            Piece * p = get_spot(i, j)->get_piece();
+            if (p) {
+                count++;
+            }
+            if (count > 2) return false;
+        }
+    }
+
+    if (count == 2) return true;
+    
     return any_path_available();
 }
 
