@@ -671,7 +671,7 @@ bool Board::in_check_after_move(Move &mv) {
     }
 
     // if castle, move rook back to original square
-    if (mv.is_castle() && valid_castle(mv)) {
+    if (mv.is_castle()) {
         std::pair<Spot*, Spot*> rook_spots = get_rook_castle_spots(ending_spot);
         Spot *rook_start_spot = rook_spots.first;
         Spot *rook_end_spot = rook_spots.second;
@@ -681,13 +681,13 @@ bool Board::in_check_after_move(Move &mv) {
     }
 
     // if en passant, set taken pawn back to alive and reattach piece to initial spot
-    if (is_en_passant(mv) && valid_en_passant(mv)) {
+    if (is_en_passant(mv)) {
         taken_pawn_spot_ep->set_piece(killed_pawn_ep);
         (taken_pawn_spot_ep->get_piece())->set_alive();
     }
 
     // if promotion, delete new piece and set original pawn to be alive
-    if (mv.is_promotion() && valid_promotion(mv)) {
+    if (mv.is_promotion()) {
         if (white_move) {
             white->remove_last_piece();
         } else {
