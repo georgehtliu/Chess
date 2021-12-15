@@ -523,7 +523,8 @@ bool Board::move_blocked(Move &mv) {
 
 // TODO
 bool Board::check_valid_move(Move &mv) {
-    std::cout << std::endl;
+
+    std::cout << "(" << mv.start_pos->get_x() << "," << mv.start_pos->get_y() << ")" << "to" << "(" << mv.end_pos->get_x() << "," << mv.end_pos->get_y() << ")" << std::endl;
 
     // check that the start spot actually has a piece
     if (!((mv.start_pos)->get_piece())) {
@@ -584,7 +585,7 @@ bool Board::check_valid_move(Move &mv) {
         std::cout << "in check after move" << std::endl;
         return false;
     }
-    std::cout << "Success" << std::endl;
+    std::cout << "Success: valid move" << std::endl;
 
     return true;
 }
@@ -797,13 +798,14 @@ Spot* Board::get_king_spot(bool white) {
         for (int j = 0; j < 8; j++) {
             Spot *candidate = get_spot(i, j);
             if (!candidate->get_piece()) continue;
-            if (white && candidate->get_piece()->is_king() && candidate->get_piece()->is_white()) {
+            if (!candidate->get_piece()->is_king()) continue;
+            if (white && candidate->get_piece()->is_white()) {
                 king_spot = candidate;
-                break;
+                return king_spot;
             }
-            if (!white && candidate->get_piece()->is_king() && !candidate->get_piece()->is_white()) {
+            if (!white && !candidate->get_piece()->is_white()) {
                 king_spot = candidate;
-                break;
+                return king_spot;
             }
         }
     }
