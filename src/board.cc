@@ -857,7 +857,23 @@ bool Board::any_path_available() {
 }
 
 bool Board::in_stalemate() {
+
     if (in_check()) return false;
+    
+    // TODO: check if only 2 pieces left on board
+    int count = 0;
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            Piece * p = get_spot(i, j)->get_piece();
+            if (p) {
+                count++;
+            }
+            if (count > 2) return false;
+        }
+    }
+
+    if (count == 2) return true;
+    
     return any_path_available();
 }
 
