@@ -84,6 +84,7 @@ std::vector<Move> Player::all_next_moves(Board *b) {
                 for (auto path : paths) {
                     Piece * killed = b->get_spot(path.first, path.second)->get_piece();
                     Move m{this, b->get_spot(i, j), b->get_spot(path.first, path.second), p, killed};
+
                     if (b->check_valid_move(m)) {
                         all_moves.push_back(m);
                     }
