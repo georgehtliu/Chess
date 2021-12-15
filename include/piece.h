@@ -11,6 +11,7 @@ class Move;
 class Piece {
 
 protected:
+    int value;
 
     bool moved = false;
     bool white;
@@ -24,6 +25,7 @@ protected:
 public:
     bool is_white() const;
     bool is_alive();
+    int get_value() const;
     virtual bool is_pawn() const;
     virtual bool is_king() const;
     virtual bool is_rook() const;

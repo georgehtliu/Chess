@@ -2,6 +2,7 @@
 
 Queen::Queen(bool white) {
     this->white = white;
+    this->value = (white ? 1 : -1) * 90;
     if (white) {
         text_repr = 'Q';
         white_square = "assets/pieces/queen_w_bg_w.png";

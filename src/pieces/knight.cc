@@ -4,6 +4,7 @@
 
 Knight::Knight(bool white) {
     this->white = white;
+    this->value = (white ? 1 : -1) * 30;
     if (white) {
         text_repr = 'N';
         white_square = "assets/pieces/knight_w_bg_w.png";
