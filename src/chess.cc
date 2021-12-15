@@ -35,7 +35,7 @@ int main() {
             {"computer3", PlayerType::AI3},
     };
 
-    std::cout << "Enter a command: ";
+    std::cout << "Enter a command: " << std::endl;
     while (std::cin >> cmd) {
         if (cmd == "game") {
             std::string white_player;
@@ -104,7 +104,7 @@ int main() {
             std::cout << "Invalid command. Try again." << std::endl;
         }
         std::cout << std::endl;
-        std::cout << "Enter a command: ";
+        std::cout << "Enter a command: " << std::endl;
     }
 
     // Final Score output

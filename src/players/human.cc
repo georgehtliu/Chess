@@ -7,15 +7,27 @@
 #include "board.h"
 
 Move human_get_next_move(Player *p, Board *b) {
+    bool first = true;
     while (true) {
-        if (p->white) {
+        if (p->white && first) {
             std::cout << "Enter (WHITE) move: " << std::endl;
-        } else {
+        } else if (!p->white && first) {
             std::cout << "Enter (BLACK) move: " << std::endl;
         }
+        
+        first = false;
 
         std::string input;
+
+        if (std::cin.eof()) {
+            return {p, nullptr, nullptr, nullptr, nullptr, 'x', true};
+        }
+
         std::getline(std::cin, input);
+        
+        if (input.empty()) {
+            continue;
+        }
 
         std::istringstream ss(input);
 
