@@ -497,7 +497,7 @@ bool Board::move_blocked(Move &mv) {
 
 // TODO
 bool Board::check_valid_move(Move &mv) {
-    std::cout << "check_valid_move called" << std::endl;
+    std::cout << "check_valid_move" << std::endl;
 
     // check that the start spot actually has a piece
     if (!((mv.start_pos)->get_piece())) {
