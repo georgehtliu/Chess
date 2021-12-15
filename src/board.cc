@@ -554,8 +554,8 @@ bool Board::check_valid_move(Move &mv) {
     }
 
     // cannot be in check after move ** should be done last **
-    if (in_check_after_move(mv)) 
-        std::cout << "in check after move" << std::endl;{
+    if (in_check_after_move(mv)) {
+        std::cout << "in check after move" << std::endl;
         return false;
     }
 
@@ -568,11 +568,6 @@ bool Board::same_spot(Spot *s1, Spot *s2) {
 }
 
 void Board::place_piece(Spot *start, Spot *end) {
-
-    // capture piece
-    if (!end->is_blank() && !same_team(start, end)) {
-       (end->get_piece())->set_killed();
-    }
 
     (start->get_piece())->set_has_moved(true);
 
@@ -732,7 +727,6 @@ void Board::execute_en_passant(Move &mv) {
         taken_pawn_spot = get_spot(end->get_x(), end->get_y() + 1);
     }
 
-    (taken_pawn_spot->get_piece())->set_killed();
     taken_pawn_spot->set_piece(nullptr);
 }
 
@@ -740,8 +734,6 @@ void Board::execute_promotion(Move &mv) {
 
     Spot *start = mv.start_pos;
     Spot *end = mv.end_pos;
-
-    (start->get_piece())->set_killed();
 
     bool init_pawn_white = (start->get_piece())->is_white();
     place_piece(start, end);
@@ -782,30 +774,28 @@ Spot* Board::get_king_spot(bool white) {
 }
 
 void Board::execute_move(Move &mv) {
-
     Spot *start = mv.start_pos;
     Spot *end = mv.end_pos;
 
     // perform castle
-    if (mv.is_castle()) {
+    if (mv.is_castle()) 
+    {
         execute_castle(mv);
     }
-
     // perform en passant
-    if (is_en_passant(mv)) {
+    else if (is_en_passant(mv)) 
+    {
         execute_en_passant(mv);
     }
-    
     // promotion
-    if (mv.is_promotion()) {
+    else if (mv.is_promotion()) 
+    {
         execute_promotion(mv);
     }
-
     // place piece for generic move
-    if (!(mv.is_castle() || is_en_passant(mv) || mv.is_promotion())) {
+    else {
         place_piece(start, end);
     }
-
     // add move to array
     moves.push_back(mv);
 

@@ -26,7 +26,7 @@ bool Pawn::valid_path(Move mv) {
         // 1 forward case
         return true;
     }
-    else if (mv.piece_killed && mv.is_diagonal() && mv.euclid_dist() == mv.DIAG_UNIT)
+    else if (mv.is_diagonal() && mv.euclid_dist() == mv.DIAG_UNIT)
     {
         // diagonal kill case (standard and en passant)
         return true;
