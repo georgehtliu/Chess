@@ -1,7 +1,7 @@
 === Welcome to Chess! ===
     In order to start a new game, run the following command:
         game [white-player] [black-player]
-    In place of [white-player] and [black-player], you can choose to either be a human, or one of four AI levels:
+    In place of [white-player] and [black-player], you can choose to either be a human, or one of three AI levels:
         human -- Human player
         computer1 -- AI level 1 (Random legal moves)
         computer2 -- AI level 2 (prefers capturing moves and checks over other moves)
@@ -14,8 +14,8 @@
             For example, a good starting move as WHITE would be 
                 move e2 e4
             If you wish to promote your pawn by reaching the opposite side of the board, you may enter
-                move e7 e8 k
-            to promote your piece to a Knight. If you do not specify a piece to promote to, then game will default to
+                move e7 e8 n
+            to promote your piece to a Knight. If you do not specify a piece to promote to, then the game will default to
             promoting your pawn to a Queen.
 
         resign
