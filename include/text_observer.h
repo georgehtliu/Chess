@@ -10,7 +10,6 @@ class Board;
 
 class TextObserver : public Observer {
     Board *subject;
-    std::unique_ptr<Xwindow> w;
 
    public:
     TextObserver(Board *board);
