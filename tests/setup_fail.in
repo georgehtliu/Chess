@@ -1,0 +1,12 @@
+setup
++ q a3
++ K a2
++ r c7
++ p f2
++ n c8
++ k h8
+done
+- a3
+done
+game human human
+resign
