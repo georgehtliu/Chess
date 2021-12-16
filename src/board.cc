@@ -213,6 +213,13 @@ void Board::setup_mode() {
             Spot *s = get_spot(position_getX(position), position_getY(position));
             s->remove_piece();
             notify_observers(s);
+        } else if (command == "=") {
+            std::cin >> piece;
+            if (piece == 'b' && white_move) {
+                white_move = !white_move;
+            } else if (piece == 'w' && !white_move) {
+                white_move = !white_move;
+            }
         }
     }
 }
