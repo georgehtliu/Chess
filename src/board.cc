@@ -100,6 +100,13 @@ void Board::gen_standard_layout() {
 void Board::add_piece(char piece, std::string position) {
     int x = position_getX(position);
     int y = position_getY(position);
+    if (x < 0 || x > 7) {
+        return;
+    }
+    if (y < 0 || y > 7) {
+        return;
+    }
+
     // advanced programming skills
     if (piece == 'p') {
         black->add_piece(std::make_shared<Pawn>(false));
@@ -178,6 +185,10 @@ bool Board::setup_complete() {
     if (under_attack(white_king)) return false;
     if (under_attack(black_king)) return false;
 
+    // check for checkmate or stalemate
+    if (in_stalemate()) return false;
+    if (in_checkmate()) return false;
+
     return true;
 }
 
@@ -211,8 +222,10 @@ void Board::setup_mode() {
         } else if (command == "-") {
             std::cin >> position;
             Spot *s = get_spot(position_getX(position), position_getY(position));
-            s->remove_piece();
-            notify_observers(s);
+            if (s) {
+                s->remove_piece();
+                notify_observers(s);
+            }
         } else if (command == "=") {
             std::cin >> piece;
             if (piece == 'b' && white_move) {
