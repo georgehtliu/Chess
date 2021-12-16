@@ -36,4 +36,4 @@ clean:
 	@rm -vf  $(TARGET).zip
 
 zip: clean
-	zip -r $(TARGET).zip Makefile src/ include/
+	zip -r $(TARGET).zip Makefile src/ include/ doc/ assets/ tests/ *.pdf
